@@ -32,10 +32,10 @@ if($controller != ''){
             echo $controller->index();
         }
     }else{
-        $controller = new src\Controller\ArticleController();
+        $controller = new src\Controller\MovieController();
         echo $controller->index();
     }
 }else{
-    $controller = new src\Controller\ArticleController();
+    $controller = new src\Controller\MovieController();
     echo $controller->index();
 }
