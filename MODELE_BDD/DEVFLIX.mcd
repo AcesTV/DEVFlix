@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?PowerDesigner AppLocale="UTF16" ID="{A14CEF2E-9067-42BE-B293-CF75A0986749}" Label="" LastModificationDate="1616167382" Name="DEVFLIX" Objects="100" Symbols="20" Type="{1E597170-9350-11D1-AB3C-0020AF71E433}" signature="CDM_DATA_MODEL_XML" version="15.1.0.2850"?>
+<?PowerDesigner AppLocale="UTF16" ID="{A14CEF2E-9067-42BE-B293-CF75A0986749}" Label="" LastModificationDate="1616682118" Name="DEVFLIX" Objects="102" Symbols="20" Type="{1E597170-9350-11D1-AB3C-0020AF71E433}" signature="CDM_DATA_MODEL_XML" version="15.1.0.2850"?>
 <!-- Veuillez ne pas modifier ce fichier -->
 
 <Model xmlns:a="attribute" xmlns:c="collection" xmlns:o="object">
@@ -12,7 +12,7 @@
 <a:Code>DEVFLIX</a:Code>
 <a:CreationDate>1616150112</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
-<a:ModificationDate>1616167361</a:ModificationDate>
+<a:ModificationDate>1616682118</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <a:PackageOptionsText>[FolderOptions]
 
@@ -1172,7 +1172,7 @@ Shadow=0</a:DisplayPreferences>
 <o:AssociationLinkSymbol Id="o5">
 <a:CreationDate>1616153212</a:CreationDate>
 <a:ModificationDate>1616153215</a:ModificationDate>
-<a:Rect>((-26608,-392), (-24784,7190))</a:Rect>
+<a:Rect>((-26646,-392), (-24784,7190))</a:Rect>
 <a:ListOfPoints>((-24884,-392),(-24884,7190))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>0</a:ArrowStyle>
@@ -1214,8 +1214,8 @@ CARD 0 Arial,8,N</a:FontList>
 <o:AssociationLinkSymbol Id="o12">
 <a:CreationDate>1616153239</a:CreationDate>
 <a:ModificationDate>1616164980</a:ModificationDate>
-<a:Rect>((16303,-7394), (23169,715))</a:Rect>
-<a:ListOfPoints>((23169,-7394),(23169,-2185),(16303,-2185),(16303,715))</a:ListOfPoints>
+<a:Rect>((16303,-6997), (23169,715))</a:Rect>
+<a:ListOfPoints>((23169,-6997),(23169,-2185),(16303,-2185),(16303,715))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>0</a:ArrowStyle>
 <a:LineColor>16744576</a:LineColor>
@@ -1235,7 +1235,7 @@ CARD 0 Arial,8,N</a:FontList>
 <o:AssociationLinkSymbol Id="o16">
 <a:CreationDate>1616153239</a:CreationDate>
 <a:ModificationDate>1616164980</a:ModificationDate>
-<a:Rect>((-3822,715), (16303,4405))</a:Rect>
+<a:Rect>((-3860,715), (16303,4405))</a:Rect>
 <a:ListOfPoints>((-3822,4405),(-3822,715),(16303,715))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>0</a:ArrowStyle>
@@ -1256,7 +1256,7 @@ CARD 0 Arial,8,N</a:FontList>
 <o:AssociationLinkSymbol Id="o18">
 <a:CreationDate>1616164472</a:CreationDate>
 <a:ModificationDate>1616164474</a:ModificationDate>
-<a:Rect>((-35486,-10913), (-29313,-4537))</a:Rect>
+<a:Rect>((-35524,-10913), (-29313,-4537))</a:Rect>
 <a:ListOfPoints>((-35486,-4537),(-35486,-7909),(-29313,-7909),(-29313,-10913))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>0</a:ArrowStyle>
@@ -1277,7 +1277,7 @@ CARD 0 Arial,8,N</a:FontList>
 <o:AssociationLinkSymbol Id="o21">
 <a:CreationDate>1616164472</a:CreationDate>
 <a:ModificationDate>1616164983</a:ModificationDate>
-<a:Rect>((-35150,-16834), (-28757,-10913))</a:Rect>
+<a:Rect>((-35188,-16834), (-28757,-10913))</a:Rect>
 <a:ListOfPoints>((-33426,-16834),(-33426,-14096),(-28757,-14096),(-28757,-10913))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>0</a:ArrowStyle>
@@ -1319,7 +1319,7 @@ CARD 0 Arial,8,N</a:FontList>
 <o:AssociationLinkSymbol Id="o27">
 <a:CreationDate>1616165146</a:CreationDate>
 <a:ModificationDate>1616167356</a:ModificationDate>
-<a:Rect>((-15638,-12831), (-12231,-2628))</a:Rect>
+<a:Rect>((-15676,-12831), (-12231,-2628))</a:Rect>
 <a:ListOfPoints>((-13914,-12831),(-13914,-6055),(-12231,-6055),(-12231,-2628))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>0</a:ArrowStyle>
@@ -1340,7 +1340,7 @@ CARD 0 Arial,8,N</a:FontList>
 <o:AssociationLinkSymbol Id="o30">
 <a:CreationDate>1616167361</a:CreationDate>
 <a:ModificationDate>1616167361</a:ModificationDate>
-<a:Rect>((-5375,-19787), (-3651,-14156))</a:Rect>
+<a:Rect>((-5413,-19787), (-3613,-14156))</a:Rect>
 <a:ListOfPoints>((-5375,-14156),(-5375,-19787))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>0</a:ArrowStyle>
@@ -1361,8 +1361,8 @@ CARD 0 Arial,8,N</a:FontList>
 <o:AssociationLinkSymbol Id="o33">
 <a:CreationDate>1616167361</a:CreationDate>
 <a:ModificationDate>1616167361</a:ModificationDate>
-<a:Rect>((-5132,-19787), (19268,-18208))</a:Rect>
-<a:ListOfPoints>((19268,-18209),(5208,-18209),(5208,-19787),(-5132,-19787))</a:ListOfPoints>
+<a:Rect>((-5132,-19787), (19268,-18414))</a:Rect>
+<a:ListOfPoints>((19268,-18415),(5208,-18415),(5208,-19787),(-5132,-19787))</a:ListOfPoints>
 <a:CornerStyle>1</a:CornerStyle>
 <a:ArrowStyle>0</a:ArrowStyle>
 <a:LineColor>16744576</a:LineColor>
@@ -1404,7 +1404,7 @@ Identifiers 0 Arial,8,N</a:FontList>
 <a:CreationDate>1616150128</a:CreationDate>
 <a:ModificationDate>1616164909</a:ModificationDate>
 <a:IconMode>-1</a:IconMode>
-<a:Rect>((10733,-23240), (31149,-5785))</a:Rect>
+<a:Rect>((10733,-23727), (31149,-5298))</a:Rect>
 <a:LineColor>11184640</a:LineColor>
 <a:FillColor>16777136</a:FillColor>
 <a:ShadowColor>12632256</a:ShadowColor>
@@ -1672,7 +1672,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Code>T_MOVIES</a:Code>
 <a:CreationDate>1616150128</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
-<a:ModificationDate>1616158216</a:ModificationDate>
+<a:ModificationDate>1616682118</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:Identifiers>
 <o:Identifier Id="o56">
@@ -1847,6 +1847,16 @@ LABL 0 Arial,8,N</a:FontList>
 <o:DataItem Ref="o86"/>
 </c:DataItem>
 </o:EntityAttribute>
+<o:EntityAttribute Id="o87">
+<a:ObjectID>A7B680D3-4CD5-4E43-8473-24EC35752610</a:ObjectID>
+<a:CreationDate>1616682098</a:CreationDate>
+<a:Creator>Paulin</a:Creator>
+<a:ModificationDate>1616682118</a:ModificationDate>
+<a:Modifier>Paulin</a:Modifier>
+<c:DataItem>
+<o:DataItem Ref="o88"/>
+</c:DataItem>
+</o:EntityAttribute>
 </c:Attributes>
 </o:Entity>
 <o:Entity Id="o37">
@@ -1858,7 +1868,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:ModificationDate>1616165752</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:Identifiers>
-<o:Identifier Id="o87">
+<o:Identifier Id="o89">
 <a:ObjectID>3C2A3F1A-D7FE-4EDB-885F-FF3C77A417D0</a:ObjectID>
 <a:Name>PK_INFO_MOVIES</a:Name>
 <a:Code>PK_INFO_MOVIES</a:Code>
@@ -1867,15 +1877,15 @@ LABL 0 Arial,8,N</a:FontList>
 <a:ModificationDate>1616152302</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:Identifier.Attributes>
-<o:EntityAttribute Ref="o88"/>
+<o:EntityAttribute Ref="o90"/>
 </c:Identifier.Attributes>
 </o:Identifier>
 </c:Identifiers>
 <c:PrimaryIdentifier>
-<o:Identifier Ref="o87"/>
+<o:Identifier Ref="o89"/>
 </c:PrimaryIdentifier>
 <c:Attributes>
-<o:EntityAttribute Id="o88">
+<o:EntityAttribute Id="o90">
 <a:ObjectID>823E4D84-7123-41F0-BBA3-D4443A38126F</a:ObjectID>
 <a:CreationDate>1616152270</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
@@ -1883,57 +1893,57 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:BaseAttribute.Mandatory>1</a:BaseAttribute.Mandatory>
 <c:DataItem>
-<o:DataItem Ref="o89"/>
+<o:DataItem Ref="o91"/>
 </c:DataItem>
 </o:EntityAttribute>
-<o:EntityAttribute Id="o90">
+<o:EntityAttribute Id="o92">
 <a:ObjectID>B24E29BA-A117-407E-8E5B-1D4429A7B6F2</a:ObjectID>
 <a:CreationDate>1616152092</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
 <a:ModificationDate>1616165752</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:DataItem>
-<o:DataItem Ref="o91"/>
+<o:DataItem Ref="o93"/>
 </c:DataItem>
 </o:EntityAttribute>
-<o:EntityAttribute Id="o92">
+<o:EntityAttribute Id="o94">
 <a:ObjectID>F9BC6C46-9EE4-45A5-8D17-0E9F83C4B93B</a:ObjectID>
 <a:CreationDate>1616152092</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
 <a:ModificationDate>1616152214</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:DataItem>
-<o:DataItem Ref="o93"/>
+<o:DataItem Ref="o95"/>
 </c:DataItem>
 </o:EntityAttribute>
-<o:EntityAttribute Id="o94">
+<o:EntityAttribute Id="o96">
 <a:ObjectID>7F7A3AB6-D6D9-444D-B274-C6EA134E1B79</a:ObjectID>
 <a:CreationDate>1616153118</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
 <a:ModificationDate>1616153169</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:DataItem>
-<o:DataItem Ref="o95"/>
+<o:DataItem Ref="o97"/>
 </c:DataItem>
 </o:EntityAttribute>
-<o:EntityAttribute Id="o96">
+<o:EntityAttribute Id="o98">
 <a:ObjectID>759E90C8-5C47-4F59-9FAD-5FDDC2D1CD25</a:ObjectID>
 <a:CreationDate>1616165699</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
 <a:ModificationDate>1616165752</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:DataItem>
-<o:DataItem Ref="o97"/>
+<o:DataItem Ref="o99"/>
 </c:DataItem>
 </o:EntityAttribute>
-<o:EntityAttribute Id="o98">
+<o:EntityAttribute Id="o100">
 <a:ObjectID>24598288-DE64-4F3D-B1E4-A6B84F8A117F</a:ObjectID>
 <a:CreationDate>1616165699</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
 <a:ModificationDate>1616165752</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:DataItem>
-<o:DataItem Ref="o99"/>
+<o:DataItem Ref="o101"/>
 </c:DataItem>
 </o:EntityAttribute>
 </c:Attributes>
@@ -1947,7 +1957,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:ModificationDate>1616167286</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:Identifiers>
-<o:Identifier Id="o100">
+<o:Identifier Id="o102">
 <a:ObjectID>C49A0FE4-2211-4BA6-B483-AA085ED308C4</a:ObjectID>
 <a:Name>PK_ROLE</a:Name>
 <a:Code>PK_ROLE</a:Code>
@@ -1956,15 +1966,15 @@ LABL 0 Arial,8,N</a:FontList>
 <a:ModificationDate>1616164457</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:Identifier.Attributes>
-<o:EntityAttribute Ref="o101"/>
+<o:EntityAttribute Ref="o103"/>
 </c:Identifier.Attributes>
 </o:Identifier>
 </c:Identifiers>
 <c:PrimaryIdentifier>
-<o:Identifier Ref="o100"/>
+<o:Identifier Ref="o102"/>
 </c:PrimaryIdentifier>
 <c:Attributes>
-<o:EntityAttribute Id="o101">
+<o:EntityAttribute Id="o103">
 <a:ObjectID>A2820920-DDA2-48F0-B877-3C6914E12BDA</a:ObjectID>
 <a:CreationDate>1616164366</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
@@ -1972,10 +1982,10 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:BaseAttribute.Mandatory>1</a:BaseAttribute.Mandatory>
 <c:DataItem>
-<o:DataItem Ref="o102"/>
+<o:DataItem Ref="o104"/>
 </c:DataItem>
 </o:EntityAttribute>
-<o:EntityAttribute Id="o103">
+<o:EntityAttribute Id="o105">
 <a:ObjectID>60E03B15-EC84-40D8-BCF6-46DABB9B7267</a:ObjectID>
 <a:CreationDate>1616164366</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
@@ -1983,10 +1993,10 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:BaseAttribute.Mandatory>1</a:BaseAttribute.Mandatory>
 <c:DataItem>
-<o:DataItem Ref="o104"/>
+<o:DataItem Ref="o106"/>
 </c:DataItem>
 </o:EntityAttribute>
-<o:EntityAttribute Id="o105">
+<o:EntityAttribute Id="o107">
 <a:ObjectID>E2D6C753-3254-4DD6-8BC6-5E7D39DC587E</a:ObjectID>
 <a:CreationDate>1616167265</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
@@ -2007,7 +2017,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:ModificationDate>1616167382</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:Identifiers>
-<o:Identifier Id="o106">
+<o:Identifier Id="o108">
 <a:ObjectID>C3F3190A-BF9B-4A9B-BB24-92B073FD68F8</a:ObjectID>
 <a:Name>PK_PRET</a:Name>
 <a:Code>PK_PRET</a:Code>
@@ -2016,15 +2026,15 @@ LABL 0 Arial,8,N</a:FontList>
 <a:ModificationDate>1616165129</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:Identifier.Attributes>
-<o:EntityAttribute Ref="o107"/>
+<o:EntityAttribute Ref="o109"/>
 </c:Identifier.Attributes>
 </o:Identifier>
 </c:Identifiers>
 <c:PrimaryIdentifier>
-<o:Identifier Ref="o106"/>
+<o:Identifier Ref="o108"/>
 </c:PrimaryIdentifier>
 <c:Attributes>
-<o:EntityAttribute Id="o107">
+<o:EntityAttribute Id="o109">
 <a:ObjectID>E54952CB-C3C1-418E-BA7B-91CA8C2F01CC</a:ObjectID>
 <a:CreationDate>1616165042</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
@@ -2032,37 +2042,37 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:BaseAttribute.Mandatory>1</a:BaseAttribute.Mandatory>
 <c:DataItem>
-<o:DataItem Ref="o108"/>
+<o:DataItem Ref="o110"/>
 </c:DataItem>
 </o:EntityAttribute>
-<o:EntityAttribute Id="o109">
+<o:EntityAttribute Id="o111">
 <a:ObjectID>9A55109F-4A5A-47DD-AA16-7B034F0F5CB2</a:ObjectID>
 <a:CreationDate>1616165042</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
 <a:ModificationDate>1616165098</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:DataItem>
-<o:DataItem Ref="o110"/>
+<o:DataItem Ref="o112"/>
 </c:DataItem>
 </o:EntityAttribute>
-<o:EntityAttribute Id="o111">
+<o:EntityAttribute Id="o113">
 <a:ObjectID>8E49AF3F-934C-411F-B742-F8CAB14374CB</a:ObjectID>
 <a:CreationDate>1616165936</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
 <a:ModificationDate>1616165961</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:DataItem>
-<o:DataItem Ref="o112"/>
+<o:DataItem Ref="o114"/>
 </c:DataItem>
 </o:EntityAttribute>
-<o:EntityAttribute Id="o113">
+<o:EntityAttribute Id="o115">
 <a:ObjectID>8F1730EA-CF8B-4610-8357-C9759825B29E</a:ObjectID>
 <a:CreationDate>1616165936</a:CreationDate>
 <a:Creator>Paulin</a:Creator>
 <a:ModificationDate>1616165961</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 <c:DataItem>
-<o:DataItem Ref="o114"/>
+<o:DataItem Ref="o116"/>
 </c:DataItem>
 </o:EntityAttribute>
 </c:Attributes>
@@ -2155,7 +2165,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:DataType>VA64</a:DataType>
 <a:Length>64</a:Length>
 </o:DataItem>
-<o:DataItem Id="o115">
+<o:DataItem Id="o117">
 <a:ObjectID>B7379D07-5655-441D-9E73-8B45ED5E4269</a:ObjectID>
 <a:Name>RATING</a:Name>
 <a:Code>RATING</a:Code>
@@ -2283,7 +2293,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>BL</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o91">
+<o:DataItem Id="o93">
 <a:ObjectID>F2B0C94A-D2EA-491A-8190-82ECC5B0C383</a:ObjectID>
 <a:Name>RATE</a:Name>
 <a:Code>RATE</a:Code>
@@ -2295,7 +2305,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Length>2</a:Length>
 <a:Precision>1</a:Precision>
 </o:DataItem>
-<o:DataItem Id="o93">
+<o:DataItem Id="o95">
 <a:ObjectID>001CDA70-20CA-4D99-8641-04776DBBF512</a:ObjectID>
 <a:Name>COMMENT</a:Name>
 <a:Code>COMMENT</a:Code>
@@ -2306,7 +2316,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:DataType>VA255</a:DataType>
 <a:Length>255</a:Length>
 </o:DataItem>
-<o:DataItem Id="o89">
+<o:DataItem Id="o91">
 <a:ObjectID>9382843B-427B-4565-AD75-B9E1B4D535EE</a:ObjectID>
 <a:Name>ID_INFO</a:Name>
 <a:Code>ID_INFO</a:Code>
@@ -2316,7 +2326,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>NO</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o116">
+<o:DataItem Id="o118">
 <a:ObjectID>743E0C94-A7EF-4E26-99E8-81E30527CAC0</a:ObjectID>
 <a:Name>ROLE</a:Name>
 <a:Code>ROLE</a:Code>
@@ -2327,7 +2337,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:DefaultValue>1</a:DefaultValue>
 <a:DataType>I</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o95">
+<o:DataItem Id="o97">
 <a:ObjectID>D9D50EB9-184B-4E39-B8AF-8D0E378C39BB</a:ObjectID>
 <a:Name>SHARE</a:Name>
 <a:Code>SHARE</a:Code>
@@ -2338,7 +2348,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:DefaultValue>0</a:DefaultValue>
 <a:DataType>BL</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o117">
+<o:DataItem Id="o119">
 <a:ObjectID>74F7A507-DD60-4E3C-85C4-3FB36BF399F7</a:ObjectID>
 <a:Name>ID_NUM_USER</a:Name>
 <a:Code>ID_NUM_USER</a:Code>
@@ -2348,7 +2358,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>I</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o118">
+<o:DataItem Id="o120">
 <a:ObjectID>67DC51A0-BB76-4B79-B368-68FB4D3C7F88</a:ObjectID>
 <a:Name>Attribut_27</a:Name>
 <a:Code>ATTRIBUT_27</a:Code>
@@ -2357,7 +2367,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:ModificationDate>1616153199</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
 </o:DataItem>
-<o:DataItem Id="o119">
+<o:DataItem Id="o121">
 <a:ObjectID>E1E53944-2DA4-4703-B070-4E52E00EA944</a:ObjectID>
 <a:Name>USER_ID</a:Name>
 <a:Code>USER_ID</a:Code>
@@ -2367,7 +2377,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>I</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o102">
+<o:DataItem Id="o104">
 <a:ObjectID>39FC3A8E-4A08-45C0-88F4-BBCFAD840434</a:ObjectID>
 <a:Name>ID_ROLES</a:Name>
 <a:Code>ID_ROLES</a:Code>
@@ -2377,7 +2387,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>NO</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o104">
+<o:DataItem Id="o106">
 <a:ObjectID>32697869-1CC9-4828-B382-D1F2E3FF3382</a:ObjectID>
 <a:Name>ISADMIN</a:Name>
 <a:Code>ISADMIN</a:Code>
@@ -2387,7 +2397,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>BL</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o108">
+<o:DataItem Id="o110">
 <a:ObjectID>7E69FFA4-DD59-4CFF-818B-E1C590683167</a:ObjectID>
 <a:Name>ID_PRET</a:Name>
 <a:Code>ID_PRET</a:Code>
@@ -2397,7 +2407,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>NO</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o110">
+<o:DataItem Id="o112">
 <a:ObjectID>FEA9257D-8918-44BE-9CAF-AB806C4AAF36</a:ObjectID>
 <a:Name>ID_USER_PRET</a:Name>
 <a:Code>ID_USER_PRET</a:Code>
@@ -2407,7 +2417,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>I</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o120">
+<o:DataItem Id="o122">
 <a:ObjectID>09B0AF63-172C-4B6F-8017-14B80477598B</a:ObjectID>
 <a:Name>ID_MOVIE_PRET</a:Name>
 <a:Code>ID_MOVIE_PRET</a:Code>
@@ -2417,7 +2427,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>I</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o97">
+<o:DataItem Id="o99">
 <a:ObjectID>EA689739-6CFF-415D-926D-6D3C0B218A95</a:ObjectID>
 <a:Name>SEE</a:Name>
 <a:Code>SEE</a:Code>
@@ -2427,7 +2437,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>BL</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o99">
+<o:DataItem Id="o101">
 <a:ObjectID>7700CEFF-7769-43D8-98CA-EB841FDEDFCC</a:ObjectID>
 <a:Name>TO_SEE</a:Name>
 <a:Code>TO_SEE</a:Code>
@@ -2437,7 +2447,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>BL</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o112">
+<o:DataItem Id="o114">
 <a:ObjectID>C4B4F975-7BD9-45B5-9D5A-FA7BD183EC8F</a:ObjectID>
 <a:Name>DATE_PRET</a:Name>
 <a:Code>DATE_PRET</a:Code>
@@ -2447,7 +2457,7 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Modifier>Paulin</a:Modifier>
 <a:DataType>D</a:DataType>
 </o:DataItem>
-<o:DataItem Id="o114">
+<o:DataItem Id="o116">
 <a:ObjectID>0F9DD161-C281-48E3-9D5F-02715DC9925A</a:ObjectID>
 <a:Name>DATE_RETOUR</a:Name>
 <a:Code>DATE_RETOUR</a:Code>
@@ -2465,6 +2475,16 @@ LABL 0 Arial,8,N</a:FontList>
 <a:Creator>Paulin</a:Creator>
 <a:ModificationDate>1616167217</a:ModificationDate>
 <a:Modifier>Paulin</a:Modifier>
+</o:DataItem>
+<o:DataItem Id="o88">
+<a:ObjectID>5FFAE687-EB8B-403E-92CE-F0AC9E3AB539</a:ObjectID>
+<a:Name>VALIDEE</a:Name>
+<a:Code>VALIDEE</a:Code>
+<a:CreationDate>1616682098</a:CreationDate>
+<a:Creator>Paulin</a:Creator>
+<a:ModificationDate>1616682118</a:ModificationDate>
+<a:Modifier>Paulin</a:Modifier>
+<a:DataType>BL</a:DataType>
 </o:DataItem>
 </c:DataItems>
 <c:Associations>
@@ -2657,7 +2677,7 @@ LABL 0 Arial,8,N</a:FontList>
 </o:AssociationLink>
 </c:AssociationsLinks>
 <c:TargetModels>
-<o:TargetModel Id="o121">
+<o:TargetModel Id="o123">
 <a:ObjectID>DAA9B15C-AE99-4E31-A952-CFA4732D234D</a:ObjectID>
 <a:Name>DEVFLIX</a:Name>
 <a:Code>DEVFLIX</a:Code>
