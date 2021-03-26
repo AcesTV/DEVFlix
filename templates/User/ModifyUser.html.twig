@@ -10,10 +10,10 @@
 <form name="ModifyUserPassword" method="post" action="?controller=User&action=ModifyUser">
 
     <input id="Pseudo" type="hidden" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}"><br><br>
-    <input id="Password" type="text" name="Password" placeholder="Mot de passe" required><br><br>
-    <input id="PasswordCheck" type="text" name="PasswordCheck" placeholder="Vérification mot de passe" required><br><br>
+    <input id="Password" type="password" name="Password" placeholder="Mot de passe" required><br><br>
+    <input id="PasswordCheck" type="password" name="PasswordCheck" placeholder="Vérification mot de passe" required><br><br>
 
-    <input id="Email" type="hidden" name="Email" placeholder="Votre email" value=""><br><br>
+    <input id="Email" type="hidden" name="Email" placeholder="Votre email" value="">
 
     <button id="btnModifyPassword" type="submit">Enregistrer Mot de passe</button><br><br>
 
@@ -25,7 +25,7 @@
     <input id="Email" type="email" name="Email" placeholder="Votre email" required><br><br>
     <input id="EmailCheck" type="email" name="EmailCheck" placeholder="Vérification email" required><br><br>
 
-    <input id="Password" type="hidden" name="Password" placeholder="Mot de passe" value=""><br><br>
+    <input id="Password" type="hidden" name="Password" placeholder="Mot de passe" value="">
 
 
     <button id="btnModifyMail" type="submit">Enregistrer Mail</button><br><br>

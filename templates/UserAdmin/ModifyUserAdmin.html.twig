@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta name="viewport" content="width=device-width" initial-scale=1/>
+
+</head>
+
+<body>
+
+<form name="ModifyUserRole" method="post" action="?controller=User&action=ModifyAdmin">
+    <p>Utilisateur : {{ Pseudo }}</p>
+    <input id="Pseudo" type="hidden" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}"><br><br>
+    <input type="checkbox" id="Role" name="Role" {{ ischeck }} value="Oui">
+    <label for="role">Administrateur</label>
+    <br><br>
+    <button id="btnModifyRole" type="submit">Enregistrer le rôle</button><br><br>
+
+</form>
+
+<!-- Pour afficher le input en rouge -->
+<!-- <script src="assets/js/formulaire.js"></script> -->
+
+</body>
+</html>

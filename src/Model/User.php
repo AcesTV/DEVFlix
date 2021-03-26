@@ -55,7 +55,14 @@ class User
 
             if (password_verify($this->getUserPASSWORD(),trim($data["PASSWORD"]))){
                 //Si tous se passe bien return True
+                if ($data["ISADMIN"] == "1"){
+                    $this->setUserISADMIN(true);
+                } else {
+                    $this->setUserISADMIN(false);
+                }
+
                 return [true,"Connexion réussie !"];
+
             } else {
                 return [false,"Utilisateur ou mot de passe incorrect"];
             }
@@ -109,9 +116,38 @@ class User
         }
     }
 
-    //Fonction SQLModifier
-    public function SQLModifyRoleUser(\PDO $bdd) : array{
-        echo "SQLModifyRoleUser";
+    //Fonction SQLModifyAdmin
+    public function SQLModifyAdmin(\PDO $bdd) : array{
+        //Formulaire pour les admin
+        try {
+            echo "Nom role = ".$this->getUserNOMROLE();
+            if ($this->getUserNOMROLE() == ""){
+                echo "ICI1";
+                $requete = $bdd->prepare("INSERT INTO t_roles (ID_USER, ISADMIN, NAME) VALUES (:ID_USER, :ISADMIN, :NAME)");
+                $requete->execute([
+                    "ID_USER" => $this->getUserID(),
+                    "ISADMIN" => $this->getUserISADMIN(),
+                    "NAME" => $this->getUserNOMROLE()
+                ]);
+            } else {
+                echo "ICI2";
+                $requete = $bdd->prepare("UPDATE t_roles SET ISADMIN=:ISADMIN, NAME=:NAME WHERE ID_USER=:ID_USER");
+                $requete->execute([
+                   "ISADMIN" => $this->getUserISADMIN(),
+                   "NAME" => $this->getUserNOMROLE(),
+                   "ID_USER" => $this->getUserID()
+                ]);
+            }
+
+            return[true,"Modification réussie"];
+
+
+
+
+        } catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
+
     }
 
     //Fonction SQLSupprimer
@@ -121,14 +157,45 @@ class User
 
     //Fonction SQLGet
     public function SQLGetOne(\PDO $bdd) : array{
-        echo "SQLGetOne";
+        try{
+            $requete = $bdd->prepare("SELECT PSEUDO,PASSWORD,ID_ROLE,ISADMIN,NAME FROM t_users LEFT JOIN t_roles ON t_users.ID_USER = t_roles.ID_USER WHERE PSEUDO=:PSEUDO");
+            $result = $requete->execute([
+                "PSEUDO" => $this->getUserPSEUDO()
+            ]);
+
+            $data = $requete->fetch(\PDO::FETCH_ASSOC);
+            $this->setUserID($data["ID"]);
+            $this->setUserPSEUDO($data["PSEUDO"]);
+            $this->setUserMAIL($data["MAIL"]);
+            $this->setUserNOMROLE($data["NAME"]);
+            $this->setUserISADMIN($data["ISADMIN"]);
+
+            return [true,$data];
+
+
+        }catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
 
     }
 
     //Fonction SQLGetAll
     public function SQLGetAll(\PDO $bdd) : array{
-        echo "SQLGetAll";
+        try{
+            $requete = $bdd->prepare("SELECT PSEUDO,PASSWORD,ID_ROLE,ISADMIN,NAME FROM t_users LEFT JOIN t_roles ON t_users.ID_USER = t_roles.ID_USER");
+            $result = $requete->execute([]);
+
+            $data = $requete->fetchAll(\PDO::FETCH_ASSOC);
+            return [true,$data];
+
+
+        }catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
     }
+
+
+
 
 
     //Getters and Setters

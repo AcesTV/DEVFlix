@@ -67,6 +67,8 @@ class UserController extends AbstractController
 
     //Fonction Login
     public function LoginUser(){
+        //Todo Récupérer si l'utilisateur est un admin
+
         if (isset($_POST["Pseudo"])){
             //Si tentative de connexion
             $val = new User();
@@ -77,6 +79,7 @@ class UserController extends AbstractController
             if ($response[0] == true){
                 echo $response[1];
                 $_SESSION["Pseudo"] = $val->getUserPSEUDO();
+                $_SESSION["IsAdmin"] = $val->getUserISADMIN();
 
             } else {
                 echo "Une erreur c'est produite : ${response[1]}";
@@ -92,7 +95,7 @@ class UserController extends AbstractController
         } else {
             //Si pas connecté
             try {
-                if (isset($_GET["param"]) & ($_GET["param"] == "loginneed")){
+                if (isset($_GET["param"]) && ($_GET["param"] == "loginneed")){
                     echo "<p>Vous devez être connectez pour pourvour modifier votre profil</p>";
                 }
                 echo $this->twig->render("User/LoginUser.html.twig", []);
@@ -139,9 +142,61 @@ class UserController extends AbstractController
         }
     }
 
-    //Fonction ModifyRole
-    public function ModifyRole(){
-        echo "ModifyRole";
+    //Fonction ModifyAdmin
+    public function ModifyAdmin(){
+        //Si l'utilisateur à déjà un rôle le modifier sinon sinon le créer
+        if (isset($_SESSION["IsAdmin"]) && ($_SESSION["IsAdmin"]) == true){
+            $val = new User();
+
+
+            /*
+             * Valeur à récup pour que cela fonctionne !
+             *
+             * $val->setUserNOMROLE("");
+             * $val->setUserISADMIN(false);
+             * $val->setUserPSEUDO("Paulin2");
+             * $val->setUserID("23");
+            */
+
+
+            if ($val->getUserISADMIN() == true){
+                $checked = "checked";
+            } else {
+                $checked = "";
+            }
+
+            echo $this->twig->render("UserAdmin/ModifyUserAdmin.html.twig", [
+                "ischeck" => $checked,
+                "Pseudo" => $val->getUserPSEUDO()
+            ]);
+
+            if (isset($_POST["Role"]) and empty($_POST["Role"]) == false){
+                $val->setUserISADMIN(true);
+                $val->setUserNOMROLE("Admin");
+            } else {
+                $val->setUserISADMIN(false);
+            }
+
+            $response = $val->SQLModifyAdmin(BDD::getInstance());
+
+            if ($response[0] == true) {
+                echo $response[1];
+
+            } else {
+                echo $this->twig->render("User/ModifyUserAdmin.html.twig", [
+                    "ischeck" => $checked,
+                    "Pseudo" => $val->getUserPSEUDO()
+                ]);
+                echo "Une erreur c'est produite : ${response[1]}";
+            }
+
+
+
+        } else {
+            echo "ACCES DENIED - Vous n'êtes pas admin";
+        }
+
+
     }
 
     //Fonction Supprimer
@@ -151,11 +206,45 @@ class UserController extends AbstractController
 
     //Fonction GetOne
     public function GetOne(){
-        echo "GetOne";
+        if (isset($_POST["Pseudo"]) || (isset($_GET["param"]) == true && empty($_GET["param"]) == false)){
+            try {
+                $pseudo = isset($_POST["Pseudo"]) ? $_POST["Pseudo"] : $_GET["param"];
+                $val = new User();
+                $val->setUserPSEUDO($pseudo);
+
+                $response = $val->SQLGetOne(BDD::getInstance());
+
+                if ($response[0]) {
+                    var_dump($response[1]);
+                } else {
+                    echo "Une erreur c'est produite : ${response[1]}";
+                }
+            } catch(\Exception $e) {
+                echo $this->twig->render("User/test.html.twig", []);
+                echo $e->getMessage();
+            }
+        } else {
+            echo $this->twig->render("User/test.html.twig", []);
+        }
+
+
     }
 
     //Fonction GetAll
     public function GetAll(){
-        echo "GetAll";
+            try {
+                $val = new User();
+                $response = $val->SQLGetAll(BDD::getInstance());
+
+                if ($response[0]) {
+                    var_dump($response[1]);
+                } else {
+                    echo "Une erreur c'est produite : ${response[1]}";
+                }
+            } catch(\Exception $e) {
+                echo $this->twig->render("User/test.html.twig", []);
+                echo $e->getMessage();
+            }
+
     }
 }
