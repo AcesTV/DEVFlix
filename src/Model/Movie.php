@@ -295,9 +295,15 @@ class Movie
     }
 
 
+    public function SQLGetOne(\PDO $bdd, $id) {
+        $requete = $bdd->prepare("SELECT * FROM t_movies WHERE ID_MOVIE=:ID");
+        $requete->execute([
+            "ID" => $id
+        ]);
+        return $requete->fetch();
+    }
 
-
-    public function SqlGetAll(\PDO $bdd)
+    public function SQLGetAll(\PDO $bdd)
     {
         $requete = $bdd->prepare("SELECT * FROM t_movies");
         $requete->execute();
@@ -327,6 +333,36 @@ class Movie
 
             //Si tous se passe bien return True
             return [true,"Ajout du film réussie !"];
+
+        } catch (\Exception $e) {
+            return [false,$e->getMessage()];
+        }
+    }
+
+    public function SQLUpdateMovie(\PDO $bdd, $id) : array
+    {
+        try{
+            $requete = $bdd->prepare("UPDATE t_movies SET NAME=:NAME, POSTER=:POSTER, ORIGIN=:ORIGIN, VO=:VO, ACTORS=:ACTORS, DIRECTOR=:DIRECTOR, GENRE=:GENRE, RELEASE_DATE=:RELEASE_DATE, PRODUCTION=:PRODUCTION, RUNTIME=:RUNTIME, TRAILER=:TRAILER, NOMINATION=:NOMINATION, SYNOPSIS=:SYNOPSIS, DVD=:DVD WHERE ID_MOVIE=:ID");
+            $reponse = $requete->execute([
+                "ID" => $id,
+                "NAME" => $this->getName(),
+                "POSTER" => $this->getPoster(),
+                "ORIGIN" => $this->getOrigin(),
+                "VO" => $this->getVo(),
+                "ACTORS" => $this->getActors(),
+                "DIRECTOR" => $this->getDirector(),
+                "GENRE" => $this->getGenre(),
+                "RELEASE_DATE" => $this->getReleaseDate(),
+                "PRODUCTION" => $this->getProduction(),
+                "RUNTIME" => $this->getRuntime(),
+                "TRAILER" => $this->getTrailer(),
+                "NOMINATION" => $this->getNomination(),
+                "SYNOPSIS" => $this->getSynopsis(),
+                "DVD" => $this->isDvd()
+            ]);
+
+            //Si tous se passe bien return True
+            return [true,"Modification du film réussie !"];
 
         } catch (\Exception $e) {
             return [false,$e->getMessage()];
