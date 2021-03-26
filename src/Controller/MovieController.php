@@ -12,4 +12,13 @@ class MovieController extends AbstractController
 
         echo "Accueil du site WEB";
     }
+
+    public function List(){
+        $movie = new Movie();
+        $movieList = $movie->SqlGetAll(BDD::getInstance());
+
+        return $this->twig->render("Movie/list.html.twig",[
+            "movieList" => $movieList
+        ]);
+    }
 }

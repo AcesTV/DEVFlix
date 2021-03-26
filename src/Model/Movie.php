@@ -294,9 +294,15 @@ class Movie
         return $this;
     }
 
+    public function SqlGetAll(\PDO $bdd){
+        $requete = $bdd->prepare("SELECT * FROM t_movies");
+        $requete->execute();
+        return $requete->fetchAll(\PDO::FETCH_CLASS, "src\Model\Movie");
+    }
 
 
 
 
+// Salut comment ça va ?
 
 }
