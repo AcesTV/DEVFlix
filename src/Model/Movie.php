@@ -302,7 +302,4 @@ class Movie
 
 
 
-
-// Salut comment ça va ?
-
 }
