@@ -1,6 +1,7 @@
 <?php
 
 
+
 namespace src\Controller;
 
 use src\Model\User;
@@ -24,7 +25,8 @@ class UserController extends AbstractController
                     //TODO Remplir les chanmps si rempli
                     //TODO Ajouter la vérification mot de passe sont les mêmes
                     //TODO Ajouter la vérification adresse mail sont les mêmes
-                    echo $this->twig->render("AddUser.html.twig", [
+
+                    echo $this->twig->render("User/AddUser.html.twig", [
                         "Pseudo" => $_POST["Pseudo"],
                         "Email" => $_POST["Email"]
                     ]);
@@ -44,18 +46,18 @@ class UserController extends AbstractController
                 $val->setUserMAIL($_POST["Email"]);
 
                 $response = $val->SQLAddUser(BDD::getInstance());
-                if ($response == true){
+                if ($response[0] == true){
                     echo "Inscription réussi";
 
                 } else {
-                    echo "Une erreur c'est produite : ${response}";
+                    echo "Une erreur c'est produite : ${response[1]}";
                 }
             }
 
         } else {
             //Affiche la vue
             try {
-                echo $this->twig->render("AddUser.html.twig", []);
+                echo $this->twig->render("User/AddUser.html.twig", []);
             } catch (LoaderError $e) {
                 echo $e->getMessage();
             }
@@ -63,10 +65,10 @@ class UserController extends AbstractController
 
     }
 
-    //Fonction Modifier
+    //Fonction Login
     public function LoginUser(){
         if (isset($_POST["Pseudo"])){
-            //Si un Email est renseigné
+            //Si tentative de connexion
             $val = new User();
             $val->setUserPSEUDO($_POST["Pseudo"]);
             $val->setUserPASSWORD($_POST["Password"]);
@@ -74,15 +76,26 @@ class UserController extends AbstractController
             $response = $val->SQLLoginUser(BDD::getInstance());
             if ($response[0] == true){
                 echo $response[1];
+                $_SESSION["Pseudo"] = $val->getUserPSEUDO();
 
             } else {
                 echo "Une erreur c'est produite : ${response[1]}";
             }
 
-        } else {
-            //Affiche la vue
+        } elseif(isset($_SESSION["Pseudo"]) && empty($_SESSION["Pseudo"]) == false) {
+            //Si déjà connecté alors on envoi vers l'accueil
             try {
-                echo $this->twig->render("Login.html.twig", []);
+                echo $this->twig->render("base.html.twig", []);
+            } catch (LoaderError $e) {
+                echo $e->getMessage();
+            }
+        } else {
+            //Si pas connecté
+            try {
+                if (isset($_GET["param"]) & ($_GET["param"] == "loginneed")){
+                    echo "<p>Vous devez être connectez pour pourvour modifier votre profil</p>";
+                }
+                echo $this->twig->render("User/LoginUser.html.twig", []);
             } catch (LoaderError $e) {
                 echo $e->getMessage();
             }
@@ -91,28 +104,44 @@ class UserController extends AbstractController
 
     //Fonction Modifier
     public function ModifyUser(){
-        if (isset($_POST["Pseudo"])){
-            //Si un Email est renseigné
-            $val = new User();
-            $val->setUserPSEUDO($_POST["Pseudo"]);
-            $val->setUserPASSWORD($_POST["Password"]);
 
-            $response = $val->SQLLoginUser(BDD::getInstance());
-            if ($response[0] == true){
-                echo $response[1];
+        //Si l'utilisateur est connecté et que le mot de passe ou l'email est renseigné
+        if (empty($_SESSION["Pseudo"]) == false){
+
+            if(isset($_POST["Password"]) || isset($_POST["Email"])) {
+                $val = new User();
+
+                $val->setUserPSEUDO($_SESSION["Pseudo"]);
+                $val->setUserPASSWORD(password_hash($_POST["Password"], PASSWORD_BCRYPT, ["cost" => 10]));
+                $val->setUserMAIL($_POST["Email"]);
+
+                $response = $val->SQLModifyUser(BDD::getInstance());
+                if ($response[0] == true) {
+                    echo $response[1];
+
+                } else {
+                    echo $this->twig->render("User/ModifyUser.html.twig", []);
+                    echo "Une erreur c'est produite : ${response[1]}";
+                }
 
             } else {
-                echo "Une erreur c'est produite : ${response[1]}";
+                echo $this->twig->render("User/ModifyUser.html.twig", []);
             }
+
 
         } else {
             //Affiche la vue
             try {
-                echo $this->twig->render("Login.html.twig", []);
+                header("location:/?controller=User&action=LoginUser&param=loginneed");
             } catch (LoaderError $e) {
                 echo $e->getMessage();
             }
         }
+    }
+
+    //Fonction ModifyRole
+    public function ModifyRole(){
+        echo "ModifyRole";
     }
 
     //Fonction Supprimer

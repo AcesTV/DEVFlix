@@ -32,6 +32,9 @@ class User
             ]);
 
             //Si tous se passe bien return True
+            $_SESSION["ID"] = $this->getUserID();
+            $_SESSION["PSEUDO"] = $this->getUserPSEUDO();
+
             return [true,"Inscription réussie !"];
 
         } catch (\Exception $e) {
@@ -65,7 +68,50 @@ class User
 
     //Fonction SQLModifier
     public function SQLModifyUser(\PDO $bdd) : array{
-        echo "SQLModifyUser";
+
+        try{
+            //ToDo Ajouter ancien mot de passe pour pouvoir changer
+            //TODO Ajouter vérif si MDP = MDP VERIF
+            //TODO Ajouter vérif si MAIL = MAIL VERIF
+            if (isset($_POST["Password"]) && empty($_POST["Password"] == false)){
+                if ($_POST["Password"] == $_POST["PasswordCheck"]){
+                    $requete = $bdd->prepare("UPDATE t_users SET PASSWORD=:PASSWORD WHERE PSEUDO=:PSEUDO");
+                    $result = $requete->execute([
+                        "PSEUDO" => $this->getUserPSEUDO(),
+                        "PASSWORD" => $this->getUserPASSWORD()
+                    ]);
+                    return [true,"Mot de passe enregistré"];
+                } else {
+                    return [false,"Les mots de passe ne correspondent pas"];
+                }
+
+
+            } elseif (isset($_POST["Email"]) && empty($_POST["Email"]) == false) {
+                if ($_POST["Email"] == $_POST["EmailCheck"]) {
+                    $requete = $bdd->prepare("UPDATE t_users SET MAIL=:MAIL WHERE PSEUDO=:PSEUDO");
+                    $result = $requete->execute([
+                        "PSEUDO" => $this->getUserPSEUDO(),
+                        "MAIL" => $this->getUserMAIL()
+                    ]);
+                    return [true,"Email enregistrée"];
+                } else {
+                    return [false,"Les adresses email ne correspondent pas"];
+                }
+
+
+            } else {
+                return [false,"dontmove"];
+            }
+
+
+        }catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
+    }
+
+    //Fonction SQLModifier
+    public function SQLModifyRoleUser(\PDO $bdd) : array{
+        echo "SQLModifyRoleUser";
     }
 
     //Fonction SQLSupprimer

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta name="viewport" content="width=device-width" initial-scale=1/>
+
+</head>
+
+<body>
+
+<form name="ModifyUserPassword" method="post" action="?controller=User&action=ModifyUser">
+
+    <input id="Pseudo" type="hidden" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}"><br><br>
+    <input id="Password" type="text" name="Password" placeholder="Mot de passe" required><br><br>
+    <input id="PasswordCheck" type="text" name="PasswordCheck" placeholder="Vérification mot de passe" required><br><br>
+
+    <input id="Email" type="hidden" name="Email" placeholder="Votre email" value=""><br><br>
+
+    <button id="btnModifyPassword" type="submit">Enregistrer Mot de passe</button><br><br>
+
+</form>
+
+<form name="ModifyUserMail" method="post" action="?controller=User&action=ModifyUser">
+
+    <input id="Pseudo" type="hidden" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}"><br><br>
+    <input id="Email" type="email" name="Email" placeholder="Votre email" required><br><br>
+    <input id="EmailCheck" type="email" name="EmailCheck" placeholder="Vérification email" required><br><br>
+
+    <input id="Password" type="hidden" name="Password" placeholder="Mot de passe" value=""><br><br>
+
+
+    <button id="btnModifyMail" type="submit">Enregistrer Mail</button><br><br>
+
+</form>
+
+<!-- Pour afficher le input en rouge -->
+<!-- <script src="assets/js/formulaire.js"></script> -->
+
+</body>
+</html>
