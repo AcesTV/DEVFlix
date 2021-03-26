@@ -24,7 +24,7 @@ class UserController extends AbstractController
                     //TODO Remplir les chanmps si rempli
                     //TODO Ajouter la vérification mot de passe sont les mêmes
                     //TODO Ajouter la vérification adresse mail sont les mêmes
-                    echo $this->twig->render("AddUser.html.twig", [
+                    echo $this->twig->render("User/AddUser.html.twig", [
                         "Pseudo" => $_POST["Pseudo"],
                         "Email" => $_POST["Email"]
                     ]);
@@ -55,7 +55,7 @@ class UserController extends AbstractController
         } else {
             //Affiche la vue
             try {
-                echo $this->twig->render("AddUser.html.twig", []);
+                echo $this->twig->render("User/AddUser.html.twig", []);
             } catch (LoaderError $e) {
                 echo $e->getMessage();
             }
@@ -82,7 +82,7 @@ class UserController extends AbstractController
         } else {
             //Affiche la vue
             try {
-                echo $this->twig->render("Login.html.twig", []);
+                echo $this->twig->render("User/Login.html.twig", []);
             } catch (LoaderError $e) {
                 echo $e->getMessage();
             }
@@ -108,7 +108,7 @@ class UserController extends AbstractController
         } else {
             //Affiche la vue
             try {
-                echo $this->twig->render("Login.html.twig", []);
+                echo $this->twig->render("User/Login.html.twig", []);
             } catch (LoaderError $e) {
                 echo $e->getMessage();
             }

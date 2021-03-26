@@ -1,0 +1,31 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Movies - {{ parent() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/mystyleForMovie.css">
+{% endblock %}
+
+{% block body %}
+    <h1>Ajout d'un film</h1>
+
+    <form name="addMovie" method="post" action="?controller=Movie&action=AddMovie">
+        <input id="Name" type="text" name="Name" placeholder="Name" required>
+        <input id="Poster" type="text" name="Poster" placeholder="Link Poster" required>
+        <input id="Origin" type="text" name="Origin" placeholder="Origin">
+        <input id="VO" type="text" name="VO" placeholder="VO">
+        <input id="Actors" type="text" name="Actors" placeholder="Actors">
+        <input id="Director" type="text" name="Director" placeholder="Director">
+        <input id="Genre" type="text" name="Genre" placeholder="Genre">
+        <input id="ReleaseDate" type="date" name="ReleaseDate" placeholder="ReleaseDate">
+        <input id="Production" type="text" name="Production" placeholder="Production">
+        <input id="Runtime" type="number" name="Runtime" placeholder="Runtime" required>
+        <input id="Trailer" type="text" name="Trailer" placeholder="Link Trailer">
+        <input id="Nomination" type="text" name="Nomination" placeholder="Nomination">
+        <input id="Synopsis" type="text" name="Synopsis" placeholder="Synopsis" required>
+        <input id="DVD" type="checkbox" name="DVD" required>
+
+        <input type="submit" value="Submit Movie">
+    </form>
+{% endblock %}
+

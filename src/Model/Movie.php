@@ -16,7 +16,7 @@ class Movie
     private String $Actors;
     private String $Director;
     private String $Genre;
-    private \DateTime $Release_date;
+    private String $Release_date; //Datetime
     private String $Production;
     private Int $Runtime;
     private String $trailer;
@@ -169,18 +169,18 @@ class Movie
     }
 
     /**
-     * @return \DateTime
+     * @return String
      */
-    public function getReleaseDate(): \DateTime
+    public function getReleaseDate(): String
     {
         return $this->Release_date;
     }
 
     /**
-     * @param \DateTime $Release_date
+     * @param String $Release_date
      * @return Movie
      */
-    public function setReleaseDate(\DateTime $Release_date): Movie
+    public function setReleaseDate(String $Release_date): Movie
     {
         $this->Release_date = $Release_date;
         return $this;
@@ -294,12 +294,43 @@ class Movie
         return $this;
     }
 
-    public function SqlGetAll(\PDO $bdd){
+
+
+
+    public function SqlGetAll(\PDO $bdd)
+    {
         $requete = $bdd->prepare("SELECT * FROM t_movies");
         $requete->execute();
         return $requete->fetchAll(\PDO::FETCH_CLASS, "src\Model\Movie");
     }
 
+    public function SQLAddMovie(\PDO $bdd) : array
+    {
+        try{
+            $requete = $bdd->prepare("INSERT INTO t_movies (NAME, POSTER, ORIGIN, VO, ACTORS, DIRECTOR, GENRE, RELEASE_DATE, PRODUCTION, RUNTIME, TRAILER, NOMINATION, SYNOPSIS, DVD) VALUES (:NAME, :POSTER, :ORIGIN, :VO, :ACTORS, :DIRECTOR, :GENRE, :RELEASE_DATE, :PRODUCTION, :RUNTIME, :TRAILER, :NOMINATION, :SYNOPSIS, :DVD)");
+            $requete->execute([
+                "NAME" => $this->getName(),
+                "POSTER" => $this->getPoster(),
+                "ORIGIN" => $this->getOrigin(),
+                "VO" => $this->getVo(),
+                "ACTORS" => $this->getActors(),
+                "DIRECTOR" => $this->getDirector(),
+                "GENRE" => $this->getGenre(),
+                "RELEASE_DATE" => $this->getReleaseDate(),
+                "PRODUCTION" => $this->getProduction(),
+                "RUNTIME" => $this->getRuntime(),
+                "TRAILER" => $this->getTrailer(),
+                "NOMINATION" => $this->getNomination(),
+                "SYNOPSIS" => $this->getSynopsis(),
+                "DVD" => $this->isDvd()
+            ]);
 
+            //Si tous se passe bien return True
+            return [true,"Ajout du film réussie !"];
+
+        } catch (\Exception $e) {
+            return [false,$e->getMessage()];
+        }
+    }
 
 }
