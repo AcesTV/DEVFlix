@@ -1,0 +1,40 @@
+@media (screen and max-width: 480px) {
+
+}
+
+@media (screen and min-width: 481px) {
+  #FormSignInUp{
+    zoom: 160%;
+  }
+}
+
+@media (screen and min-width: 1024px) {
+  #FormSignInUp{
+    zoom: 200%;
+  }
+}
+
+
+body{
+  background-color: #e3e4e5;
+  margin: 0px;
+
+
+}
+
+#FormSignInUp{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  form{
+    padding: 1em;
+    border: solid #000 1px;
+    background-color: #fff;
+    /* Centrage verticale */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+}
