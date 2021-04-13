@@ -2,19 +2,26 @@
 <html lang="fr">
 <head>
     <meta name="viewport" content="width=device-width" initial-scale=1/>
-
+    <link rel="stylesheet" href="assets/css/MyStyleForUsers.css">
 </head>
 
 <body>
 
-<form name="addUser" method="post" action="?controller=User&action=LoginUser">
+<div id="FormSignInUp">
 
-    <input type="text" name="Pseudo" placeholder="Pseudo"><br><br>
-    <input type="text" name="Password" placeholder="Mot de passe"><br><br>
 
-    <input type="submit" value="Connexion"><br><br>
+    <form name="addUser" method="post" action="?controller=User&action=LoginUser">
+        <h2>Connexion</h2>
 
-</form>
+        <input type="text" name="Pseudo" placeholder="Pseudo"><br><br>
+        <input type="text" name="Password" placeholder="Mot de passe"><br><br>
+
+        <input type="submit" value="Connexion"><br><br><br>
+
+        <a href="?controller=User&action=AddUser">Pas de compte ? Créer le !</a>
+
+    </form>
+</div>
 
 </body>
 </html>

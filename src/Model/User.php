@@ -15,13 +15,12 @@ class User
     private bool $User_ISADMIN = false;
 
 
-    //Fonctions SQL
+    //ToDo Vérifier si l'utilisateur est bien admin pour chaque opération complexe
 
 
     //Fonction SQLAjout
     public function SQLAddUser(\PDO $bdd) : array{
         //ToDo Ajouter la vérification de mail, si le comtpe éxiste déjà
-
         try{
             $requete = $bdd->prepare("INSERT INTO t_users (PSEUDO, MAIL, PASSWORD, ID_ROLE) VALUES(:PSEUDO, :MAIL, :PASSWORD, :ID_ROLE)");
             $requete->execute([
@@ -152,7 +151,59 @@ class User
 
     //Fonction SQLSupprimer
     public function SQLDeleteUser(\PDO $bdd) : array{
-        echo "SQLDeleteUser";
+        try{
+            //Récupération de L'ID User
+            $requete = $bdd->prepare("SELECT ID_USER FROM t_users WHERE PSEUDO=:PSEUDO");
+            $result = $requete->execute([
+                "PSEUDO" => $this->getUserPSEUDO()
+            ]);
+
+            $data = $requete->fetch(\PDO::FETCH_ASSOC);
+            $this->setUserID($data["ID_USER"]);
+
+            //Vérifie si le compte à supprimer n'est pas le compte sur lequel on est connecté
+            if ($this->getUserID() == $_SESSION["ID"]) {
+                echo "Impossible de supprimer le compte, vous êtes connecté(e) dessus !";
+                exit();
+            }
+
+            //Suppression dans la table rôle
+            $requete = $bdd->prepare("DELETE FROM t_roles WHERE ID_USER=:ID_USER");
+            $result = $requete->execute([
+                "ID_USER" => $this->getUserID()
+            ]);
+
+            //Suppression dans la table prets
+            $requete = $bdd->prepare("DELETE FROM t_prets WHERE ID_USER=:ID_USER");
+            $result = $requete->execute([
+                "ID_USER" => $this->getUserID()
+            ]);
+
+            //Suppression dans la table rôle
+            $requete = $bdd->prepare("DELETE FROM t_roles WHERE ID_USER=:ID_USER");
+            $result = $requete->execute([
+                "ID_USER" => $this->getUserID()
+            ]);
+
+            //Suppression dans la table rôle
+            $requete = $bdd->prepare("DELETE FROM t_info_movies WHERE ID_USER=:ID_USER");
+            $result = $requete->execute([
+                "ID_USER" => $this->getUserID()
+            ]);
+
+
+            //Suppression dans la table utilisateur
+            $requete = $bdd->prepare("DELETE FROM t_users WHERE ID_USER=:ID_USER");
+            $result = $requete->execute([
+                "ID_USER" => $this->getUserID()
+            ]);
+
+            return [true,'Suppression réalisée avec succès'];
+
+
+        }catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
     }
 
     //Fonction SQLGet
@@ -164,7 +215,7 @@ class User
             ]);
 
             $data = $requete->fetch(\PDO::FETCH_ASSOC);
-            $this->setUserID($data["ID"]);
+            $this->setUserID($data["ID_USER"]);
             $this->setUserPSEUDO($data["PSEUDO"]);
             $this->setUserMAIL($data["MAIL"]);
             $this->setUserNOMROLE($data["NAME"]);

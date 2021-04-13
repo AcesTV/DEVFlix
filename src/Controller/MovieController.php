@@ -10,7 +10,7 @@ class MovieController extends AbstractController
 {
     public function index(){
 
-        echo "Accueil du site WEB";
+        echo "Bienvenue sur l'accueil";
     }
 
     public function List(){

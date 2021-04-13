@@ -123,12 +123,16 @@ class UserController extends AbstractController
                     echo $response[1];
 
                 } else {
-                    echo $this->twig->render("User/ModifyUser.html.twig", []);
+                    echo $this->twig->render("User/ModifyUser.html.twig", [
+                        "Pseudo" => $_SESSION["Pseudo"]
+                    ]);
                     echo "Une erreur c'est produite : ${response[1]}";
                 }
 
             } else {
-                echo $this->twig->render("User/ModifyUser.html.twig", []);
+                echo $this->twig->render("User/ModifyUser.html.twig", [
+                    "Pseudo" => $_SESSION["Pseudo"]
+                ]);
             }
 
 
@@ -144,6 +148,8 @@ class UserController extends AbstractController
 
     //Fonction ModifyAdmin
     public function ModifyAdmin(){
+        $this->CheckAdminUser();
+
         //Si l'utilisateur à déjà un rôle le modifier sinon sinon le créer
         if (isset($_SESSION["IsAdmin"]) && ($_SESSION["IsAdmin"]) == true){
             $val = new User();
@@ -190,6 +196,8 @@ class UserController extends AbstractController
                 echo "Une erreur c'est produite : ${response[1]}";
             }
 
+
+
         } else {
             echo "ACCES DENIED - Vous n'êtes pas admin";
         }
@@ -199,11 +207,32 @@ class UserController extends AbstractController
 
     //Fonction Supprimer
     public function DeleteUser(){
-        echo "DeleteUser";
+        if (isset($_POST["Pseudo"])){
+            try {
+                $pseudo = $_POST["Pseudo"];
+                $val = new User();
+                $val->setUserPSEUDO($pseudo);
+
+                $response = $val->SQLDeleteUser(BDD::getInstance());
+
+                if ($response[0]) {
+                    echo $response[1];
+                } else {
+                    echo "Une erreur c'est produite : ${response[1]}";
+                }
+            } catch(\Exception $e) {
+                echo $this->twig->render("User/DeleteUser.html.twig", []);
+                echo $e->getMessage();
+            }
+        } else {
+            echo $this->twig->render("User/DeleteUser.html.twig", []);
+        }
+
     }
 
     //Fonction GetOne
     public function GetOne(){
+        $this->CheckAdminUser();
         if (isset($_POST["Pseudo"]) || (isset($_GET["param"]) == true && empty($_GET["param"]) == false)){
             try {
                 $pseudo = isset($_POST["Pseudo"]) ? $_POST["Pseudo"] : $_GET["param"];
@@ -230,6 +259,7 @@ class UserController extends AbstractController
 
     //Fonction GetAll
     public function GetAll(){
+        $this->CheckAdminUser();
             try {
                 $val = new User();
                 $response = $val->SQLGetAll(BDD::getInstance());
@@ -245,4 +275,15 @@ class UserController extends AbstractController
             }
 
     }
+
+    //Fonction vérifie si admin
+    public function CheckAdminUser(){
+
+        if (isset($_SESSION["IsAdmin"]) == false || ($_SESSION["IsAdmin"] == false)){
+            echo $this->twig->render("User/ErreurAcces.html.twig");
+            exit;
+        }
+    }
+
+
 }
