@@ -190,8 +190,6 @@ class UserController extends AbstractController
                 echo "Une erreur c'est produite : ${response[1]}";
             }
 
-
-
         } else {
             echo "ACCES DENIED - Vous n'êtes pas admin";
         }
