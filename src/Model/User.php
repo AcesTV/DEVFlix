@@ -21,7 +21,6 @@ class User
     //Fonction SQLAjout
     public function SQLAddUser(\PDO $bdd) : array{
         try{
-            //ToDo Ajouter une requete SQL qui vérifie si Doublon Pseudo et doublon Email
             $requeteboublon = $bdd->prepare("SELECT PSEUDO,MAIL FROM t_users WHERE PSEUDO=:PSEUDO OR MAIL=:MAIL");
             $requeteboublon->execute([
                 "PSEUDO" => $this->getUserPSEUDO(),
@@ -50,16 +49,13 @@ class User
             return [false,$e->getMessage()];
         }
 
-        //ToDo Vérifier qu'il n'y a aucun doublon ! Nom d'utilisateur et adresse mail !
-
-
     }
 
     //Fonction SQLLogin
     public function SQLLoginUser(\PDO $bdd) : array{
         try{
             $requete = $bdd->prepare("SELECT t_users.ID_USER,PSEUDO,PASSWORD,ISADMIN,NAME FROM t_users LEFT JOIN t_roles ON t_users.ID_USER = t_roles.ID_USER WHERE PSEUDO=:PSEUDO");
-            $result = $requete->execute([
+            $requete->execute([
                 "PSEUDO" => $this->getUserPSEUDO()
             ]);
 
@@ -80,7 +76,6 @@ class User
                 return [false,"Utilisateur ou mot de passe incorrect"];
             }
 
-
         }catch (\Exception $e){
             return [false,"Une erreur c'est produite : ".$e->getMessage()];
         }
@@ -90,9 +85,6 @@ class User
     public function SQLModifyUser(\PDO $bdd) : array{
 
         try{
-            //ToDo Ajouter ancien mot de passe pour pouvoir changer
-            //TODO Ajouter vérif si MDP = MDP VERIF
-            //TODO Ajouter vérif si MAIL = MAIL VERIF
             if (isset($_POST["Password"]) && empty($_POST["Password"] == false)){
                 if ($_POST["Password"] == $_POST["PasswordCheck"]){
                     $requete = $bdd->prepare("UPDATE t_users SET PASSWORD=:PASSWORD WHERE PSEUDO=:PSEUDO");
@@ -104,7 +96,6 @@ class User
                 } else {
                     return [false,"Les mots de passe ne correspondent pas"];
                 }
-
 
             } elseif (isset($_POST["Email"]) && empty($_POST["Email"]) == false) {
                 if ($_POST["Email"] == $_POST["EmailCheck"]) {
@@ -118,11 +109,9 @@ class User
                     return [false,"Les adresses email ne correspondent pas"];
                 }
 
-
             } else {
                 return [false,"dontmove"];
             }
-
 
         }catch (\Exception $e){
             return [false,"Une erreur c'est produite : ".$e->getMessage()];
@@ -149,7 +138,6 @@ class User
                 }
 
                 return [true,"Email et rôle modifié"];
-
 
             } elseif ((empty($_POST["Email"])) && (isset($_POST["Role"]))) {
                 //On change le role en admin si il est pas déjà admin
@@ -194,8 +182,6 @@ class User
         } catch (\Exception $e){
             return [false,"Une erreur c'est produite : ".$e->getMessage()];
         }
-
-
 
     }
 
@@ -250,7 +236,6 @@ class User
 
             return [true,'Suppression réalisée avec succès'];
 
-
         }catch (\Exception $e){
             return [false,"Une erreur c'est produite : ".$e->getMessage()];
         }
@@ -282,7 +267,6 @@ class User
 
             return [false, "No_Data"];
 
-
         }catch (\Exception $e){
             return [false,"Une erreur c'est produite : ".$e->getMessage()];
         }
@@ -298,14 +282,10 @@ class User
             $data = $requete->fetchAll(\PDO::FETCH_ASSOC);
             return [true,$data];
 
-
         }catch (\Exception $e){
             return [false,"Une erreur c'est produite : ".$e->getMessage()];
         }
     }
-
-
-
 
 
     //Getters and Setters
@@ -405,23 +385,4 @@ class User
     {
         $this->User_PASSWORD = $User_PASSWORD;
     }
-
-    /**
-     * @return string
-     */
-    public function getSQLPARAM(): string
-    {
-        return $this->SQLPARAM;
-    }
-
-    /**
-     * @param string $SQLPARAM
-     */
-    public function setSQLPARAM(string $SQLPARAM): void
-    {
-        $this->SQLPARAM = $SQLPARAM;
-    }
-
-
-
 }

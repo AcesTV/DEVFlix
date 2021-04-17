@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace src\Controller;
 
 use mysql_xdevapi\Exception;
