@@ -4,6 +4,7 @@
 
 namespace src\Controller;
 
+use mysql_xdevapi\Exception;
 use src\Model\User;
 use src\Model\BDD;
 use Twig\Error\LoaderError;
@@ -11,53 +12,91 @@ use Twig\Error\LoaderError;
 class UserController extends AbstractController
 {
     public function index(){
-        echo "Controller User";
-        //rediriger vers index (Page d'accueil)
+        //En cas de problème, on redirige vers l'accueil
+        header("location:/");
+    }
+
+    public function Admin(){
+        header("location:/admin/list");
     }
 
     //Fonction Ajout
     public function AddUser(){
+        //On vérifie si l'utilisateur est déjà connecté, si c'est le cas, on le redirige vers l'accueil
+        if (isset($_SESSION["ID_USER"])){
+            header("location:/");
+        }
 
-        if (isset($_POST["Email"]) && isset($_POST["Pseudo"]) && isset($_POST["Password"])){
+        //Si l'utilisateur à envoyer le formulaire
+        if ((isset($_POST["Password"])) && isset($_POST["Email"])){
+            //On défini le nom d'utilisateur et le mail
+            $val = new User();
+            $val->setUserPSEUDO($_POST["Pseudo"]);
+            $val->setUserMAIL($_POST["Email"]);
 
-            if(empty($_POST["Email"]) || empty($_POST["Pseudo"]) || empty($_POST["Password"])){
+            if ($_POST["Password"] != $_POST["Passwordcheck"]){
+                echo '<script language="javascript"> alert("Les mots de passe ne correspondent pas !") </script>';
+                exit();
+            }
+
+            //Vérifie si le mail est bien identiques
+            if ($_POST["Email"] != $_POST["Emailcheck"]){
+                echo '<script language="javascript"> alert("Les adresse mail ne correspond pas !") </script>';
+                exit();
+
+            }
+
+            //Si toutes les vérifications sont OK
+            $val->setUserPASSWORD(password_hash($_POST["Password"], PASSWORD_BCRYPT, ["cost" => 10]));
+            $val->setUserMAIL($_POST["Email"]);
+
+            $response = $val->SQLAddUser(BDD::getInstance());
+            if ($response[0] == true){
+                var_dump($_SESSION);
+                echo "Inscription réussi";
+
+                //ToDo envoyer mail de bienvenue, si le temps envoyer mail de confirmation
+
+            } else if($response[1] == "PSEUDO_DOUBLON"){
                 try {
-                    //TODO Remplir les chanmps si rempli
-                    //TODO Ajouter la vérification mot de passe sont les mêmes
-                    //TODO Ajouter la vérification adresse mail sont les mêmes
-
                     echo $this->twig->render("User/AddUser.html.twig", [
-                        "Pseudo" => $_POST["Pseudo"],
                         "Email" => $_POST["Email"]
                     ]);
-
-                    echo "Veuillez remplir tous les champs";
-
-
                 } catch (LoaderError $e) {
                     echo $e->getMessage();
                 }
 
+                echo '<script language="javascript"> alert("le nom d\'utilisateur est déjà utilisé") </script>';
+
+
+            } else if($response[1] == "MAIL_DOUBLON"){
+                try {
+                    echo $this->twig->render("User/AddUser.html.twig", [
+                        "Pseudo"=> $_POST["Pseudo"]
+                    ]);
+                } catch (LoaderError $e) {
+                    echo $e->getMessage();
+                }
+
+                echo '<script language="javascript"> alert("L\'email est déjà utilisée") </script>';
+
+
             } else {
-
-                $val = new User();
-                $val->setUserPSEUDO($_POST["Pseudo"]);
-                $val->setUserPASSWORD(password_hash($_POST["Password"], PASSWORD_BCRYPT, ["cost" => 10]));
-                $val->setUserMAIL($_POST["Email"]);
-
-                $response = $val->SQLAddUser(BDD::getInstance());
-                if ($response[0] == true){
-                    echo "Inscription réussi";
-
-                } else {
-                    echo "Une erreur c'est produite : ${response[1]}";
+                echo "Une erreur c'est produite : ${response[1]}";
+                try {
+                    echo $this->twig->render("User/AddUser.html.twig", [
+                        "Pseudo"=> $_POST["Pseudo"]
+                    ]);
+                } catch (LoaderError $e) {
+                    echo $e->getMessage();
                 }
             }
 
         } else {
-            //Affiche la vue
             try {
-                echo $this->twig->render("User/AddUser.html.twig", []);
+                echo $this->twig->render("User/AddUser.html.twig", [
+
+                ]);
             } catch (LoaderError $e) {
                 echo $e->getMessage();
             }
@@ -67,7 +106,6 @@ class UserController extends AbstractController
 
     //Fonction Login
     public function LoginUser(){
-        //Todo Récupérer si l'utilisateur est un admin
 
         if (isset($_POST["Pseudo"])){
             //Si tentative de connexion
@@ -77,31 +115,45 @@ class UserController extends AbstractController
 
             $response = $val->SQLLoginUser(BDD::getInstance());
             if ($response[0] == true){
-                echo $response[1];
+                //echo $response[1];
+                header("location:/");
                 $_SESSION["Pseudo"] = $val->getUserPSEUDO();
                 $_SESSION["IsAdmin"] = $val->getUserISADMIN();
+                $_SESSION["ID_USER"] = $val->getUserID();
 
             } else {
                 echo "Une erreur c'est produite : ${response[1]}";
             }
 
+
         } elseif(isset($_SESSION["Pseudo"]) && empty($_SESSION["Pseudo"]) == false) {
-            //Si déjà connecté alors on envoi vers l'accueil
+            //Si l'utilisateur est déjà connecté, on le renvoi vers l'accueil
             try {
-                echo $this->twig->render("base.html.twig", []);
-            } catch (LoaderError $e) {
+                //echo $this->twig->render("base.html.twig", []);
+                header("location:/");
+            } catch (Exception $e) {
                 echo $e->getMessage();
             }
         } else {
             //Si pas connecté
             try {
-                if (isset($_GET["param"]) && ($_GET["param"] == "loginneed")){
-                    echo "<p>Vous devez être connectez pour pourvour modifier votre profil</p>";
-                }
                 echo $this->twig->render("User/LoginUser.html.twig", []);
             } catch (LoaderError $e) {
                 echo $e->getMessage();
             }
+        }
+    }
+
+    //Fonction de déconnexion
+    public function LogoutUser(){
+        if (empty($_SESSION["Pseudo"]) == false) {
+            if (session_destroy()){
+                header("location:/");
+            } else {
+                echo "<h1>Une erreur c'est produite lors de la déconnexion, veuillez réesayer</h1>";
+            };
+        } else {
+            header("location:/");
         }
     }
 
@@ -120,7 +172,9 @@ class UserController extends AbstractController
 
                 $response = $val->SQLModifyUser(BDD::getInstance());
                 if ($response[0] == true) {
-                    echo $response[1];
+                    if ($response[1]){
+                        header("location:/user/profil");
+                    }
 
                 } else {
                     echo $this->twig->render("User/ModifyUser.html.twig", [
@@ -137,12 +191,9 @@ class UserController extends AbstractController
 
 
         } else {
-            //Affiche la vue
-            try {
-                header("location:/?controller=User&action=LoginUser&param=loginneed");
-            } catch (LoaderError $e) {
-                echo $e->getMessage();
-            }
+            //Si utilisateur pas connecter alors on redirige
+            header("location:/user/login");
+
         }
     }
 
@@ -150,114 +201,117 @@ class UserController extends AbstractController
     public function ModifyAdmin(){
         $this->CheckAdminUser();
 
-        //Si l'utilisateur à déjà un rôle le modifier sinon sinon le créer
-        if (isset($_SESSION["IsAdmin"]) && ($_SESSION["IsAdmin"]) == true){
-            $val = new User();
-
-
-            /*
-             * Valeur à récup pour que cela fonctionne !
-             *
-             * $val->setUserNOMROLE("");
-             * $val->setUserISADMIN(false);
-             * $val->setUserPSEUDO("Paulin2");
-             * $val->setUserID("23");
-            */
-
-
-            if ($val->getUserISADMIN() == true){
-                $checked = "checked";
-            } else {
-                $checked = "";
-            }
-
-            echo $this->twig->render("UserAdmin/ModifyUserAdmin.html.twig", [
-                "ischeck" => $checked,
-                "Pseudo" => $val->getUserPSEUDO()
-            ]);
-
-            if (isset($_POST["Role"]) and empty($_POST["Role"]) == false){
-                $val->setUserISADMIN(true);
-                $val->setUserNOMROLE("Admin");
-            } else {
-                $val->setUserISADMIN(false);
-            }
-
-            $response = $val->SQLModifyAdmin(BDD::getInstance());
-
-            if ($response[0] == true) {
-                echo $response[1];
-
-            } else {
-                echo $this->twig->render("User/ModifyUserAdmin.html.twig", [
-                    "ischeck" => $checked,
-                    "Pseudo" => $val->getUserPSEUDO()
-                ]);
-                echo "Une erreur c'est produite : ${response[1]}";
-            }
-
-
-
+        if (isset($_GET["param"]) == false) {
+            //Si il n'y a pas le paramètre ID_USER, on redirige vers la liste des utilisateurs
+            header("location:/admin/list");
+            exit();
         } else {
-            echo "ACCES DENIED - Vous n'êtes pas admin";
+            $param = (isset($_GET["param"])) ? $_GET["param"] : "";
+
+            $val = new User();
+            $val->setUserID($param);
+            $result = $val->SQLGetOne(BDD::getInstance());
+
+            if ((isset($_GET["param"])) && (isset($_POST["ID_User"]))) {
+                try {
+                    $val->setUserMAIL($_POST["Email"]);
+                    $isadmin = isset($_POST["Role"]);
+                    $val->setUserISADMIN($isadmin);
+                    $NameRole = empty($result[1]["NAME"]) ? "null" : "";
+                    $val->setUserNOMROLE($NameRole);
+
+                    $response = $val->SQLModifyAdmin(BDD::getInstance());
+
+                    if ($response[0]) {
+                        header("location:/admin/modify/${_GET["param"]}");
+                    } else {
+                        echo "Une erreur c'est produite : ${response[1]}";
+                    }
+                } catch (\Exception $e) {
+                    echo $e->getMessage();
+                }
+            } else if (isset($_GET["param"])) {
+                if (($result[0] == false) || $result[1] == "No_Data") {
+                    header("location:/admin/list");
+
+                } else {
+                    //On vérifie que le l'ID est différent de celui de la session
+
+                    if ($param == $_SESSION["ID_USER"]) {
+                        echo "<h1><font color='red'>Impossible de modifier le compte, vous êtes connecté à ce compte ! <a href='/admin/list'>Cliquez ici pour retourner à la liste</a></font></h1>";
+                    } else {
+                        $ischeck = (isset($_POST["Role"]) || $result[1]["ISADMIN"] == 1) ? "Checked" : "";
+
+                        echo $this->twig->render("UserAdmin/ModifyAdmin.html.twig", [
+                            "ID_User" => $result[1]["ID_USER"],
+                            "Pseudo" => $result[1]["PSEUDO"],
+                            "Email" => $result[1]["MAIL"],
+                            "ischeck" => $ischeck
+                        ]);
+                    }
+                }
+            }
         }
-
-
     }
 
     //Fonction Supprimer
-    public function DeleteUser(){
-        if (isset($_POST["Pseudo"])){
-            try {
-                $pseudo = $_POST["Pseudo"];
-                $val = new User();
-                $val->setUserPSEUDO($pseudo);
-
-                $response = $val->SQLDeleteUser(BDD::getInstance());
-
-                if ($response[0]) {
-                    echo $response[1];
-                } else {
-                    echo "Une erreur c'est produite : ${response[1]}";
-                }
-            } catch(\Exception $e) {
-                echo $this->twig->render("User/DeleteUser.html.twig", []);
-                echo $e->getMessage();
-            }
-        } else {
-            echo $this->twig->render("User/DeleteUser.html.twig", []);
-        }
-
-    }
-
-    //Fonction GetOne
-    public function GetOne(){
+    public function DeleteAdmin(){
         $this->CheckAdminUser();
-        if (isset($_POST["Pseudo"]) || (isset($_GET["param"]) == true && empty($_GET["param"]) == false)){
-            try {
-                $pseudo = isset($_POST["Pseudo"]) ? $_POST["Pseudo"] : $_GET["param"];
-                $val = new User();
-                $val->setUserPSEUDO($pseudo);
 
-                $response = $val->SQLGetOne(BDD::getInstance());
-
-                if ($response[0]) {
-                    var_dump($response[1]);
-                } else {
-                    echo "Une erreur c'est produite : ${response[1]}";
-                }
-            } catch(\Exception $e) {
-                echo $this->twig->render("User/test.html.twig", []);
-                echo $e->getMessage();
-            }
+        if (isset($_GET["param"]) == false) {
+            //Si il n'y a pas le paramètre ID_USER, on redirige vers la liste des utilisateurs
+            header("location:/admin/list");
+            exit();
         } else {
-            echo $this->twig->render("User/test.html.twig", []);
+            $param = (isset($_GET["param"])) ? $_GET["param"] : "";
+
+            $val = new User();
+            $val->setUserID($param);
+            $result = $val->SQLGetOne(BDD::getInstance());
+
+            //
+
+            if ((isset($_GET["param"])) && (isset($_POST["ID_User"]))){
+                try {
+                    $response = $val->SQLDeleteUser(BDD::getInstance());
+
+                    if ($response[0]) {
+                        header("location:/admin/list");
+                    } else {
+                        echo "Une erreur c'est produite : ${response[1]}";
+                    }
+                } catch(\Exception $e) {
+                    echo $e->getMessage();
+                }
+            } else if(isset($_GET["param"])) {
+                if (($result[0] == false) || $result[1] == "No_Data") {
+                    header("location:/admin/list");
+
+                } else {
+                    //On vérifie que le l'ID est différent de celui de la session
+
+                    if ($param == $_SESSION["ID_USER"]){
+                        echo "<h1><font color='red'>Impossible de supprimer le compte, vous êtes connecté à ce compte ! <a href='/admin/list'>Cliquez ici pour retourner à la liste</a></font></h1>";
+                    } else {
+                        //ToDo Remplir la liste des différentes informations de l'utilisateur
+                        echo $this->twig->render("UserAdmin/DeleteUser.html.twig", [
+                            "Pseudo" => $result[1]["PSEUDO"],
+                            "ID_User" => $result[1]["ID_USER"]
+                        ]);
+                    }
+
+
+                }
+
+
+            }
         }
+
 
 
     }
 
-    //Fonction GetAll
+    //Fonction GetAll (Admin)
     public function GetAll(){
         $this->CheckAdminUser();
             try {
@@ -265,12 +319,15 @@ class UserController extends AbstractController
                 $response = $val->SQLGetAll(BDD::getInstance());
 
                 if ($response[0]) {
-                    var_dump($response[1]);
+                    //var_dump($response[1]);
+                    echo $this->twig->render("UserAdmin/ListUser.html.twig", [
+                        "userslist" => $response[1]
+                    ]);
                 } else {
                     echo "Une erreur c'est produite : ${response[1]}";
                 }
+
             } catch(\Exception $e) {
-                echo $this->twig->render("User/test.html.twig", []);
                 echo $e->getMessage();
             }
 
@@ -280,8 +337,22 @@ class UserController extends AbstractController
     public function CheckAdminUser(){
 
         if (isset($_SESSION["IsAdmin"]) == false || ($_SESSION["IsAdmin"] == false)){
-            echo $this->twig->render("User/ErreurAcces.html.twig");
-            exit;
+            header("location:/user/login");
+        }
+    }
+
+    //Fonction envoi de mail
+    public function sendmail(){
+        //Fonctionne avec la bonne configuration de xampp/Wamp !
+        $to_email = "mrpaulin39@gmail.com";
+        $subject = "Sujet du mail";
+        $body = "Voici le message";
+        $headers = "From: deflix.cesi@gmail.com";
+
+        if (mail($to_email, $subject, $body, $headers)) {
+            echo "Email envoyé avec succès à l'email : $to_email";
+        } else {
+            echo "L'envoi de l'email a échoué";
         }
     }
 

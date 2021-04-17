@@ -20,32 +20,45 @@ class User
 
     //Fonction SQLAjout
     public function SQLAddUser(\PDO $bdd) : array{
-        //ToDo Ajouter la vérification de mail, si le comtpe éxiste déjà
         try{
-            $requete = $bdd->prepare("INSERT INTO t_users (PSEUDO, MAIL, PASSWORD, ID_ROLE) VALUES(:PSEUDO, :MAIL, :PASSWORD, :ID_ROLE)");
-            $requete->execute([
+            //ToDo Ajouter une requete SQL qui vérifie si Doublon Pseudo et doublon Email
+            $requeteboublon = $bdd->prepare("SELECT PSEUDO,MAIL FROM t_users WHERE PSEUDO=:PSEUDO OR MAIL=:MAIL");
+            $requeteboublon->execute([
                 "PSEUDO" => $this->getUserPSEUDO(),
-                "MAIL" => $this->getUserMAIL(),
-                "PASSWORD" => $this->getUserPassword(),
-                "ID_ROLE" => "" //Défini le rôle à rien
+                "MAIL" => $this->getUserMAIL()
             ]);
 
-            //Si tous se passe bien return True
-            $_SESSION["ID"] = $this->getUserID();
-            $_SESSION["PSEUDO"] = $this->getUserPSEUDO();
+            $data = $requeteboublon->fetch(\PDO::FETCH_ASSOC);
+            if (empty($data) == false && $data["PSEUDO"] == $this->getUserPSEUDO()){
+                return [false, "PSEUDO_DOUBLON"];
 
-            return [true,"Inscription réussie !"];
+            } else if (empty($data) == false && $data["MAIL"] == $this->getUserMAIL()){
+                return [false, "MAIL_DOUBLON"];
+
+            } else {
+                $requete = $bdd->prepare("INSERT INTO t_users (PSEUDO, MAIL, PASSWORD) VALUES (:PSEUDO, :MAIL, :PASSWORD)");
+                $requete->execute([
+                    "PSEUDO" => $this->getUserPSEUDO(),
+                    "MAIL" => $this->getUserMAIL(),
+                    "PASSWORD" => $this->getUserPassword()
+                ]);
+
+                return [true,"Inscription réussie !"];
+            }
 
         } catch (\Exception $e) {
             return [false,$e->getMessage()];
         }
+
+        //ToDo Vérifier qu'il n'y a aucun doublon ! Nom d'utilisateur et adresse mail !
+
 
     }
 
     //Fonction SQLLogin
     public function SQLLoginUser(\PDO $bdd) : array{
         try{
-            $requete = $bdd->prepare("SELECT PSEUDO,PASSWORD,ID_ROLE,ISADMIN,NAME FROM t_users LEFT JOIN t_roles ON t_users.ID_USER = t_roles.ID_USER WHERE PSEUDO=:PSEUDO");
+            $requete = $bdd->prepare("SELECT t_users.ID_USER,PSEUDO,PASSWORD,ISADMIN,NAME FROM t_users LEFT JOIN t_roles ON t_users.ID_USER = t_roles.ID_USER WHERE PSEUDO=:PSEUDO");
             $result = $requete->execute([
                 "PSEUDO" => $this->getUserPSEUDO()
             ]);
@@ -54,6 +67,7 @@ class User
 
             if (password_verify($this->getUserPASSWORD(),trim($data["PASSWORD"]))){
                 //Si tous se passe bien return True
+                $this->setUserID($data["ID_USER"]);
                 if ($data["ISADMIN"] == "1"){
                     $this->setUserISADMIN(true);
                 } else {
@@ -117,35 +131,71 @@ class User
 
     //Fonction SQLModifyAdmin
     public function SQLModifyAdmin(\PDO $bdd) : array{
-        //Formulaire pour les admin
+        //SQL de modification pour les admins
         try {
-            echo "Nom role = ".$this->getUserNOMROLE();
-            if ($this->getUserNOMROLE() == ""){
-                echo "ICI1";
-                $requete = $bdd->prepare("INSERT INTO t_roles (ID_USER, ISADMIN, NAME) VALUES (:ID_USER, :ISADMIN, :NAME)");
+            if((empty($_POST["Email"]) == false) && (isset($_POST["Role"]))){
+                //On change l'email et le role
+                $requete = $bdd->prepare("UPDATE t_users SET MAIL=:MAIL WHERE ID_USER=:ID_USER");
                 $requete->execute([
-                    "ID_USER" => $this->getUserID(),
-                    "ISADMIN" => $this->getUserISADMIN(),
-                    "NAME" => $this->getUserNOMROLE()
+                    "MAIL" => $this->getUserMAIL(),
+                    "ID_USER" => $_GET["param"]
                 ]);
+
+                if ($this->getUserNOMROLE() == "null"){
+                    $requete = $bdd->prepare("INSERT INTO t_roles (ID_USER,ISADMIN,NAME) VALUES (:ID_USER,1,'Admin')");
+                    $requete->execute([
+                        "ID_USER" => $_GET["param"]
+                    ]);
+                }
+
+                return [true,"Email et rôle modifié"];
+
+
+            } elseif ((empty($_POST["Email"])) && (isset($_POST["Role"]))) {
+                //On change le role en admin si il est pas déjà admin
+                if ($this->getUserNOMROLE() == "null"){
+                    $requete = $bdd->prepare("INSERT INTO t_roles (ID_USER,ISADMIN,NAME) VALUES (:ID_USER,1,'Admin')");
+                    $requete->execute([
+                        "ID_USER" => $_GET["param"]
+                    ]);
+                }
+
+                return [true,"Rôle passé à admin (si pas déjà)"];
+
+            } elseif((empty($_POST["Email"]) == false) && (isset($_POST["Role"]) == false)) {
+                //On change l'email et on supprime l'admin (si il est présent dans la BDD)
+                $requete = $bdd->prepare("UPDATE t_users SET MAIL=:MAIL WHERE ID_USER=:ID_USER");
+                $requete->execute([
+                    "MAIL" => $this->getUserMAIL(),
+                    "ID_USER" => $_GET["param"]
+                ]);
+
+                $requete = $bdd->prepare("DELETE FROM t_roles WHERE ID_USER=:ID_USER");
+                $requete->execute([
+                    "ID_USER" => $_GET["param"]
+                ]);
+
+                return [true,"Email modifié et admin supprimé (si présent dans la BDD)"];
+
+            } elseif ((empty($_POST["Email"])) && (isset($_POST["Role"]) == false)) {
+                //Si le rôle admin est attribué à l'utilisateur, on le supprime
+                $requete = $bdd->prepare("DELETE FROM t_roles WHERE ID_USER=:ID_USER");
+                $requete->execute([
+                    "ID_USER" => $_GET["param"]
+                ]);
+
+                return [true,"Suppression du rôle admin (si il existe)"];
+
             } else {
-                echo "ICI2";
-                $requete = $bdd->prepare("UPDATE t_roles SET ISADMIN=:ISADMIN, NAME=:NAME WHERE ID_USER=:ID_USER");
-                $requete->execute([
-                   "ISADMIN" => $this->getUserISADMIN(),
-                   "NAME" => $this->getUserNOMROLE(),
-                   "ID_USER" => $this->getUserID()
-                ]);
+                return[false, "Aucune correspondance dans les conditions"];
+                exit();
             }
-
-            return[true,"Modification réussie"];
-
-
-
 
         } catch (\Exception $e){
             return [false,"Une erreur c'est produite : ".$e->getMessage()];
         }
+
+
 
     }
 
@@ -206,22 +256,31 @@ class User
         }
     }
 
-    //Fonction SQLGet
+    //Fonction SQLGetOne
     public function SQLGetOne(\PDO $bdd) : array{
         try{
-            $requete = $bdd->prepare("SELECT PSEUDO,PASSWORD,ID_ROLE,ISADMIN,NAME FROM t_users LEFT JOIN t_roles ON t_users.ID_USER = t_roles.ID_USER WHERE PSEUDO=:PSEUDO");
-            $result = $requete->execute([
-                "PSEUDO" => $this->getUserPSEUDO()
+            $requete = $bdd->prepare("SELECT t_users.ID_USER,PSEUDO,PASSWORD,MAIL,ID_ROLES,ISADMIN,NAME FROM t_users LEFT JOIN t_roles ON t_users.ID_USER = t_roles.ID_USER WHERE t_users.ID_USER=:ID_USER");
+            $requete->execute([
+                "ID_USER" => $this->getUserID()
             ]);
 
             $data = $requete->fetch(\PDO::FETCH_ASSOC);
-            $this->setUserID($data["ID_USER"]);
-            $this->setUserPSEUDO($data["PSEUDO"]);
-            $this->setUserMAIL($data["MAIL"]);
-            $this->setUserNOMROLE($data["NAME"]);
-            $this->setUserISADMIN($data["ISADMIN"]);
+            if ($data == true) {
+                $this->setUserID($data["ID_USER"]);
+                $this->setUserPSEUDO($data["PSEUDO"]);
+                $this->setUserMAIL($data["MAIL"]);
 
-            return [true,$data];
+                //Vérification si pas de grade !
+                $name = $data["NAME"] ?? "Utilisateur";
+                $this->setUserNOMROLE($name);
+
+                $isadmin = $data["ISADMIN"] ?? "0";
+                $this->setUserISADMIN($isadmin);
+
+                return [true,$data];
+            }
+
+            return [false, "No_Data"];
 
 
         }catch (\Exception $e){
@@ -233,8 +292,8 @@ class User
     //Fonction SQLGetAll
     public function SQLGetAll(\PDO $bdd) : array{
         try{
-            $requete = $bdd->prepare("SELECT PSEUDO,PASSWORD,ID_ROLE,ISADMIN,NAME FROM t_users LEFT JOIN t_roles ON t_users.ID_USER = t_roles.ID_USER");
-            $result = $requete->execute([]);
+            $requete = $bdd->prepare("SELECT t_users.ID_USER,PSEUDO,PASSWORD,ISADMIN,NAME FROM t_users LEFT JOIN t_roles ON t_users.ID_USER = t_roles.ID_USER ORDER BY PSEUDO");
+            $requete->execute([]);
 
             $data = $requete->fetchAll(\PDO::FETCH_ASSOC);
             return [true,$data];

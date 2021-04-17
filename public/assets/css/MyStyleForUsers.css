@@ -28,4 +28,62 @@ body {
   transform: translateY(-50%);
 }
 
+table {
+  border-collapse: collapse;
+  width: 90%;
+  /* Centrage horizontal */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+td {
+  text-align: center;
+  border: 2px solid black;
+  width: 25%;
+  height: 35px;
+}
+
+.msgerror {
+  color: red;
+}
+
+.btnmodifyadmin {
+  background-color: #5295ff;
+  padding: 5px 15px;
+  text-decoration: none;
+  color: #000;
+  width: 200px;
+  height: 25px;
+  margin-left: 10px;
+}
+
+.btndeleteadmin {
+  background-color: #f12c2c;
+  padding: 5px 15px;
+  text-decoration: none;
+  color: #000;
+  width: 200px;
+  height: 25px;
+  margin-left: 10px;
+}
+
+.boite {
+  display: inline-grid;
+  width: 250px;
+  height: 200px;
+  border: #000 1px solid;
+  padding: 5px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+}
+.boite li {
+  list-style: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
 /*# sourceMappingURL=MyStyleForUsers.css.map */
