@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta name="viewport" content="width=device-width" initial-scale=1/>
+
+</head>
+
+<body>
+
+<form name="addInfoMovie" method="post" action="?controller=InfoMovie&action=AddInfoMovie">
+
+    <input id="Rate" type="number" name="Rate" placeholder="Note" value="{{ Rate }}"><br><br>
+{#    <input id="Comment" type="textarea" name="Comment" placeholder="Commentaire" required rows="5" cols="33"><br><br>#}
+    <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="33" > </textarea>
+
+    <button id="btnAdComment" type="submit">Envoyer</button><br><br>
+
+</form>
+
+<!-- Pour afficher le input en rouge -->
+<!-- <script src="assets/js/formulaire.js"></script> -->
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Movies - {{ parent() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/mystyleForMovie.css">
+{% endblock %}
+
+{% block body %}
+
+    {% if movieList is defined %}
+        <h1>Liste des Films</h1>
+        {% for movie in movieList %}
+        <h2>{{ movie.NAME }}</h2>
+        <p>{{ movie.RELEASE_DATE }}</p>
+        <p>{{ movie.SYNOPSIS }}</p>
+        <hr>
+        {% endfor %}
+    {% else %}
+        <h1>Détail de {{ movie.NAME }}</h1>
+        <h2>{{ movie.NAME }}</h2>
+        <p>{{ movie.RELEASE_DATE }}</p>
+        <p>{{ movie.SYNOPSIS }}</p>
+        <hr>
+    {% endif %}
+{% endblock %}
