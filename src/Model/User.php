@@ -15,9 +15,6 @@ class User
     private bool $User_ISADMIN = false;
 
 
-    //ToDo Vérifier si l'utilisateur est bien admin pour chaque opération complexe
-
-
     //Fonction SQLAjout
     public function SQLAddUser(\PDO $bdd) : array{
         try{
@@ -88,7 +85,7 @@ class User
             if (isset($_POST["Password"]) && empty($_POST["Password"] == false)){
                 if ($_POST["Password"] == $_POST["PasswordCheck"]){
                     $requete = $bdd->prepare("UPDATE t_users SET PASSWORD=:PASSWORD WHERE PSEUDO=:PSEUDO");
-                    $result = $requete->execute([
+                    $requete->execute([
                         "PSEUDO" => $this->getUserPSEUDO(),
                         "PASSWORD" => $this->getUserPASSWORD()
                     ]);
@@ -100,7 +97,7 @@ class User
             } elseif (isset($_POST["Email"]) && empty($_POST["Email"]) == false) {
                 if ($_POST["Email"] == $_POST["EmailCheck"]) {
                     $requete = $bdd->prepare("UPDATE t_users SET MAIL=:MAIL WHERE PSEUDO=:PSEUDO");
-                    $result = $requete->execute([
+                    $requete->execute([
                         "PSEUDO" => $this->getUserPSEUDO(),
                         "MAIL" => $this->getUserMAIL()
                     ]);
@@ -176,7 +173,6 @@ class User
 
             } else {
                 return[false, "Aucune correspondance dans les conditions"];
-                exit();
             }
 
         } catch (\Exception $e){
@@ -190,7 +186,7 @@ class User
         try{
             //Récupération de L'ID User
             $requete = $bdd->prepare("SELECT ID_USER FROM t_users WHERE PSEUDO=:PSEUDO");
-            $result = $requete->execute([
+            $requete->execute([
                 "PSEUDO" => $this->getUserPSEUDO()
             ]);
 
@@ -205,32 +201,32 @@ class User
 
             //Suppression dans la table rôle
             $requete = $bdd->prepare("DELETE FROM t_roles WHERE ID_USER=:ID_USER");
-            $result = $requete->execute([
+            $requete->execute([
                 "ID_USER" => $this->getUserID()
             ]);
 
             //Suppression dans la table prets
             $requete = $bdd->prepare("DELETE FROM t_prets WHERE ID_USER=:ID_USER");
-            $result = $requete->execute([
+            $requete->execute([
                 "ID_USER" => $this->getUserID()
             ]);
 
             //Suppression dans la table rôle
             $requete = $bdd->prepare("DELETE FROM t_roles WHERE ID_USER=:ID_USER");
-            $result = $requete->execute([
+            $requete->execute([
                 "ID_USER" => $this->getUserID()
             ]);
 
             //Suppression dans la table rôle
             $requete = $bdd->prepare("DELETE FROM t_info_movies WHERE ID_USER=:ID_USER");
-            $result = $requete->execute([
+            $requete->execute([
                 "ID_USER" => $this->getUserID()
             ]);
 
 
             //Suppression dans la table utilisateur
             $requete = $bdd->prepare("DELETE FROM t_users WHERE ID_USER=:ID_USER");
-            $result = $requete->execute([
+            $requete->execute([
                 "ID_USER" => $this->getUserID()
             ]);
 
