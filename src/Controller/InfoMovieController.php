@@ -41,8 +41,8 @@ class InfoMovieController extends AbstractController
             } else {
 
                 $val = new InfoMovie();
-                $val->setInfoMovieRATE($_POST["Rate"]);
-                $val->setInfoMovieCOMMENT($_POST["Comment"]);
+                $val->setRate($_POST["Rate"]);
+                $val->setComment($_POST["Comment"]);
 
 
                 $response = $val->SQLAddInfoMovie(BDD::getInstance());
@@ -64,63 +64,33 @@ class InfoMovieController extends AbstractController
         }
 
     }
-//    public function AddInfoMovie($id){
-//        $movie = new InfoMovie();
-//        if(isset($_POST["Rate"]) && isset($_POST["Comment"])) {
-//            $movie->setRate($_POST["Rate"]);
-//            $movie->setComment($_POST["Comment"]);
-//
-//            $response = $movie->SQLAddInfoMovie(BDD::getInstance(), $id);
-//            if ($response[0] == true){
-//                echo "$response[1]";
-//
-//            } else {
-//                echo "Une erreur c'est produite : ${response[1]}";
-//            }
-//        }
-//        header("Location: ?controller=InfoMovie&action=AddInfoMovie&param=$id");
-//    }
-
-
 
 
     //Fonction Modifier
-    public function ModifyUser(){
+    public function UpdateInfoMovie($id){
+        $movie = new InfoMovie();
+        if(isset($_POST["Comment"]) && isset($_POST["Rate"])) {
+            $movie->setComment($_POST["Comment"]);
+            $movie->setRate($_POST["Rate"]);
 
-        //Si l'utilisateur est connecté et que le mot de passe ou l'email est renseigné
-        if (empty($_SESSION["Pseudo"]) == false){
-
-            if(isset($_POST["Password"]) || isset($_POST["Email"])) {
-                $val = new User();
-
-                $val->setUserPSEUDO($_SESSION["Pseudo"]);
-                $val->setUserPASSWORD(password_hash($_POST["Password"], PASSWORD_BCRYPT, ["cost" => 10]));
-                $val->setUserMAIL($_POST["Email"]);
-
-                $response = $val->SQLModifyUser(BDD::getInstance());
-                if ($response[0] == true) {
-                    echo $response[1];
-
-                } else {
-                    echo $this->twig->render("User/ModifyUser.html.twig", []);
-                    echo "Une erreur c'est produite : ${response[1]}";
-                }
+            $response = $movie->SQLUpdateInfoMovie(BDD::getInstance(), $id);
+            if ($response[0] == true){
+                echo "$response[1]";
 
             } else {
-                echo $this->twig->render("User/ModifyUser.html.twig", []);
+                echo "Une erreur s'est produite : ${response[1]}";
             }
-
-
         } else {
-            //Affiche la vue
-            try {
-                header("location:/?controller=User&action=LoginUser&param=loginneed");
-            } catch (LoaderError $e) {
-                echo $e->getMessage();
-            }
-        }
-    }
 
+            $movie = $movie->SQLGetOne(BDD::getInstance(), $id);
+
+
+            return $this->twig->render("InfoMovie/UpdateInfoMovie.html.twig",[
+                "InfoMovie" => $movie
+            ]);
+        }
+        header("Location: ?controller=InfoMovie&action=UpdateInfoMovie&param=$id");
+    }
 
     //Fonction Supprimer
     public function DeleteUser(){
