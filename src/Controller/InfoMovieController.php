@@ -18,9 +18,9 @@ class InfoMovieController extends AbstractController
     //Fonction Ajout
     public function AddInfoMovie(){
 
-        if (isset($_POST["Rate"]) && isset($_POST["Comment"])){
+        if (isset($_POST["Rate"]) && isset($_POST["Comment"]) && isset($_POST["Share"])){
 
-            if(empty($_POST["Rate"]) || empty($_POST["Comment"])){
+            if(empty($_POST["Rate"]) || empty($_POST["Comment"]) || empty($_POST["Share"])){
                 try {
                     //TODO Remplir les chanmps si rempli
                     //TODO Ajouter la vérification mot de passe sont les mêmes
@@ -28,7 +28,8 @@ class InfoMovieController extends AbstractController
 
                     echo $this->twig->render("InfoMovie/AddInfoMovie.html.twig", [
                         "Rate" => $_POST["Rate"],
-                        "Comment" => $_POST["Comment"]
+                        "Comment" => $_POST["Comment"],
+                        "Share" => $_POST["Share"]
                     ]);
 
                     echo "Veuillez remplir tous les champs";
@@ -43,6 +44,7 @@ class InfoMovieController extends AbstractController
                 $val = new InfoMovie();
                 $val->setRate($_POST["Rate"]);
                 $val->setComment($_POST["Comment"]);
+                $val->setShare($_POST["Share"]);
 
 
                 $response = $val->SQLAddInfoMovie(BDD::getInstance());
@@ -70,8 +72,10 @@ class InfoMovieController extends AbstractController
     public function UpdateInfoMovie($id){
         $movie = new InfoMovie();
         if(isset($_POST["Comment"]) && isset($_POST["Rate"])) {
+            $checkbox = isset($_POST["Share"])?1:0;
             $movie->setComment($_POST["Comment"]);
             $movie->setRate($_POST["Rate"]);
+            $movie->setShare($checkbox);
 
             $response = $movie->SQLUpdateInfoMovie(BDD::getInstance(), $id);
             if ($response[0] == true){

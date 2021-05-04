@@ -11,7 +11,7 @@ class InfoMovie
     private Int $Id_user;
     private Float $Rate;
     private String $Comment;
-//    private bool $Share;
+    private int $Share;
 //    private bool $See;
 //    private bool $To_see;
 
@@ -22,7 +22,7 @@ class InfoMovie
 
         try{
 //            $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, RATE, COMMENT, SHARE, SEE, TO_SEE) VALUES(:ID_MOVIE, :ID_USER, :RATE, :COMMENT, :SHARE, :SEE, :TO_SEE)");
-            $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, RATE, COMMENT) VALUES(:ID_MOVIE, :ID_USER, :RATE, :COMMENT)");
+            $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, RATE, COMMENT, SHARE) VALUES(:ID_MOVIE, :ID_USER, :RATE, :COMMENT, :SHARE)");
             $requete->execute([
 //                "ID_MOVIE" => $_GET["param"],
                 "ID_MOVIE" => 1, //TODO à supprimer à la fin des tests
@@ -30,7 +30,7 @@ class InfoMovie
                 "ID_USER" => 1,
                 "RATE" => $this->getRate(),
                 "COMMENT" => $this->getComment(),
-//                "SHARE" => $this->getInfoMovieSHARE(),
+                "SHARE" => $this->isShare()
 //                "SEE" => $this->getInfoMovieSEE(),
 //                "TO_SEE" => $this->getInfoMovieTO_SEE(),
             ]);
@@ -54,7 +54,7 @@ class InfoMovie
 
         try{
 //            $requete = $bdd->prepare("UPDATE t_info_movies SET ID_MOVIE:=ID_MOVIE, ID_USER=:ID_USER, RATE=RATE:, COMMENT=:COMMENT, SHARE=:SHARE, SEE=:SEE, TO_SEE=:TO_SEE WHERE ID_INFO=:ID");
-            $requete = $bdd->prepare("UPDATE t_info_movies SET ID_MOVIE=:ID_MOVIE, ID_USER=:ID_USER, RATE=:RATE, COMMENT=:COMMENT WHERE ID_INFO=:ID");
+            $requete = $bdd->prepare("UPDATE t_info_movies SET ID_MOVIE=:ID_MOVIE, ID_USER=:ID_USER, RATE=:RATE, COMMENT=:COMMENT, SHARE=:SHARE WHERE ID_INFO=:ID");
             $reponse = $requete->execute([
                 "ID" => $id,
 //                "ID_MOVIE" => $this->getInfoMovieID_MOVIE(),
@@ -63,7 +63,7 @@ class InfoMovie
                 "ID_USER" => 1,
                 "RATE" => $this->getRate(),
                 "COMMENT" => $this->getComment(),
-//                "SHARE" => $this->getInfoMovieSHARE(),
+                "SHARE" => $this->isShare(),
 //                "SEE" => $this->getInfoMovieSEE(),
 //                "TO_SEE" => $this->getInfoMovieTO_SEE(),
             ]);
@@ -75,6 +75,32 @@ class InfoMovie
             return [false,$e->getMessage()];
         }
 
+    }
+
+    //Fonction Delete
+    public function SQLDeleteInfoMovie(\PDO $bdd) : array{
+        try{
+            //Récupération de L'ID_Info
+            $requete = $bdd->prepare("SELECT ID_INFO FROM t_info_movies WHERE ID_USER=:ID_USER");
+            $requete->execute([
+                "ID_USER" => $this->getIdUser()
+            ]);
+
+            $data = $requete->fetch(\PDO::FETCH_ASSOC);
+            $this->setIdInfo($data["ID_INFO"]);
+
+            //Suppression dans la table infoMovie
+            $requete = $bdd->prepare("DELETE FROM t_info_movies WHERE ID_USER=:ID_USER");
+            $requete->execute([
+                "ID_USER" => $this->getUserID()
+            ]);
+
+
+            return [true,'Suppression réalisée avec succès'];
+
+        }catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
     }
 
     //Getters and Setters
@@ -162,19 +188,19 @@ class InfoMovie
     /**
      * @return bool
      */
-//    public function isShare(): bool
-//    {
-//        return $this->Share;
-//    }
-//
-//    /**
-//     * @param bool $Share
-//     */
-//    public function setShare(bool $Share): void
-//    {
-//        $this->Share = $Share;
-//    }
-//
+    public function isShare(): bool
+    {
+        return $this->Share;
+    }
+
+    /**
+     * @param bool $Share
+     */
+    public function setShare(bool $Share): void
+    {
+        $this->Share = $Share;
+    }
+
 //    /**
 //     * @return bool
 //     */
