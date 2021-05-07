@@ -2,7 +2,7 @@
 /shelf/
 /workspace.xml
 # Datasource local storage ignored files
-/../../../../../:\xampp2\htdocs\DEVFlix\.idea/dataSources/
+/../../../../../:\xampp\htdocs\DEVFlix\.idea/dataSources/
 /dataSources.local.xml
 # Editor-based HTTP Client requests
 /httpRequests/

@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace src\Controller;
 
 use src\Model\InfoMovie;
@@ -18,53 +16,24 @@ class InfoMovieController extends AbstractController
     //Fonction Ajout
     public function AddInfoMovie(){
 
-        if (isset($_POST["Rate"]) && isset($_POST["Comment"]) && isset($_POST["Share"])){
+        if (isset($_POST["Rate"]) && isset($_POST["Comment"]) && isset($_POST["Share"]) && isset($_POST["To_See"])){
+            $val = new InfoMovie();
 
-            if(empty($_POST["Rate"]) || empty($_POST["Comment"]) || empty($_POST["Share"])){
-                try {
-                    //TODO Remplir les chanmps si rempli
-                    //TODO Ajouter la vérification mot de passe sont les mêmes
-                    //TODO Ajouter la vérification adresse mail sont les mêmes
+            $val->setRate($_POST["Rate"]);
+            $val->setComment($_POST["Comment"]);
+            $val->setShare($_POST["Share"]);
+            $val->setToSee($_POST["To_See"]);
 
-                    echo $this->twig->render("InfoMovie/AddInfoMovie.html.twig", [
-                        "Rate" => $_POST["Rate"],
-                        "Comment" => $_POST["Comment"],
-                        "Share" => $_POST["Share"]
-                    ]);
-
-                    echo "Veuillez remplir tous les champs";
-
-
-                } catch (LoaderError $e) {
-                    echo $e->getMessage();
-                }
-
+            $response = $val->SQLAddInfoMovie(BDD::getInstance());
+            if ($response[0] == true) {
+                echo "$response[1]";
             } else {
-
-                $val = new InfoMovie();
-                $val->setRate($_POST["Rate"]);
-                $val->setComment($_POST["Comment"]);
-                $val->setShare($_POST["Share"]);
-
-
-                $response = $val->SQLAddInfoMovie(BDD::getInstance());
-                if ($response[0] == true){
-                    echo "Commentaire ajouté";
-
-                } else {
-                    echo "Une erreur c'est produite : ${response[1]}";
-                }
+                echo "Une erreur s'est produite : ${response}";
             }
-
         } else {
             //Affiche la vue
-            try {
-                echo $this->twig->render("InfoMovie/AddInfoMovie.html.twig", []);
-            } catch (LoaderError $e) {
-                echo $e->getMessage();
-            }
+            return $this->twig->render("InfoMovie/AddInfoMovie.html.twig");
         }
-
     }
 
 
@@ -73,9 +42,11 @@ class InfoMovieController extends AbstractController
         $movie = new InfoMovie();
         if(isset($_POST["Comment"]) && isset($_POST["Rate"])) {
             $checkbox = isset($_POST["Share"])?1:0;
+            $checkboxToSee = isset($_POST["To_See"])?1:0;
             $movie->setComment($_POST["Comment"]);
             $movie->setRate($_POST["Rate"]);
             $movie->setShare($checkbox);
+            $movie->setToSee($checkboxToSee);
 
             $response = $movie->SQLUpdateInfoMovie(BDD::getInstance(), $id);
             if ($response[0] == true){
@@ -85,9 +56,7 @@ class InfoMovieController extends AbstractController
                 echo "Une erreur s'est produite : ${response[1]}";
             }
         } else {
-
             $movie = $movie->SQLGetOne(BDD::getInstance(), $id);
-
 
             return $this->twig->render("InfoMovie/UpdateInfoMovie.html.twig",[
                 "InfoMovie" => $movie

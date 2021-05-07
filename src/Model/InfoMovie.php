@@ -1,6 +1,5 @@
 <?php
 namespace src\Model;
-session_start();
 
 //use Twig\Extension\StringLoaderExtension;
 
@@ -13,7 +12,7 @@ class InfoMovie
     private String $Comment;
     private int $Share;
 //    private bool $See;
-//    private bool $To_see;
+    private bool $To_see;
 
     //Fonctions SQL
 
@@ -22,7 +21,7 @@ class InfoMovie
 
         try{
 //            $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, RATE, COMMENT, SHARE, SEE, TO_SEE) VALUES(:ID_MOVIE, :ID_USER, :RATE, :COMMENT, :SHARE, :SEE, :TO_SEE)");
-            $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, RATE, COMMENT, SHARE) VALUES(:ID_MOVIE, :ID_USER, :RATE, :COMMENT, :SHARE)");
+            $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, RATE, COMMENT, SHARE, TO_SEE) VALUES(:ID_MOVIE, :ID_USER, :RATE, :COMMENT, :SHARE, :TO_SEE)");
             $requete->execute([
 //                "ID_MOVIE" => $_GET["param"],
                 "ID_MOVIE" => 1, //TODO à supprimer à la fin des tests
@@ -30,9 +29,9 @@ class InfoMovie
                 "ID_USER" => 1,
                 "RATE" => $this->getRate(),
                 "COMMENT" => $this->getComment(),
-                "SHARE" => $this->isShare()
+                "SHARE" => $this->isShare(),
 //                "SEE" => $this->getInfoMovieSEE(),
-//                "TO_SEE" => $this->getInfoMovieTO_SEE(),
+                "TO_SEE" => $this->isToSee()
             ]);
 
             //Si tous se passe bien return True
@@ -42,6 +41,7 @@ class InfoMovie
             return [false,$e->getMessage()];
         }
     }
+
     public function SQLGetOne(\PDO $bdd, $id) {
         $requete = $bdd->prepare("SELECT * FROM t_info_movies WHERE ID_INFO=:ID");
         $requete->execute([
@@ -49,12 +49,13 @@ class InfoMovie
         ]);
         return $requete->fetch();
     }
+
     //Fonction SQLUpDadeInfoMovie
     public function SQLUpdateInfoMovie(\PDO $bdd, $id) : array{
 
         try{
 //            $requete = $bdd->prepare("UPDATE t_info_movies SET ID_MOVIE:=ID_MOVIE, ID_USER=:ID_USER, RATE=RATE:, COMMENT=:COMMENT, SHARE=:SHARE, SEE=:SEE, TO_SEE=:TO_SEE WHERE ID_INFO=:ID");
-            $requete = $bdd->prepare("UPDATE t_info_movies SET ID_MOVIE=:ID_MOVIE, ID_USER=:ID_USER, RATE=:RATE, COMMENT=:COMMENT, SHARE=:SHARE WHERE ID_INFO=:ID");
+            $requete = $bdd->prepare("UPDATE t_info_movies SET ID_MOVIE=:ID_MOVIE, ID_USER=:ID_USER, RATE=:RATE, COMMENT=:COMMENT, SHARE=:SHARE, TO_SEE=:TO_SEE WHERE ID_INFO=:ID");
             $reponse = $requete->execute([
                 "ID" => $id,
 //                "ID_MOVIE" => $this->getInfoMovieID_MOVIE(),
@@ -65,7 +66,7 @@ class InfoMovie
                 "COMMENT" => $this->getComment(),
                 "SHARE" => $this->isShare(),
 //                "SEE" => $this->getInfoMovieSEE(),
-//                "TO_SEE" => $this->getInfoMovieTO_SEE(),
+                "TO_SEE" => $this->isToSee()
             ]);
 
             //Si tous se passe bien return True
@@ -74,7 +75,6 @@ class InfoMovie
         } catch (\Exception $e) {
             return [false,$e->getMessage()];
         }
-
     }
 
     //Fonction Delete
@@ -217,21 +217,21 @@ class InfoMovie
 //        $this->See = $See;
 //    }
 //
-//    /**
-//     * @return bool
-//     */
-//    public function isToSee(): bool
-//    {
-//        return $this->To_see;
-//    }
-//
-//    /**
-//     * @param bool $To_see
-//     */
-//    public function setToSee(bool $To_see): void
-//    {
-//        $this->To_see = $To_see;
-//    }
+    /**
+     * @return bool
+     */
+    public function isToSee(): bool
+    {
+        return $this->To_see;
+    }
+
+    /**
+     * @param bool $To_see
+     */
+    public function setToSee(bool $To_see): void
+    {
+        $this->To_see = $To_see;
+    }
 
 
 }
