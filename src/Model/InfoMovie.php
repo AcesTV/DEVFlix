@@ -77,6 +77,12 @@ class InfoMovie
         }
     }
 
+    public function SQLGetAll(\PDO $bdd) {
+        $requete = $bdd->prepare("SELECT * FROM t_info_movies");
+        $requete->execute();
+        return $requete->fetchAll(\PDO::FETCH_CLASS, "src\Model\InfoMovie");
+    }
+
     //Fonction Delete
     public function SQLDeleteInfoMovie(\PDO $bdd) : array{
         try{

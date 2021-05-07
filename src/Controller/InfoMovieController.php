@@ -65,6 +65,15 @@ class InfoMovieController extends AbstractController
         header("Location: ?controller=InfoMovie&action=UpdateInfoMovie&param=$id");
     }
 
+    public function List(){
+        $infoMovie = new InfoMovie();
+        $infoMovieList = $infoMovie->SQLGetAll(BDD::getInstance());
+
+        return $this->twig->render("InfoMovie/list.html.twig",[
+            "infoMovieList" => $infoMovieList
+        ]);
+    }
+
     //Fonction Supprimer
     public function DeleteUser(){
         echo "DeleteUser";
