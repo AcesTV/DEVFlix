@@ -70,7 +70,8 @@ class MovieController extends AbstractController
     public function UpdateMovie($id){
         $movie = new Movie();
         if(isset($_POST["Name"]) && isset($_POST["Poster"]) && isset($_POST["Origin"]) && isset($_POST["VO"]) && isset($_POST["Actors"]) && isset($_POST["Director"]) && isset($_POST["Genre"]) && isset($_POST["ReleaseDate"]) && isset($_POST["Production"]) && isset($_POST["Runtime"]) && isset($_POST["Trailer"]) && isset($_POST["Nomination"]) && isset($_POST["Synopsis"])) {
-            $checkbox = isset($_POST["DVD"])?1:0;
+            $checkbox = isset($_POST["DVD"]);
+
             $movie->setName($_POST["Name"]);
             $movie->setPoster($_POST["Poster"]);
             $movie->setOrigin($_POST["Origin"]);
@@ -100,7 +101,19 @@ class MovieController extends AbstractController
                 "movie" => $movie
             ]);
         }
-        header("Location: ?controller=movie&action=updatemovie&param=$id");
+//        header("Location: ?controller=movie&action=updatemovie&param=$id");
+    }
+
+    public function DeleteMovie($id){
+        $movie = new Movie();
+        $response = $movie->SQLDeleteMovie(BDD::getInstance(), $id);
+        if ($response[0] == true){
+            echo "$response[1]";
+
+        } else {
+            echo "Une erreur c'est produite : ${response[1]}";
+        }
+        header('location: ?controller=movie&action=list');
     }
 
 }

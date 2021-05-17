@@ -343,6 +343,7 @@ class Movie
     {
         try{
             $requete = $bdd->prepare("UPDATE t_movies SET NAME=:NAME, POSTER=:POSTER, ORIGIN=:ORIGIN, VO=:VO, ACTORS=:ACTORS, DIRECTOR=:DIRECTOR, GENRE=:GENRE, RELEASE_DATE=:RELEASE_DATE, PRODUCTION=:PRODUCTION, RUNTIME=:RUNTIME, TRAILER=:TRAILER, NOMINATION=:NOMINATION, SYNOPSIS=:SYNOPSIS, DVD=:DVD WHERE ID_MOVIE=:ID");
+
             $reponse = $requete->execute([
                 "ID" => $id,
                 "NAME" => $this->getName(),
@@ -360,9 +361,24 @@ class Movie
                 "SYNOPSIS" => $this->getSynopsis(),
                 "DVD" => $this->isDvd()
             ]);
-
             //Si tous se passe bien return True
             return [true,"Modification du film réussie !"];
+
+        } catch (\Exception $e) {
+            return [false,$e->getMessage()];
+        }
+    }
+
+    public function SQLDeleteMovie(\PDO $bdd, $id) : array
+    {
+        try{
+            $requete = $bdd->prepare("DELETE FROM t_movies WHERE ID_MOVIE=:ID");
+
+            $reponse = $requete->execute([
+                "ID" => $id,
+            ]);
+            //Si tous se passe bien return True
+            return [true,"Supression du film réussie !"];
 
         } catch (\Exception $e) {
             return [false,$e->getMessage()];
