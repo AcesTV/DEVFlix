@@ -1,6 +1,7 @@
 {
     "require": {
         "twig/twig": "^3.3",
-        "ext-pdo": "*"
+        "ext-pdo": "*",
+        "swiftmailer/swiftmailer": "^6.2"
     }
 }

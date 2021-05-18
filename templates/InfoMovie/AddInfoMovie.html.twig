@@ -12,11 +12,10 @@
 <form name="addInfoMovie" method="post" action="?controller=InfoMovie&action=AddInfoMovie">
 
     <input id="Rate" type="number" name="Rate" placeholder="Note" required><br><br>
-{#    <input id="Comment" type="textarea" name="Comment" placeholder="Commentaire" required rows="5" cols="33"><br><br>#}
     <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="33" required></textarea>
-    <input type="checkbox" id="Share" name="Share" required>
+    <input type="checkbox" id="Share" name="Share">
     <label for="Share">actuellement prêté</label>
-    <input type="checkbox" id="To_See" name="To_See" required>
+    <input type="checkbox" id="To_See" name="To_See" >
     <label for="To_See">A voir</label>
     <button id="btnAdComment" type="submit">Envoyer</button><br><br>
 

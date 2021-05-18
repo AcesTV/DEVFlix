@@ -14,7 +14,21 @@ class InfoMovie
 //    private bool $See;
     private bool $To_see;
 
-    //Fonctions SQL
+    //Fonction afficher un commentaire
+    public function SQLGetOne(\PDO $bdd, $id) {
+        $requete = $bdd->prepare("SELECT * FROM t_info_movies WHERE ID_INFO=:ID");
+        $requete->execute([
+            "ID" => $id
+        ]);
+        return $requete->fetch();
+    }
+
+    //Fonction afficher tous les commentaires
+    public function SQLGetAll(\PDO $bdd) {
+        $requete = $bdd->prepare("SELECT * FROM t_info_movies");
+        $requete->execute();
+        return $requete->fetchAll(\PDO::FETCH_CLASS, "src\Model\InfoMovie");
+    }
 
     //Fonction SQLAjout
     public function SQLAddInfoMovie(\PDO $bdd) : array{
@@ -29,9 +43,9 @@ class InfoMovie
                 "ID_USER" => 1,
                 "RATE" => $this->getRate(),
                 "COMMENT" => $this->getComment(),
-                "SHARE" => $this->isShare(),
+                "SHARE" => ($this->isShare()==false)? 0 : 1,
 //                "SEE" => $this->getInfoMovieSEE(),
-                "TO_SEE" => $this->isToSee()
+                "TO_SEE" => ($this->isToSee() ==false)? 0 : 1
             ]);
 
             //Si tous se passe bien return True
@@ -42,19 +56,10 @@ class InfoMovie
         }
     }
 
-    public function SQLGetOne(\PDO $bdd, $id) {
-        $requete = $bdd->prepare("SELECT * FROM t_info_movies WHERE ID_INFO=:ID");
-        $requete->execute([
-            "ID" => $id
-        ]);
-        return $requete->fetch();
-    }
-
     //Fonction SQLUpDadeInfoMovie
     public function SQLUpdateInfoMovie(\PDO $bdd, $id) : array{
 
         try{
-//            $requete = $bdd->prepare("UPDATE t_info_movies SET ID_MOVIE:=ID_MOVIE, ID_USER=:ID_USER, RATE=RATE:, COMMENT=:COMMENT, SHARE=:SHARE, SEE=:SEE, TO_SEE=:TO_SEE WHERE ID_INFO=:ID");
             $requete = $bdd->prepare("UPDATE t_info_movies SET ID_MOVIE=:ID_MOVIE, ID_USER=:ID_USER, RATE=:RATE, COMMENT=:COMMENT, SHARE=:SHARE, TO_SEE=:TO_SEE WHERE ID_INFO=:ID");
             $reponse = $requete->execute([
                 "ID" => $id,
@@ -77,31 +82,13 @@ class InfoMovie
         }
     }
 
-    public function SQLGetAll(\PDO $bdd) {
-        $requete = $bdd->prepare("SELECT * FROM t_info_movies");
-        $requete->execute();
-        return $requete->fetchAll(\PDO::FETCH_CLASS, "src\Model\InfoMovie");
-    }
-
-    //Fonction Delete
-    public function SQLDeleteInfoMovie(\PDO $bdd) : array{
+    public function SQLDeleteInfoMovie(\PDO $bdd, $id) : array{
         try{
             //Récupération de L'ID_Info
-            $requete = $bdd->prepare("SELECT ID_INFO FROM t_info_movies WHERE ID_USER=:ID_USER");
+            $requete = $bdd->prepare("DELETE FROM t_info_movies WHERE ID_INFO=:ID");
             $requete->execute([
-                "ID_USER" => $this->getIdUser()
+                "ID" => $id
             ]);
-
-            $data = $requete->fetch(\PDO::FETCH_ASSOC);
-            $this->setIdInfo($data["ID_INFO"]);
-
-            //Suppression dans la table infoMovie
-            $requete = $bdd->prepare("DELETE FROM t_info_movies WHERE ID_USER=:ID_USER");
-            $requete->execute([
-                "ID_USER" => $this->getUserID()
-            ]);
-
-
             return [true,'Suppression réalisée avec succès'];
 
         }catch (\Exception $e){
@@ -238,6 +225,4 @@ class InfoMovie
     {
         $this->To_see = $To_see;
     }
-
-
 }

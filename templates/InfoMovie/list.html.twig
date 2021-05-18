@@ -4,7 +4,9 @@
 
 {% block css %}
     {#<link rel="stylesheet" href="/assets/css/mystyleForMovie.css">#}
+
 {% endblock %}
+
 
 {% block body %}
 
@@ -14,6 +16,7 @@
             <p>Film n°{{ infoMovie.ID_MOVIE }}</p>
             <h4>Note : {{ infoMovie.RATE }}</h4>
             <p>{{ infoMovie.COMMENT }}</p>
+            <button  onclick="deleteConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
             <hr>
         {% endfor %}
     {% else %}
@@ -22,4 +25,8 @@
         <p>{{ infoMovie.COMMENT }}</p>
         <hr>
     {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="/assets/js/listInfoMovie.js"></script>
 {% endblock %}
