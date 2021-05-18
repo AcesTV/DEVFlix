@@ -14,3 +14,5 @@ RewriteRule ^admin/modify/([0-9]+)$ index.php?controller=User&action=ModifyAdmin
 RewriteRule ^admin/delete/([0-9]+)$ index.php?controller=User&action=DeleteAdmin&param=$1
 RewriteRule ^admin/list$ index.php?controller=User&action=GetAll
 RewriteRule ^admin$ index.php?controller=User&action=Admin
+
+test
