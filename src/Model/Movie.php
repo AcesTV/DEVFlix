@@ -328,7 +328,7 @@ class Movie
                 "TRAILER" => $this->getTrailer(),
                 "NOMINATION" => $this->getNomination(),
                 "SYNOPSIS" => $this->getSynopsis(),
-                "DVD" => $this->isDvd()
+                "DVD" => ($this->isDvd() ==  false) ? 0 : 1
             ]);
 
             //Si tous se passe bien return True
@@ -359,7 +359,7 @@ class Movie
                 "TRAILER" => $this->getTrailer(),
                 "NOMINATION" => $this->getNomination(),
                 "SYNOPSIS" => $this->getSynopsis(),
-                "DVD" => $this->isDvd()
+                "DVD" => ($this->isDvd() ==  false) ? 0 : 1
             ]);
             //Si tous se passe bien return True
             return [true,"Modification du film réussie !"];
@@ -372,9 +372,12 @@ class Movie
     public function SQLDeleteMovie(\PDO $bdd, $id) : array
     {
         try{
+            $requete = $bdd->prepare("DELETE FROM t_info_movies WHERE ID_MOVIE=:ID");
+            $requete->execute([
+                "ID" => $id,
+            ]);
             $requete = $bdd->prepare("DELETE FROM t_movies WHERE ID_MOVIE=:ID");
-
-            $reponse = $requete->execute([
+            $requete->execute([
                 "ID" => $id,
             ]);
             //Si tous se passe bien return True

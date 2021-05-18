@@ -34,8 +34,9 @@ class MovieController extends AbstractController
 
     public function AddMovie(){
 
-        if(isset($_POST["Name"]) && isset($_POST["Poster"]) && isset($_POST["Origin"]) && isset($_POST["VO"]) && isset($_POST["Actors"]) && isset($_POST["Director"]) && isset($_POST["Genre"]) && isset($_POST["ReleaseDate"]) && isset($_POST["Production"]) && isset($_POST["Runtime"]) && isset($_POST["Trailer"]) && isset($_POST["Nomination"]) && isset($_POST["Synopsis"]) && isset($_POST["DVD"])) {
-
+        if(isset($_POST["Name"]) && isset($_POST["Poster"]) && isset($_POST["Origin"]) && isset($_POST["VO"]) && isset($_POST["Actors"]) && isset($_POST["Director"]) && isset($_POST["Genre"]) && isset($_POST["ReleaseDate"]) && isset($_POST["Production"]) && isset($_POST["Runtime"]) && isset($_POST["Trailer"]) && isset($_POST["Nomination"]) && isset($_POST["Synopsis"])) {
+            $checkbox = isset($_POST["DVD"]);
+            $checkbox = ($checkbox == false) ? 0 : 1;
             $movie = new Movie();
 
             $movie->setName($_POST["Name"]);
@@ -51,7 +52,7 @@ class MovieController extends AbstractController
             $movie->setTrailer($_POST["Trailer"]);
             $movie->setNomination($_POST["Nomination"]);
             $movie->setSynopsis($_POST["Synopsis"]);
-            $movie->setDvd($_POST["DVD"]);
+            $movie->setDvd($checkbox);
 
             $response = $movie->SQLAddMovie(BDD::getInstance());
             if ($response[0] == true){
@@ -71,7 +72,7 @@ class MovieController extends AbstractController
         $movie = new Movie();
         if(isset($_POST["Name"]) && isset($_POST["Poster"]) && isset($_POST["Origin"]) && isset($_POST["VO"]) && isset($_POST["Actors"]) && isset($_POST["Director"]) && isset($_POST["Genre"]) && isset($_POST["ReleaseDate"]) && isset($_POST["Production"]) && isset($_POST["Runtime"]) && isset($_POST["Trailer"]) && isset($_POST["Nomination"]) && isset($_POST["Synopsis"])) {
             $checkbox = isset($_POST["DVD"]);
-
+            $checkbox = ($checkbox == false) ? 0 : 1;
             $movie->setName($_POST["Name"]);
             $movie->setPoster($_POST["Poster"]);
             $movie->setOrigin($_POST["Origin"]);
@@ -101,9 +102,10 @@ class MovieController extends AbstractController
                 "movie" => $movie
             ]);
         }
-//        header("Location: ?controller=movie&action=updatemovie&param=$id");
+        header("Location: ?controller=movie&action=updatemovie&param=$id");
     }
 
+    //TODO NE PAS OUBLIER LES CLES ETRANGERES
     public function DeleteMovie($id){
         $movie = new Movie();
         $response = $movie->SQLDeleteMovie(BDD::getInstance(), $id);

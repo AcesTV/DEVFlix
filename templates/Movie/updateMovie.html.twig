@@ -23,7 +23,7 @@
         <input id="Trailer" type="text" name="Trailer" placeholder="Link Trailer" value="{{ movie.TRAILER }}">
         <input id="Nomination" type="text" name="Nomination" placeholder="Nomination" value="{{ movie.NOMINATION }}">
         <input id="Synopsis" type="text" name="Synopsis" placeholder="Synopsis" value="{{ movie.SYNOPSIS }}" required>
-        <input id="DVD" type="checkbox" name="DVD" {% if movie.DVD %} checked {% endif %}>
+        <input id="DVD" type="checkbox" name="DVD" value="oui"{% if movie.DVD %} checked {% endif %}>
 
         <input type="submit" value="Submit Movie">
     </form>
