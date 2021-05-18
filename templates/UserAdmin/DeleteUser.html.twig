@@ -1,20 +1,16 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta name="viewport" content="width=device-width" initial-scale=1/>
+{% extends"base.html.twig" %}
 
-</head>
+{% block title %}Suppression utilisateur - {{ parent() }}{% endblock %}
 
-<body>
+{% block body %}
 
-    <form name="addUser" method="post" action="?controller=User&action=DeleteAdmin&param={{ ID_User }}">
+    <form name="addUser" method="post" action="/admin/delete/{{ ID_User }}">
         <h2>Êtes vous sur de vouloir supprimer le compte de {{ Pseudo }} ?</h2>
 
-        <input id="ID_User" type="text" name="ID_User" hidden value="{{ ID_User }}" hidden><br><br>
+        <input id="ID_User" type="hidden" name="ID_User" value="{{ ID_User }}"><br><br>
 
         <button id="btndelete" type="submit">Confirmer la suppression</button><br><br>
 
     </form>
 
-</body>
-</html>
+{% endblock %}

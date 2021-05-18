@@ -14,6 +14,11 @@ class User
     private string $User_NOMROLE = "";
     private bool $User_ISADMIN = false;
 
+    private string $RecoveryID;
+    private string $RecoveryEmail;
+    private string $RecoveryCle;
+    private string $RecoveryPassword;
+
 
     //Fonction SQLAjout
     public function SQLAddUser(\PDO $bdd) : array{
@@ -211,13 +216,13 @@ class User
                 "ID_USER" => $this->getUserID()
             ]);
 
-            //Suppression dans la table rôle
-            $requete = $bdd->prepare("DELETE FROM t_roles WHERE ID_USER=:ID_USER");
+            //Suppression dans la table Password Recovery
+            $requete = $bdd->prepare("DELETE FROM t_password_recovery WHERE ID_USER=:ID_USER");
             $requete->execute([
                 "ID_USER" => $this->getUserID()
             ]);
 
-            //Suppression dans la table rôle
+            //Suppression dans la table détails de film
             $requete = $bdd->prepare("DELETE FROM t_info_movies WHERE ID_USER=:ID_USER");
             $requete->execute([
                 "ID_USER" => $this->getUserID()
@@ -284,6 +289,92 @@ class User
     }
 
 
+    //Fonction Recovery - Step 1 : Vérification existance compte
+    public function SQLCheckEmail(\PDO $bdd) : array{
+        try{
+            var_dump($this->getRecoveryEmail());
+
+            $requete = $bdd->prepare("SELECT ID_USER,MAIL FROM t_users WHERE MAIL = :MAIL");
+            $requete->execute([
+                "MAIL" => $this->getRecoveryEmail()
+            ]);
+
+            if ($requete->rowCount() == 1) {
+                $this->setRecoveryID($requete->fetch()[0]);
+
+                //Supppresion des anciennes clé si il en existe
+                $requete2 = $bdd->prepare("DELETE FROM t_password_recovery WHERE ID_USER = :ID_USER");
+                $requete2->execute([
+                    "ID_USER" => $this->getRecoveryID()
+                ]);
+
+                $this->setRecoveryCle(rand(100000,999999));
+
+                $requete3 = $bdd->prepare("INSERT INTO t_password_recovery (ID_USER, CODE) VALUES (:ID_USER, :CODE)");
+                $requete3->execute([
+                    "ID_USER" => $this->getRecoveryID(),
+                    "CODE" => $this->getRecoveryCle()
+                ]);
+
+                //Sauvegarde du recoveryID dans la session
+                $_SESSION["RecoveryID"] = $this->getRecoveryID();
+
+                return [true];
+            } else {
+                return [false];
+            }
+
+        }catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
+    }
+
+    //Fonction Recovery - Step 2 : Vérification de la clé
+    public function SQLCheckCle(\PDO $bdd) : array{
+        try{
+            $requete = $bdd->prepare("SELECT CODE FROM t_password_recovery WHERE ID_USER = :ID_USER");
+            $requete->execute([
+                "ID_USER" => $this->getRecoveryID()
+            ]);
+
+            if ($requete->rowCount() == 1) {
+                if ($this->getRecoveryCle() == $requete->fetch()[0]){
+                    return [true,"Clé correcte"];
+                } else{
+                    return [false, "Clé incorrecte"];
+                }
+
+            } else {
+                return [false, "Aucune clé n'est enregistré pour l'utilisateur"];
+            }
+
+        }catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
+    }
+
+    //Fonction Recovery - Step 3 : Update du mot de passe
+    public function SQLUpdatePassword(\PDO $bdd) : array{
+        try{
+            $requete = $bdd->prepare("UPDATE t_users set PASSWORD = :PASSWORD WHERE ID_USER = :ID_USER");
+            $requete->execute([
+                "PASSWORD" => $this->getRecoveryPassword(),
+                "ID_USER" => $this->getRecoveryID()
+            ]);
+
+            $requete2 = $bdd->prepare("DELETE FROM t_password_recovery WHERE ID_USER = :ID_USER");
+            $requete2->execute([
+                "ID_USER" => $this->getRecoveryID()
+            ]);
+
+            return [true,"Changement de mot de passe effectif"];
+
+        }catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
+    }
+
+
     //Getters and Setters
 
     /**
@@ -299,7 +390,7 @@ class User
      */
     public function setUserPSEUDO(string $User_PSEUDO): void
     {
-        $this->User_PSEUDO = $User_PSEUDO;
+        $this->User_PSEUDO = htmlspecialchars($User_PSEUDO);
     }
 
     /**
@@ -315,7 +406,7 @@ class User
      */
     public function setUserMAIL(string $User_MAIL): void
     {
-        $this->User_MAIL = $User_MAIL;
+        $this->User_MAIL = htmlspecialchars($User_MAIL);
     }
 
     /**
@@ -331,7 +422,7 @@ class User
      */
     public function setUserNOMROLE(string $User_NOMROLE): void
     {
-        $this->User_NOMROLE = $User_NOMROLE;
+        $this->User_NOMROLE = htmlspecialchars($User_NOMROLE);
     }
 
     /**
@@ -347,7 +438,7 @@ class User
      */
     public function setUserISADMIN(bool $User_ISADMIN): void
     {
-        $this->User_ISADMIN = $User_ISADMIN;
+        $this->User_ISADMIN = htmlspecialchars($User_ISADMIN);
     }
 
     /**
@@ -363,7 +454,7 @@ class User
      */
     public function setUserID(string $User_ID): void
     {
-        $this->User_ID = $User_ID;
+        $this->User_ID = htmlspecialchars($User_ID);
     }
 
     /**
@@ -379,6 +470,70 @@ class User
      */
     public function setUserPASSWORD(string $User_PASSWORD): void
     {
-        $this->User_PASSWORD = $User_PASSWORD;
+        $this->User_PASSWORD = htmlspecialchars($User_PASSWORD);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRecoveryID(): string
+    {
+        return $this->RecoveryID;
+    }
+
+    /**
+     * @param string $RecoveryID
+     */
+    public function setRecoveryID(string $RecoveryID): void
+    {
+        $this->RecoveryID = htmlspecialchars($RecoveryID);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRecoveryEmail(): string
+    {
+        return $this->RecoveryEmail;
+    }
+
+    /**
+     * @param string $RecoveryEmail
+     */
+    public function setRecoveryEmail(string $RecoveryEmail): void
+    {
+        $this->RecoveryEmail = htmlspecialchars($RecoveryEmail);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRecoveryCle(): string
+    {
+        return $this->RecoveryCle;
+    }
+
+    /**
+     * @param string $RecoveryCle
+     */
+    public function setRecoveryCle(string $RecoveryCle): void
+    {
+        $this->RecoveryCle = htmlspecialchars($RecoveryCle);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRecoveryPassword(): string
+    {
+        return $this->RecoveryPassword;
+    }
+
+    /**
+     * @param string $RecoveryPassword
+     */
+    public function setRecoveryPassword(string $RecoveryPassword): void
+    {
+        $this->RecoveryPassword = htmlspecialchars($RecoveryPassword);
     }
 }

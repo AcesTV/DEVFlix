@@ -13,11 +13,11 @@ class MovieController extends AbstractController
 
         if (isset($_SESSION["ID_USER"])){
             echo "Bienvenue sur l'accueil ${_SESSION["Pseudo"]}<br>";
-            echo "<a href='/user/profil'>Accédez à mon profil</a><br>";
-            echo "<a href='/user/logout'>Déconnexion</a>";
+            echo "<a href='/profil'>Accédez à mon profil</a><br>";
+            echo "<a href='/logout'>Déconnexion</a>";
         } else {
             echo "Bienvenue sur l'accueil<br>";
-            echo "<a href='/user/login'>Connexion</a>";
+            echo "<a href='/login'>Connexion</a>";
         }
 
     }

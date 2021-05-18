@@ -2,6 +2,9 @@
 <html lang="fr">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}DEVFLIX{% endblock %}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/pepper-grinder/jquery-ui.css">
@@ -23,10 +26,12 @@
                     Admin
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Liste</a>
-                    <a class="dropdown-item" href="#">Ajout</a>
+                    <a class="dropdown-item" href="#">Liste des film</a>
+                    <a class="dropdown-item" href="#">Ajouter un film</a>
+                    <a class="dropdown-item" href="/admin/list">Liste des utilisateurs</a>
                     <div class="dropdown-divider"></div>
                 </div>
+
             </li>
         </ul>
     </div>

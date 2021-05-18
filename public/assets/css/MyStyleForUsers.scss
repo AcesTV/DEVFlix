@@ -3,9 +3,7 @@
 }
 
 @media (screen and min-width: 481px) {
-  #FormSignInUp{
-    zoom: 160%;
-  }
+
 
 }
 
@@ -17,7 +15,10 @@
 
 }
 
-
+ul#myUL{
+  margin: auto;
+  width: 80%;
+}
 body{
   background-color: #e3e4e5;
   margin: 0px;
@@ -38,7 +39,6 @@ body{
     top: 50%;
     transform: translateY(-50%);
   }
-
 }
 
 table{
@@ -70,6 +70,7 @@ td{
   width: 200px;
   height: 25px;
   margin-left: 10px;
+
 }
 
 .btndeleteadmin{
@@ -80,6 +81,7 @@ td{
   width: 200px;
   height: 25px;
   margin-left: 10px;
+
 }
 
 .boite{
@@ -100,5 +102,45 @@ ul{
   padding: 0;
 }
 
+#ResetPassword{
+  form{
+    padding-top: 15px;
+    text-align: center;
+    input, label{
+      display: block;
+    }
 
+    input{
+      margin: auto auto 15px;
+    }
 
+  }
+}
+
+.TextCenter{
+  text-align: center;
+}
+
+.msg-err{
+  color: #e52f1b;
+}
+
+.msg-succes{
+  color: #477adb;
+}
+
+//Pour erreur bootstrap
+.container{
+  margin: 0;
+  padding: 0;
+  max-width: unset;
+
+  *, ::after, ::before {
+    box-sizing: unset;
+  }
+}
+
+a:hover{
+  text-decoration: none;
+  color: #FFF;
+}

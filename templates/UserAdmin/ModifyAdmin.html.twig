@@ -1,11 +1,8 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta name="viewport" content="width=device-width" initial-scale=1/>
+{% extends"base.html.twig" %}
 
-</head>
+{% block title %}Modification utilisateur - {{ parent() }}{% endblock %}
 
-<body>
+{% block body %}
     <div class="ModifyAdmin">
         <div id="LeftPart">
             <h2>Utilisateur : {{ Pseudo }}</h2>
@@ -30,5 +27,4 @@
         </div>
     </div>
 
-</body>
-</html>
+{% endblock %}

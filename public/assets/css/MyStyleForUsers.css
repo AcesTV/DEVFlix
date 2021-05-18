@@ -1,13 +1,13 @@
-@media (min-width: 481px) {
-  #FormSignInUp {
-    zoom: 160%;
-  }
-}
 @media (min-width: 1024px) {
   #FormSignInUp {
     zoom: 200%;
   }
 }
+ul#myUL {
+  margin: auto;
+  width: 80%;
+}
+
 body {
   background-color: #e3e4e5;
   margin: 0px;
@@ -84,6 +84,43 @@ td {
 ul {
   margin: 0;
   padding: 0;
+}
+
+#ResetPassword form {
+  padding-top: 15px;
+  text-align: center;
+}
+#ResetPassword form input, #ResetPassword form label {
+  display: block;
+}
+#ResetPassword form input {
+  margin: auto auto 15px;
+}
+
+.TextCenter {
+  text-align: center;
+}
+
+.msg-err {
+  color: #e52f1b;
+}
+
+.msg-succes {
+  color: #477adb;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  max-width: unset;
+}
+.container *, .container ::after, .container ::before {
+  box-sizing: unset;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #FFF;
 }
 
 /*# sourceMappingURL=MyStyleForUsers.css.map */

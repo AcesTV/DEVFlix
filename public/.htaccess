@@ -3,10 +3,11 @@ ErrorDocument 404 /404.html
 RewriteEngine On
 
 #URL Rewriting pour la partie user
-RewriteRule ^user/signin$ index.php?controller=User&action=AddUser
-RewriteRule ^user/login$ index.php?controller=User&action=LoginUser
-RewriteRule ^user/logout$ index.php?controller=User&action=LogoutUser
-RewriteRule ^user/profil$ index.php?controller=User&action=ModifyUser
+RewriteRule ^signin$ index.php?controller=User&action=AddUser
+RewriteRule ^login$ index.php?controller=User&action=LoginUser
+RewriteRule ^logout$ index.php?controller=User&action=LogoutUser
+RewriteRule ^profil$ index.php?controller=User&action=ModifyUser
+RewriteRule ^resetpassword$ index.php?controller=User&action=ResetPassword
 
 #URL Rewriting pour la partie admin
 RewriteRule ^admin/modify/([0-9]+)$ index.php?controller=User&action=ModifyAdmin&param=$1

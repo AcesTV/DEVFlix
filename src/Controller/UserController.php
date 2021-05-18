@@ -33,13 +33,13 @@ class UserController extends AbstractController
             $val->setUserMAIL($_POST["Email"]);
 
             if ($_POST["Password"] != $_POST["Passwordcheck"]){
-                echo '<script language="javascript"> alert("Les mots de passe ne correspondent pas !") </script>';
+                echo '<script> alert("Les mots de passe ne correspondent pas !") </script>';
                 exit();
             }
 
             //Vérifie si le mail est bien identiques
             if ($_POST["Email"] != $_POST["Emailcheck"]){
-                echo '<script language="javascript"> alert("Les adresse mail ne correspond pas !") </script>';
+                echo '<script> alert("Les adresse mail ne correspond pas !") </script>';
                 exit();
 
             }
@@ -50,10 +50,26 @@ class UserController extends AbstractController
 
             $response = $val->SQLAddUser(BDD::getInstance());
             if ($response[0] == true){
-                var_dump($_SESSION);
                 echo "Inscription réussi";
 
-                //ToDo envoyer mail de bienvenue, si le temps envoyer mail de confirmation
+                //Paramètres du send mail
+                $to_email= $val->getUserMAIL();
+                $subject = "Bienvenue sur DevFlix !";
+                $body = "<html>
+                            <body>
+                                <h1>Toutes l'équipe de DevFlix vous souhaite la bienvenue sur notre site !</h1>
+                                Vous pouvez à présent commenter, noter et partager vos films préférés. <br><br>
+                                Retrouvez nous vite sur notre site <a href='http://devflix.local'>DevFlix</a>
+                            </body>
+                        </html>";
+                $headers = "From: devflix.cesi@gmail.com\r\n";
+                $headers .= "MINE-Version: 1.0\r\n";
+                $headers .= "Content-Type: text/html; charset=utf-8\r\n";
+
+                //Envoi du mail de bienvenue
+                $this->sendmail($to_email, $subject, $body, $headers);
+
+                header("location:/");
 
             } else if($response[1] == "PSEUDO_DOUBLON"){
                 try {
@@ -64,8 +80,7 @@ class UserController extends AbstractController
                     echo $e->getMessage();
                 }
 
-                echo '<script language="javascript"> alert("le nom d\'utilisateur est déjà utilisé") </script>';
-
+                echo '<script > alert("le nom d\'utilisateur est déjà utilisé") </script>';
 
             } else if($response[1] == "MAIL_DOUBLON"){
                 try {
@@ -75,9 +90,7 @@ class UserController extends AbstractController
                 } catch (LoaderError $e) {
                     echo $e->getMessage();
                 }
-
-                echo '<script language="javascript"> alert("L\'email est déjà utilisée") </script>';
-
+                echo '<script > alert("L\'email est déjà utilisée") </script>';
 
             } else {
                 echo "Une erreur c'est produite : ${response[1]}";
@@ -89,17 +102,14 @@ class UserController extends AbstractController
                     echo $e->getMessage();
                 }
             }
-
         } else {
             try {
-                echo $this->twig->render("User/AddUser.html.twig", [
+                echo $this->twig->render("User/AddUser.html.twig", []);
 
-                ]);
             } catch (LoaderError $e) {
                 echo $e->getMessage();
             }
         }
-
     }
 
     //Fonction Login
@@ -122,7 +132,6 @@ class UserController extends AbstractController
             } else {
                 echo "Une erreur c'est produite : ${response[1]}";
             }
-
 
         } elseif(isset($_SESSION["Pseudo"]) && empty($_SESSION["Pseudo"]) == false) {
             //Si l'utilisateur est déjà connecté, on le renvoi vers l'accueil
@@ -155,9 +164,8 @@ class UserController extends AbstractController
         }
     }
 
-    //Fonction Modifier
+    //Fonction Modifier du côté utilisateur
     public function ModifyUser(){
-
         //Si l'utilisateur est connecté et que le mot de passe ou l'email est renseigné
         if (empty($_SESSION["Pseudo"]) == false){
 
@@ -173,21 +181,17 @@ class UserController extends AbstractController
                     if ($response[1]){
                         header("location:/user/profil");
                     }
-
                 } else {
                     echo $this->twig->render("User/ModifyUser.html.twig", [
                         "Pseudo" => $_SESSION["Pseudo"]
                     ]);
                     echo "Une erreur c'est produite : ${response[1]}";
                 }
-
             } else {
                 echo $this->twig->render("User/ModifyUser.html.twig", [
                     "Pseudo" => $_SESSION["Pseudo"]
                 ]);
             }
-
-
         } else {
             //Si utilisateur pas connecter alors on redirige
             header("location:/user/login");
@@ -195,7 +199,7 @@ class UserController extends AbstractController
         }
     }
 
-    //Fonction ModifyAdmin
+    //Fonction ModifyAdmin qui permet la modification de l'email et du rôle côté admin
     public function ModifyAdmin(){
         $this->CheckAdminUser();
 
@@ -210,8 +214,11 @@ class UserController extends AbstractController
             $val->setUserID($param);
             $result = $val->SQLGetOne(BDD::getInstance());
 
+
+
             if ((isset($_GET["param"])) && (isset($_POST["ID_User"]))) {
                 try {
+
                     $val->setUserMAIL($_POST["Email"]);
                     $isadmin = isset($_POST["Role"]);
                     $val->setUserISADMIN($isadmin);
@@ -236,7 +243,7 @@ class UserController extends AbstractController
                     //On vérifie que le l'ID est différent de celui de la session
 
                     if ($param == $_SESSION["ID_USER"]) {
-                        echo "<h1><font color='red'>Impossible de modifier le compte, vous êtes connecté à ce compte ! <a href='/admin/list'>Cliquez ici pour retourner à la liste</a></font></h1>";
+                        echo "<h1><div class='msgerror'>Impossible de modifier le compte, vous êtes connecté à ce compte ! <a href='/admin/list'>Cliquez ici pour retourner à la liste</a></div></h1>";
                     } else {
                         $ischeck = (isset($_POST["Role"]) || $result[1]["ISADMIN"] == 1) ? "Checked" : "";
 
@@ -252,7 +259,7 @@ class UserController extends AbstractController
         }
     }
 
-    //Fonction Supprimer
+    //Fonction Supprimer un utilisateur
     public function DeleteAdmin(){
         $this->CheckAdminUser();
 
@@ -266,8 +273,6 @@ class UserController extends AbstractController
             $val = new User();
             $val->setUserID($param);
             $result = $val->SQLGetOne(BDD::getInstance());
-
-            //
 
             if ((isset($_GET["param"])) && (isset($_POST["ID_User"]))){
                 try {
@@ -287,25 +292,18 @@ class UserController extends AbstractController
 
                 } else {
                     //On vérifie que le l'ID est différent de celui de la session
-
                     if ($param == $_SESSION["ID_USER"]){
-                        echo "<h1><font color='red'>Impossible de supprimer le compte, vous êtes connecté à ce compte ! <a href='/admin/list'>Cliquez ici pour retourner à la liste</a></font></h1>";
+                        echo "<h1><div class='msgerror'>Impossible de supprimer le compte, vous êtes connecté à ce compte ! <a href='/admin/list'>Cliquez ici pour retourner à la liste</a></div></h1>";
                     } else {
-                        //ToDo Remplir la liste des différentes informations de l'utilisateur
+
                         echo $this->twig->render("UserAdmin/DeleteUser.html.twig", [
                             "Pseudo" => $result[1]["PSEUDO"],
                             "ID_User" => $result[1]["ID_USER"]
                         ]);
                     }
-
-
                 }
-
-
             }
         }
-
-
 
     }
 
@@ -317,7 +315,6 @@ class UserController extends AbstractController
                 $response = $val->SQLGetAll(BDD::getInstance());
 
                 if ($response[0]) {
-                    //var_dump($response[1]);
                     echo $this->twig->render("UserAdmin/ListUser.html.twig", [
                         "userslist" => $response[1]
                     ]);
@@ -331,7 +328,111 @@ class UserController extends AbstractController
 
     }
 
-    //Fonction vérifie si admin
+    //Fonction Reset Password
+    public function ResetPassword(){
+        //Vérification de déjà connecter
+        if (isset($_SESSION['Pseudo'])) { header("location:/");}
+
+        $val = new User();
+        if (isset($_SESSION["RecoveryID"]) AND !empty($_SESSION["RecoveryID"])){ $val->setRecoveryID($_SESSION["RecoveryID"]);}
+
+        //Interface Niveau 4
+        if (isset($_POST["Password"]) AND !empty($_POST["Password"]) AND isset($_POST["PasswordCheck"]) AND !empty($_POST["PasswordCheck"])){
+            //Si les mot de passe son identique alors on le met à jour
+            if ($_POST["Password"] == $_POST["PasswordCheck"]){
+                $val->setRecoveryPassword(password_hash($_POST["Password"], PASSWORD_BCRYPT, ["cost" => 10]));
+                $val->SQLUpdatePassword(BDD::getInstance());
+
+                //Destruction de la variable de session RecoveryID
+                unset($_SESSION["RecoveryID"]);
+
+                return $this->twig->render("User/reset.html.twig",[
+                    "ValeurBouton" => "Valider le nouveau mot de passe",
+                    "NiveauInterface" => 0,
+                    "MSG_SUCCES" => "Modification du mot de passe réussit"
+                ]);
+
+
+            } else {
+                return $this->twig->render("User/reset.html.twig",[
+                    "ValeurBouton" => "Valider le nouveau mot de passe",
+                    "NiveauInterface" => 2,
+                    "RecoveryEmail" => $_POST["Email"],
+                    "MSG_ERR" => "Les mots de passe ne sont pas identiques"
+                ]);
+            }
+
+
+
+            //Interface Niveau 3
+        } elseif (isset($_POST["CleRecovery"]) AND !empty($_POST["CleRecovery"])){
+            $val->setRecoveryCle($_POST["CleRecovery"]);
+            $val->setRecoveryEmail($_POST["Email"]);
+
+            $response = $val->SQLCheckCle(BDD::getInstance());
+
+            if ($response[0]){
+                return $this->twig->render("User/reset.html.twig",[
+                    "ValeurBouton" => "Valider le nouveau mot de passe",
+                    "NiveauInterface" => 2,
+                    "RecoveryCleHidden" => $_POST["CleRecovery"],
+                    "RecoveryEmail" => $_POST["Email"]
+                ]);
+            } else {
+                return $this->twig->render("User/reset.html.twig",[
+                    "ValeurBouton" => "Valider le mot de passe temporaire",
+                    "NiveauInterface" => 1,
+                    "MSG_ERR" => "Clé incorrecte !",
+                    "RecoveryEmail" => $_POST["Email"]
+                ]);
+            }
+
+
+
+            //Interface Niveau 2
+        } elseif (isset($_POST["Email"]) AND !empty($_POST["Email"])){
+            $val->setRecoveryEmail($_POST["Email"]);
+            $response = $val->SQLCheckEmail(BDD::getInstance());
+
+            if ($response[0]){
+
+                $objet = "Récupération de votre mot de passe";
+                $msg = htmlspecialchars("Voici votre mot de passe temporaire : " . $val->getRecoveryCle());
+                $msg =  utf8_decode($msg) ;
+
+                $to = $val->getRecoveryEmail();
+
+                $headers = "From: Webmaster Site <webmaster@devflix.local>\n";
+                $headers = $headers."Content-type: text/plain; charset=iso-8859-1\n";
+
+                $this->sendmail($to, $objet, $msg, $headers);
+
+
+                return $this->twig->render("User/reset.html.twig",[
+                    "ValeurBouton" => "Valider le mot de passe temporaire",
+                    "RecoveryEmail" => $val->getRecoveryEmail(),
+                    "NiveauInterface" => 1
+                ]);
+
+            } else {
+                return $this->twig->render("User/reset.html.twig",[
+                    "ValeurBouton" => "Valider l'adresse email",
+                    "NiveauInterface" => 0,
+                    "MSG_ERR" => "L'adresse email n'est pas présente dans notre base"
+                ]);
+            }
+
+            //Interface Niveau 1
+        } else {
+            $val->setRecoveryID("12");
+            return $this->twig->render("User/reset.html.twig",[
+                "ValeurBouton" => "Valider l'adresse email",
+                "NiveauInterface" => 0
+            ]);
+        }
+    }
+
+    //Fonction qui vérifie si l'utilisateur est administrateur
     public function CheckAdminUser(){
 
         if (isset($_SESSION["IsAdmin"]) == false || ($_SESSION["IsAdmin"] == false)){
@@ -339,19 +440,10 @@ class UserController extends AbstractController
         }
     }
 
-    //Fonction envoi de mail
-    public function sendmail(){
-        //Fonctionne avec la bonne configuration de xampp/Wamp !
-        $to_email = "mrpaulin39@gmail.com";
-        $subject = "Sujet du mail";
-        $body = "Voici le message";
-        $headers = "From: deflix.cesi@gmail.com";
+    //Fonction d'envoi de mail
+    public function sendmail(string $to_email, $subject, $body, $headers){
+        mail($to_email, $subject, $body, $headers);
 
-        if (mail($to_email, $subject, $body, $headers)) {
-            echo "Email envoyé avec succès à l'email : $to_email";
-        } else {
-            echo "L'envoi de l'email a échoué";
-        }
     }
 
 

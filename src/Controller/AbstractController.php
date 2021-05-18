@@ -18,4 +18,5 @@ abstract class AbstractController {
         $this->twig->addExtension(new \Twig\Extension\DebugExtension());
     }
 
+
 }

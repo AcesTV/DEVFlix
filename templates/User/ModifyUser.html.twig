@@ -13,7 +13,7 @@
 <h1>Bienvenue sur votre profil {{ Pseudo }}</h1>
 
 
-    <form name="ModifyUserPassword" method="post" action="/user/profil">
+    <form name="ModifyUserPassword" method="post" action="/profil">
 
         <input id="Pseudo" type="hidden" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}"><br><br>
         <input id="Password" type="password" name="Password" placeholder="Mot de passe" required><br><br>
@@ -25,7 +25,7 @@
 
     </form>
 
-    <form name="ModifyUserMail" method="post" action="/user/profil">
+    <form name="ModifyUserMail" method="post" action="/profil">
 
         <input id="Pseudo" type="hidden" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}"><br><br>
         <input id="Email" type="email" name="Email" placeholder="Votre email" required><br><br>
