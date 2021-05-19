@@ -1,0 +1,35 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Liste utilisateur - {{ parent() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/MyStyleForUsers.css">
+{% endblock %}
+
+{% block body %}
+    <div class="TextCenter">
+        <h1>Voici la liste des utilisateurs</h1>
+        <label for="search">Rechercher un utilisateur  :</label>
+        <input type="text" id="search" placeholder="Pseudonyme" onkeyup="searchchange()"> <br><br><br>
+    </div>
+    <ul id="myUL" class="TextCenter">
+    {% for users in userslist %}
+        <div class="boite">
+
+            <strong>Pseudonyme : <li>{{ users.PSEUDO }}</li></strong>
+                <strong>Rôle : {{ users.NAME|default('Utilisateur') }}</strong>
+
+                <a class="btnmodifyadmin" href="/admin/modify/{{ users.ID_USER }}">Modifier l'utilisateur</a>
+                <a class="btndeleteadmin" href="/admin/delete/{{ users.ID_USER }}">Supprimer le compte</a>
+
+        </div>
+    {% endfor %}
+    </ul>
+
+
+
+{% endblock %}
+
+{% block javascript %}
+<script src="/assets/js/search.js"></script>
+{% endblock %}

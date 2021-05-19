@@ -1,5 +1,6 @@
 <?php
 require "../vendor/autoload.php";
+require "../src/config.php";
 
 // Autoloader de Classe
 function chargerClasse($classe){
@@ -20,7 +21,6 @@ $controller = (isset($_GET["controller"])) ? $_GET["controller"] : "";
 $action = (isset($_GET["action"])) ? $_GET["action"] : "";
 $param = (isset($_GET["param"])) ? $_GET["param"] : "";
 
-//TODO CHANGER LES ARTICLECONTROLLER
 
 if($controller != ''){
     $class = "src\Controller\\".$controller."Controller";

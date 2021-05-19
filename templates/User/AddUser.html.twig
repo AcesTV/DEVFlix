@@ -2,25 +2,33 @@
 <html lang="fr">
 <head>
     <meta name="viewport" content="width=device-width" initial-scale=1/>
+    <link rel="stylesheet" href="/assets/css/MyStyleForUsers.css">
+
+</head>
 
 <body>
+<div id="FormSignInUp">
 
-    <form name="addUser" method="post" action="?controller=User&action=AddUser">
-
-        <input id="Pseudo" type="text" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}" required><br><br>
-        <input id="Password" type="text" name="Password" placeholder="Mot de passe" required><br><br>
-        <input id="Passwordcheck" type="text" name="Passwordcheck" placeholder="Vérification mot de passe" required><br><br>
-        <input id="Email" type="email" name="Email" placeholder="Votre email" value="{{ Email }}" required><br><br>
+    <form name="addUser" method="post" action="/signin">
+        <h1>Inscription</h1>
+        <input id="Pseudo" type="text" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}" required><br>
+        <label id="LabelPassword"><br></label>
+        <input id="Password" type="password" name="Password" placeholder="Mot de passe" required><br>
+        <label id="LabelPasswordcheck"><br></label>
+        <input id="Passwordcheck" type="password" name="Passwordcheck" placeholder="Vérification mot de passe" required><br><br>
+        <input id="Email" type="email" name="Email" placeholder="Votre email" value="{{ Email }}" required><br>
+        <label id="LabelEmailcheck"><br></label>
         <input id="Emailcheck" type="email" name="Emailcheck" placeholder="Vérification email" required><br><br>
 
-        <button id="btnsignup" type="submit">Inscription</button><br><br>
+        <button id="btnsignup" type="submit">Inscription</button><br><br><br>
+
+        <a href="/login">Déjà un compte ? Connectez vous !</a>
 
     </form>
 
-    <p>{{ app.request.parameter.get("Email") }}</p>
-
-    <!-- Pour afficher le input en rouge -->
-    <!-- <script src="assets/js/formulaire.js"></script> -->
+{#    Pour afficher le input en rouge#}
+    <script src="/assets/js/formulaire.js"></script>
+</div>
 
 </body>
 </html>

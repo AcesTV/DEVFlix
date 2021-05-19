@@ -1,0 +1,26 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Movies - {{ parent() }}{% endblock %}
+
+{% block css %}
+    {#<link rel="stylesheet" href="/assets/css/mystyleForMovie.css">#}
+{% endblock %}
+
+{% block body %}
+    <h1>Mise à jour du Commentaire n° {{ InfoMovie.ID_INFO }}</h1>
+
+    <form name="addInfoMovie" method="post" action="?controller=InfoMovie&action=updateInfoMovie&param={{ InfoMovie.ID_INFO }}">
+
+        <input id="Rate" type="number" name="Rate" placeholder="Note" value="{{ InfoMovie.RATE }}"><br><br>
+        <textarea id="Comment" name="Comment" rows="5" cols="33" >{{ InfoMovie.COMMENT}}</textarea>
+        <input id="Share" type="checkbox" name="Share" {% if InfoMovie.SHARE == 1%} checked {% endif %}>
+        <label for="Share">actuellement prêté</label>
+        <input type="checkbox" id="To_See" name="To_See" {% if InfoMovie.TO_SEE == 1%} checked {% endif %}>
+        <label for="To_See">A voir</label>
+
+        <input type="hidden" name="ID_MOVIE" value="{{ InfoMovie.ID_MOVIE }}">
+
+        <button id="btnAdComment" type="submit">Envoyer</button><br><br>
+
+    </form>
+{% endblock %}

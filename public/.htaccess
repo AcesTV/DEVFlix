@@ -1,0 +1,24 @@
+ErrorDocument 404 /404.html
+
+RewriteEngine On
+
+#URL Rewriting pour la partie user
+RewriteRule ^signin$ index.php?controller=User&action=AddUser
+RewriteRule ^login$ index.php?controller=User&action=LoginUser
+RewriteRule ^logout$ index.php?controller=User&action=LogoutUser
+RewriteRule ^profil$ index.php?controller=User&action=ModifyUser
+RewriteRule ^resetpassword$ index.php?controller=User&action=ResetPassword
+
+#URL Rewriting pour la partie admin
+RewriteRule ^admin/modify/([0-9]+)$ index.php?controller=User&action=ModifyAdmin&param=$1
+RewriteRule ^admin/delete/([0-9]+)$ index.php?controller=User&action=DeleteAdmin&param=$1
+RewriteRule ^admin/list$ index.php?controller=User&action=GetAll
+RewriteRule ^admin$ index.php?controller=User&action=Admin
+
+#URL Rewriting movie
+RewriteRule ^movies$ index.php?controller=Movie&action=List
+RewriteRule ^movie/([0-9]+)$ index.php?controller=movie&action=showonemovie&param=$1
+RewriteRule ^admin/movies$ index.php?controller=Movie&action=ListAdmin
+RewriteRule ^admin/movie/modify/([0-9]+)$ index.php?controller=movie&action=updatemovie&param=$1
+RewriteRule ^admin/movie/delete/([0-9]+)$ index.php?controller=Movie&action=DeleteMovie&param=$1
+RewriteRule ^admin/movie/add$ index.php?controller=Movie&action=AddMovie

@@ -11,8 +11,8 @@
     {% if movieList is defined %}
         <h1>Liste des Films</h1>
         {% for movie in movieList %}
-        <h2><a href="?controller=movie&action=showonemovie&param={{ movie.ID_MOVIE }}">{{ movie.NAME }}</a></h2>
-        <p><a href="?controller=movie&action=updatemovie&param={{ movie.ID_MOVIE }}">Modifier</a></p>
+        <h2><a href="/movie/{{ movie.ID_MOVIE }}">{{ movie.NAME }}</a></h2>
+        <p><a href="/admin/movie/modify/{{ movie.ID_MOVIE }}">Modifier</a></p>
         <button  onclick="deleteConfirm({{ movie.ID_MOVIE }})" id="deleteButton">Supprimer</button>
         <p>{{ movie.RELEASE_DATE }}</p>
         <p>{{ movie.SYNOPSIS }}</p>
@@ -67,9 +67,35 @@
         </table>
         <hr>
 
+        <h2>Ajouter un commentaire</h2>
+        <form name="addInfoMovie" method="post" action="/?controller=InfoMovie&action=AddInfoMovie&param={{ movie.ID_MOVIE }}">
+
+            <input id="Rate" type="number" min="0" max="10" name="Rate" placeholder="Note" required><br><br>
+            <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="33" required></textarea>
+            <input type="checkbox" id="Share" name="Share">
+            <label for="Share">actuellement prêté</label>
+            <input type="checkbox" id="To_See" name="To_See" >
+            <label for="To_See">A voir</label>
+            <button id="btnAdComment" type="submit">Envoyer</button><br><br>
+
+        </form>
+
+        {% if infoMovieList is defined %}
+            <h1>Liste des Commentaires</h1>
+            {% for infoMovie in infoMovieList %}
+                <h4>Note : {{ infoMovie.RATE }}</h4>
+                <p>{{ infoMovie.COMMENT }}</p>
+                {% if (ID_SESSION == infoMovie.ID_USER) or (IS_ADMIN == 1) %}
+                    <button  onclick="deleteDetailConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
+                {% endif %}
+                <hr>
+            {% endfor %}
+        {% endif %}
+
     {% endif %}
 {% endblock %}
 
 {% block javascript %}
     <script src="/assets/js/listMovie.js"></script>
+    <script src="/assets/js/listInfoMovie.js"></script>
 {% endblock %}

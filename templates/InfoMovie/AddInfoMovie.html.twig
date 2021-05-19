@@ -1,0 +1,24 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Commentaires - {{ parent() }}{% endblock %}
+
+{% block css %}
+    {#<link rel="stylesheet" href="/assets/css/mystyleForMovie.css">#}
+{% endblock %}
+
+{% block body %}
+<h1>Ajout d'un commentaire</h1>
+
+<form name="addInfoMovie" method="post" action="/?controller=InfoMovie&action=AddInfoMovie&param={{ ID_MOVIE }}">
+
+    <input id="Rate" type="number" name="Rate" placeholder="Note" required><br><br>
+    <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="33" required></textarea>
+    <input type="checkbox" id="Share" name="Share">
+    <label for="Share">actuellement prêté</label>
+    <input type="checkbox" id="To_See" name="To_See" >
+    <label for="To_See">A voir</label>
+    <button id="btnAdComment" type="submit">Envoyer</button><br><br>
+
+</form>
+
+{% endblock %}

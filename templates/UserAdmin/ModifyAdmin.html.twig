@@ -1,0 +1,30 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Modification utilisateur - {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="ModifyAdmin">
+        <div id="LeftPart">
+            <h2>Utilisateur : {{ Pseudo }}</h2>
+            <form name="ModifyUserRole" method="post" action="/admin/modify/{{ ID_User }}">
+
+                <input id="ID_User" type="hidden" name="ID_User" value="{{ ID_User }}"><br><br>
+                <label for="Email">Email actuelle : {{ Email }}</label> <br><br>
+                <input id="Email" type="email" name="Email" placeholder="Nouvelle email"><br><br>
+
+                <input type="checkbox" id="Role" name="Role" {{ ischeck }} value="Oui">
+                <label for="role">Administrateur</label>
+                <br><br>
+                <button id="btnModifyAdmin" type="submit">Enregistrer les modifications</button><br><br>
+
+            </form>
+        </div>
+
+        <div id="RightPart">
+
+            {# Ajouter les commentaires (Voir avec Fleur) #}
+
+        </div>
+    </div>
+
+{% endblock %}

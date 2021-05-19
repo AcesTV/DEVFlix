@@ -1,0 +1,16 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Suppression utilisateur - {{ parent() }}{% endblock %}
+
+{% block body %}
+
+    <form name="addUser" method="post" action="/admin/delete/{{ ID_User }}">
+        <h2>Êtes vous sur de vouloir supprimer le compte de {{ Pseudo }} ?</h2>
+
+        <input id="ID_User" type="hidden" name="ID_User" value="{{ ID_User }}"><br><br>
+
+        <button id="btndelete" type="submit">Confirmer la suppression</button><br><br>
+
+    </form>
+
+{% endblock %}
