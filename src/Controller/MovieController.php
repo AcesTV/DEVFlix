@@ -39,6 +39,7 @@ class MovieController extends AbstractController
         ]);
     }
 
+    //Todo : Ajouter la moyenne des notes !
     public function ShowOneMovie(Int $id){
         $movie = new Movie();
         $movie = $movie->SQLGetOne(BDD::getInstance(), $id);
@@ -49,6 +50,7 @@ class MovieController extends AbstractController
 
         $detailsmovie = new InfoMovie();
         $response = $detailsmovie->SQLGetCommentMovie(BDD::getInstance(), $id);
+
 
         return $this->twig->render("Movie/list.html.twig",[
             "movie" => $movie,

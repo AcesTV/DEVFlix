@@ -55,6 +55,8 @@ class User
     //Fonction SQLLogin
     public function SQLLoginUser(\PDO $bdd) : array{
         try{
+            sleep(1);
+
             $requete = $bdd->prepare("SELECT t_users.ID_USER,PSEUDO,PASSWORD,ISADMIN,NAME FROM t_users LEFT JOIN t_roles ON t_users.ID_USER = t_roles.ID_USER WHERE PSEUDO=:PSEUDO");
             $requete->execute([
                 "PSEUDO" => $this->getUserPSEUDO()
