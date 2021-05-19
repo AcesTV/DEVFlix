@@ -30,7 +30,14 @@ class InfoMovie
         return $requete->fetchAll(\PDO::FETCH_CLASS, "src\Model\InfoMovie");
     }
 
-    //ToDo : Ajouter fonction pour récupérer les commentaires d'un seul utilisateur
+    //Fonction afficher les commentaire d'un film
+    public function SQLGetCommentMovie(\PDO $bdd, $id) : array {
+        $requete = $bdd->prepare("SELECT * FROM t_info_movies WHERE ID_MOVIE=:ID");
+        $requete->execute([
+            "ID" => $id
+        ]);
+        return [true, $requete->fetchAll()];
+    }
 
     //Fonction SQLAjout
     public function SQLAddInfoMovie(\PDO $bdd) : array{

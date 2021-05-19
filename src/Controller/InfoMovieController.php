@@ -83,7 +83,7 @@ class InfoMovieController extends AbstractController
 
             $response = $val->SQLAddInfoMovie(BDD::getInstance());
             if ($response[0]) {
-                header("location:/?controller=Movie&action=ShowOneMovie&param=${_GET["param"]}");
+                header("location:/movie/${_GET["param"]}");
             } else {
                 echo "Une erreur s'est produite : ${response}";
             }
@@ -133,6 +133,9 @@ class InfoMovieController extends AbstractController
 
     //Fonction Supprimer le commentaire
     public function DeleteInfoMovie($id){
+        //ToDo : Vérifier si propriétaire du commentaire ou admin
+        //Todo : Redirection vers le film si sur interface film, profil si profil, ou profil admin
+
         //Permet la vérification de la présence d'un ID pour le commentaire
         if (!isset($_GET["param"]) OR empty($_GET["param"])){
             header("location:/");
@@ -143,17 +146,17 @@ class InfoMovieController extends AbstractController
         $pre_reponse = $InfoMovie->SQLGetOne(BDD::getInstance(), $id);
 
         if (($pre_reponse["ID_USER"] != $_SESSION["ID_USER"]) OR $admin->CheckAdminUser() == false){
-            header("location:/movie/${$pre_reponse["ID_MOVIE"]}");
+            header("location:/movie/${pre_reponse["ID_MOVIE"]}");
         }
+
+
 
         $response = $InfoMovie->SQLDeleteInfoMovie(BDD::getInstance(), $id);
         if ($response[0]){
-            echo $response[1];
-            if ($admin->CheckAdminUser() == false){
-                header("location:/movie/${$pre_reponse["ID_MOVIE"]}");
-            } else {
-                header("Location: admin/modify/${$pre_reponse["ID_USER"]}");
-            }
+            //echo $response[1];
+
+            header("location:/movie/${pre_reponse["ID_MOVIE"]}");
+
 
         } else {
             echo "Une erreur s'est produite : ${response[1]}";
