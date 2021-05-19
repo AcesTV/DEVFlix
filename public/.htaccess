@@ -15,4 +15,9 @@ RewriteRule ^admin/delete/([0-9]+)$ index.php?controller=User&action=DeleteAdmin
 RewriteRule ^admin/list$ index.php?controller=User&action=GetAll
 RewriteRule ^admin$ index.php?controller=User&action=Admin
 
-test
+#URL Rewriting movie
+RewriteRule ^movie/([0-9]+)$ index.php?controller=movie&action=showonemovie&param=$1
+RewriteRule ^admin/movie$ index.php?controller=Movie&action=List
+RewriteRule ^admin/movie/modify/([0-9]+)$ index.php?controller=movie&action=updatemovie&param=$1
+RewriteRule ^admin/movie/delete/([0-9]+)$ index.php?controller=Movie&action=DeleteMovie&param=$1
+RewriteRule ^admin/movie/add$ index.php?controller=Movie&action=AddMovie

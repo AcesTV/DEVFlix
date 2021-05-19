@@ -50,7 +50,6 @@ class User
         } catch (\Exception $e) {
             return [false,$e->getMessage()];
         }
-
     }
 
     //Fonction SQLLogin
@@ -374,6 +373,12 @@ class User
         }
     }
 
+    //Fonction qui vérifie si l'utilisateur est administrateur
+    public function CheckAdminUser() : bool{
+        if (isset($_SESSION["IsAdmin"]) AND ($_SESSION["IsAdmin"])){
+            return true;
+        } else return false;
+    }
 
     //Getters and Setters
 

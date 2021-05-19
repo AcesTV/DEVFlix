@@ -16,7 +16,7 @@ class Movie
     private String $Actors;
     private String $Director;
     private String $Genre;
-    private \DateTime $Release_date;
+    private String $Release_date; //Datetime
     private String $Production;
     private Int $Runtime;
     private String $trailer;
@@ -169,18 +169,18 @@ class Movie
     }
 
     /**
-     * @return \DateTime
+     * @return String
      */
-    public function getReleaseDate(): \DateTime
+    public function getReleaseDate(): String
     {
         return $this->Release_date;
     }
 
     /**
-     * @param \DateTime $Release_date
+     * @param String $Release_date
      * @return Movie
      */
-    public function setReleaseDate(\DateTime $Release_date): Movie
+    public function setReleaseDate(String $Release_date): Movie
     {
         $this->Release_date = $Release_date;
         return $this;
@@ -294,12 +294,98 @@ class Movie
         return $this;
     }
 
-    public function SqlGetAll(\PDO $bdd){
+
+    public function SQLGetOne(\PDO $bdd, $id) {
+        $requete = $bdd->prepare("SELECT * FROM t_movies WHERE ID_MOVIE=:ID");
+        $requete->execute([
+            "ID" => $id
+        ]);
+        return $requete->fetch();
+    }
+
+    public function SQLGetAll(\PDO $bdd)
+    {
         $requete = $bdd->prepare("SELECT * FROM t_movies");
         $requete->execute();
         return $requete->fetchAll(\PDO::FETCH_CLASS, "src\Model\Movie");
     }
 
+    public function SQLAddMovie(\PDO $bdd) : array
+    {
+        try{
+            $requete = $bdd->prepare("INSERT INTO t_movies (NAME, POSTER, ORIGIN, VO, ACTORS, DIRECTOR, GENRE, RELEASE_DATE, PRODUCTION, RUNTIME, TRAILER, NOMINATION, SYNOPSIS, DVD) VALUES (:NAME, :POSTER, :ORIGIN, :VO, :ACTORS, :DIRECTOR, :GENRE, :RELEASE_DATE, :PRODUCTION, :RUNTIME, :TRAILER, :NOMINATION, :SYNOPSIS, :DVD)");
+            $requete->execute([
+                "NAME" => $this->getName(),
+                "POSTER" => $this->getPoster(),
+                "ORIGIN" => $this->getOrigin(),
+                "VO" => $this->getVo(),
+                "ACTORS" => $this->getActors(),
+                "DIRECTOR" => $this->getDirector(),
+                "GENRE" => $this->getGenre(),
+                "RELEASE_DATE" => $this->getReleaseDate(),
+                "PRODUCTION" => $this->getProduction(),
+                "RUNTIME" => $this->getRuntime(),
+                "TRAILER" => $this->getTrailer(),
+                "NOMINATION" => $this->getNomination(),
+                "SYNOPSIS" => $this->getSynopsis(),
+                "DVD" => ($this->isDvd() ==  false) ? 0 : 1
+            ]);
 
+            //Si tous se passe bien return True
+            return [true,"Ajout du film réussie !"];
+
+        } catch (\Exception $e) {
+            return [false,$e->getMessage()];
+        }
+    }
+
+    public function SQLUpdateMovie(\PDO $bdd, $id) : array
+    {
+        try{
+            $requete = $bdd->prepare("UPDATE t_movies SET NAME=:NAME, POSTER=:POSTER, ORIGIN=:ORIGIN, VO=:VO, ACTORS=:ACTORS, DIRECTOR=:DIRECTOR, GENRE=:GENRE, RELEASE_DATE=:RELEASE_DATE, PRODUCTION=:PRODUCTION, RUNTIME=:RUNTIME, TRAILER=:TRAILER, NOMINATION=:NOMINATION, SYNOPSIS=:SYNOPSIS, DVD=:DVD WHERE ID_MOVIE=:ID");
+
+            $reponse = $requete->execute([
+                "ID" => $id,
+                "NAME" => $this->getName(),
+                "POSTER" => $this->getPoster(),
+                "ORIGIN" => $this->getOrigin(),
+                "VO" => $this->getVo(),
+                "ACTORS" => $this->getActors(),
+                "DIRECTOR" => $this->getDirector(),
+                "GENRE" => $this->getGenre(),
+                "RELEASE_DATE" => $this->getReleaseDate(),
+                "PRODUCTION" => $this->getProduction(),
+                "RUNTIME" => $this->getRuntime(),
+                "TRAILER" => $this->getTrailer(),
+                "NOMINATION" => $this->getNomination(),
+                "SYNOPSIS" => $this->getSynopsis(),
+                "DVD" => ($this->isDvd() ==  false) ? 0 : 1
+            ]);
+            //Si tous se passe bien return True
+            return [true,"Modification du film réussie !"];
+
+        } catch (\Exception $e) {
+            return [false,$e->getMessage()];
+        }
+    }
+
+    public function SQLDeleteMovie(\PDO $bdd, $id) : array
+    {
+        try{
+            $requete = $bdd->prepare("DELETE FROM t_info_movies WHERE ID_MOVIE=:ID");
+            $requete->execute([
+                "ID" => $id,
+            ]);
+            $requete = $bdd->prepare("DELETE FROM t_movies WHERE ID_MOVIE=:ID");
+            $requete->execute([
+                "ID" => $id,
+            ]);
+            //Si tous se passe bien return True
+            return [true,"Supression du film réussie !"];
+
+        } catch (\Exception $e) {
+            return [false,$e->getMessage()];
+        }
+    }
 
 }

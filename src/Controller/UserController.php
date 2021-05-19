@@ -166,6 +166,7 @@ class UserController extends AbstractController
 
     //Fonction Modifier du côté utilisateur
     public function ModifyUser(){
+        //Todo : Ajouter l'interface des commentaire + possibilité de modifier et supprimer
         //Si l'utilisateur est connecté et que le mot de passe ou l'email est renseigné
         if (empty($_SESSION["Pseudo"]) == false){
 
@@ -201,7 +202,10 @@ class UserController extends AbstractController
 
     //Fonction ModifyAdmin qui permet la modification de l'email et du rôle côté admin
     public function ModifyAdmin(){
-        $this->CheckAdminUser();
+        $val = new User();
+        if ($val->CheckAdminUser() == false){
+            header("location:/login");
+        }
 
         if (isset($_GET["param"]) == false) {
             //Si il n'y a pas le paramètre ID_USER, on redirige vers la liste des utilisateurs
@@ -213,8 +217,6 @@ class UserController extends AbstractController
             $val = new User();
             $val->setUserID($param);
             $result = $val->SQLGetOne(BDD::getInstance());
-
-
 
             if ((isset($_GET["param"])) && (isset($_POST["ID_User"]))) {
                 try {
@@ -261,7 +263,10 @@ class UserController extends AbstractController
 
     //Fonction Supprimer un utilisateur
     public function DeleteAdmin(){
-        $this->CheckAdminUser();
+        $val = new User();
+        if ($val->CheckAdminUser() == false){
+            header("location:/login");
+        }
 
         if (isset($_GET["param"]) == false) {
             //Si il n'y a pas le paramètre ID_USER, on redirige vers la liste des utilisateurs
@@ -309,10 +314,13 @@ class UserController extends AbstractController
 
     //Fonction GetAll (Admin)
     public function GetAll(){
-        $this->CheckAdminUser();
-            try {
-                $val = new User();
-                $response = $val->SQLGetAll(BDD::getInstance());
+        $val = new User();
+        if ($val->CheckAdminUser() == false){
+            header("location:/login");
+        }
+
+             try {
+                 $response = $val->SQLGetAll(BDD::getInstance());
 
                 if ($response[0]) {
                     echo $this->twig->render("UserAdmin/ListUser.html.twig", [
@@ -429,14 +437,6 @@ class UserController extends AbstractController
                 "ValeurBouton" => "Valider l'adresse email",
                 "NiveauInterface" => 0
             ]);
-        }
-    }
-
-    //Fonction qui vérifie si l'utilisateur est administrateur
-    public function CheckAdminUser(){
-
-        if (isset($_SESSION["IsAdmin"]) == false || ($_SESSION["IsAdmin"] == false)){
-            header("location:/user/login");
         }
     }
 
