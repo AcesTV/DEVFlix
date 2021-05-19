@@ -8,16 +8,27 @@
 
 {% block body %}
 
-    {% if movieList is defined %}
-        <h1>Liste des Films</h1>
-        {% for movie in movieList %}
-        <h2><a href="/movie/{{ movie.ID_MOVIE }}">{{ movie.NAME }}</a></h2>
-        <p><a href="/admin/movie/modify/{{ movie.ID_MOVIE }}">Modifier</a></p>
-        <button  onclick="deleteConfirm({{ movie.ID_MOVIE }})" id="deleteButton">Supprimer</button>
-        <p>{{ movie.RELEASE_DATE }}</p>
-        <p>{{ movie.SYNOPSIS }}</p>
-        <hr>
-        {% endfor %}
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 mt-4 px-4">
+
+        {% if movieList is defined %}
+            {% for movie in movieList %}
+
+                <div class="col-11 col-sm-6 col-md-4">
+                    <div class="card shadow-sm mb-3">
+                        <img src="./affiche-le-loup-de-wall-street.jpg" alt="">
+
+                        <div class="card-body">
+                            <img src="{{ movie.POSTER }}" alt="" class="w-100">
+                            <h4 class="my-2"><a href="/movie/{{ movie.ID_MOVIE }}">{{ movie.NAME }}</a></h4>
+                            <p class="mb-2">{{ movie.RELEASE_DATE }}</p>
+                            <button class="btn btn-success" onclick="window.location.href='/admin/movie/modify/{​{​ movie.ID_MOVIE }​}​'">Modifier</button>
+                            <button class="btn btn-danger" onclick="deleteConfirm({​{​ movie.ID_MOVIE }​}​)" id="deleteButton">Supprimer</button>
+                            <p class="card-text">{{ movie.SYNOPSIS }}</p>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %}
     {% else %}
         <h1>Détail de {{ movie.NAME }}</h1>
         <h2>{{ movie.NAME }}</h2>

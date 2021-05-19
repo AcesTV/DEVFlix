@@ -1,9 +1,3 @@
-#deleteButton {
-  background-color: #ec3232;
-  border-radius: 20px;
-  border: 1px solid black;
-}
-
 table, tbody, td, tr {
   border-collapse: collapse;
   border: 1px solid black;
@@ -11,6 +5,10 @@ table, tbody, td, tr {
 
 .container-flex {
   display: flex;
+}
+
+.bg-noir {
+  background-color: black;
 }
 
 /*# sourceMappingURL=mystyleForMovie.css.map */

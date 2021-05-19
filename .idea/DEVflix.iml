@@ -4,10 +4,20 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-ctype" />
+      <excludeFolder url="file://$MODULE_DIR$/var/cache/3b" />
+      <excludeFolder url="file://$MODULE_DIR$/var/cache/4c" />
+      <excludeFolder url="file://$MODULE_DIR$/var/cache/7a" />
+      <excludeFolder url="file://$MODULE_DIR$/var/cache/55" />
+      <excludeFolder url="file://$MODULE_DIR$/var/cache/75" />
+      <excludeFolder url="file://$MODULE_DIR$/var/cache/95" />
+      <excludeFolder url="file://$MODULE_DIR$/var/cache/b2" />
+      <excludeFolder url="file://$MODULE_DIR$/var/cache/c4" />
+      <excludeFolder url="file://$MODULE_DIR$/var/cache/d4" />
+      <excludeFolder url="file://$MODULE_DIR$/var/cache/dd" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/twig/twig" />
-      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-ctype" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/polyfill-mbstring" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

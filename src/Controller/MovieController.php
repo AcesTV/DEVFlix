@@ -11,8 +11,13 @@ class MovieController extends AbstractController
 {
 
     public function index(){
+        $movie = new Movie();
+        $movieList = $movie->SQLGetAll(BDD::getInstance());
 
-        echo "Accueil du site WEB";
+        //ToDo : render la page d'accueil du site à implémenter
+        return $this->twig->render("Movie/accueil.html.twig",[
+            "movieList" => $movieList
+        ]);
     }
 
     public function List(){
@@ -20,7 +25,7 @@ class MovieController extends AbstractController
         $movieList = $movie->SQLGetAll(BDD::getInstance());
 
         //ToDo : render la page d'accueil du site à implémenter
-        return $this->twig->render("Movie/accueil.html.twig",[
+        return $this->twig->render("Movie/list.html.twig",[
             "movieList" => $movieList
         ]);
     }
