@@ -39,7 +39,6 @@ class MovieController extends AbstractController
         ]);
     }
 
-    //Todo : Ajouter la moyenne des notes !
     public function ShowOneMovie(Int $id){
         $movie = new Movie();
         $movie = $movie->SQLGetOne(BDD::getInstance(), $id);
@@ -52,9 +51,22 @@ class MovieController extends AbstractController
         $response = $detailsmovie->SQLGetCommentMovie(BDD::getInstance(), $id);
 
 
+        $totalRate = 0;
+        $totalRateVote = 0;
+        if(!empty($response[1])){
+            foreach ($response[1] as $key => $value) {
+                $totalRate += $value['RATE'];
+                $totalRateVote++;
+            }
+            $totalRate = round($totalRate / $totalRateVote,2);
+        } else {
+            $totalRate = "Non défini";
+        }
+
         return $this->twig->render("Movie/list.html.twig",[
             "movie" => $movie,
             "infoMovieList" => $response[1],
+            "totalRate" => $totalRate,
             "ID_SESSION" => isset($_SESSION["ID_USER"]) ? $_SESSION["ID_USER"] : null,
             "IS_ADMIN" => isset($_SESSION["IsAdmin"])
         ]);
@@ -156,7 +168,7 @@ class MovieController extends AbstractController
         } else {
             echo "Une erreur c'est produite : ${response[1]}";
         }
-        header('location:/admin/movie');
+        header('location:/admin/movies');
     }
 
 }

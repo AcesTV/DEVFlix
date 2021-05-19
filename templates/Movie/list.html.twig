@@ -12,8 +12,8 @@
         <h1>Liste des Films</h1>
         {% for movie in movieList %}
         <h2><a href="/movie/{{ movie.ID_MOVIE }}">{{ movie.NAME }}</a></h2>
-        <p><a href="/admin/movie/modify/{{ movie.ID_MOVIE }}">Modifier</a></p>
-        <button  onclick="deleteConfirm({{ movie.ID_MOVIE }})" id="deleteButton">Supprimer</button>
+        <button class="btn btn-success" onclick="window.location.href='/admin/movie/modify/{{ movie.ID_MOVIE }}'">Modifier</button>
+        <button class="btn btn-danger" onclick="deleteConfirm({{ movie.ID_MOVIE }})" id="deleteButton">Supprimer</button>
         <p>{{ movie.RELEASE_DATE }}</p>
         <p>{{ movie.SYNOPSIS }}</p>
         <hr>
@@ -39,6 +39,23 @@
         <hr>
         <table>
             <tbody>
+                <tr>
+                    <td>Note : {{ totalRate }}
+                        {% if totalRate == "Non défini" %}
+
+                        {% elseif totalRate >= 10 %}
+                            ⭐⭐⭐⭐⭐
+                        {% elseif totalRate >= 8 %}
+                            ⭐⭐⭐⭐
+                        {% elseif totalRate >= 6 %}
+                            ⭐⭐⭐
+                        {% elseif totalRate >= 4 %}
+                            ⭐⭐
+                        {% elseif totalRate >= 2 %}
+                            ⭐
+                        {% endif %}
+                    </td>
+                </tr>
                 <tr>
                     <td>Origine : {{ movie.ORIGIN }}</td>
                 </tr>
@@ -67,26 +84,51 @@
         </table>
         <hr>
 
-        <h2>Ajouter un commentaire</h2>
-        <form name="addInfoMovie" method="post" action="/?controller=InfoMovie&action=AddInfoMovie&param={{ movie.ID_MOVIE }}">
-
-            <input id="Rate" type="number" min="0" max="10" name="Rate" placeholder="Note" required><br><br>
-            <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="33" required></textarea>
-            <input type="checkbox" id="Share" name="Share">
-            <label for="Share">actuellement prêté</label>
-            <input type="checkbox" id="To_See" name="To_See" >
-            <label for="To_See">A voir</label>
-            <button id="btnAdComment" type="submit">Envoyer</button><br><br>
-
-        </form>
-
         {% if infoMovieList is defined %}
-            <h1>Liste des Commentaires</h1>
+
+            {% set commentOK = 0 %}
             {% for infoMovie in infoMovieList %}
+                {% if (ID_SESSION == infoMovie.ID_USER)  %}
+
+                    <h1>Liste des Commentaires</h1>
+
+                    <h4>Note : {{ infoMovie.RATE }}</h4>
+                    <p>{{ infoMovie.COMMENT }}</p>
+                    <button class="btn btn-success" onclick="window.location.href='/infomovie/editcomment/{{ infoMovie.ID_INFO }}'">Modifier</button>
+                    <button class="btn btn-danger" onclick="deleteDetailConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
+                    {% set commentOK = 1 %}
+                {% endif %}
+
+            {% endfor %}
+
+            {% if commentOK == 0 and ID_SESSION != null%}
+                <h2>Ajouter un commentaire</h2>
+                <form name="addInfoMovie" method="post" action="/infomovie/addcomment/{{ movie.ID_MOVIE }}">
+
+                    <input id="Rate" type="number" step="0.1" min="0" max="10" name="Rate" placeholder="Note" required><br><br>
+                    <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="33" required></textarea>
+                    <input type="checkbox" id="Share" name="Share">
+                    <label for="Share">actuellement prêté</label>
+                    <input type="checkbox" id="To_See" name="To_See" >
+                    <label for="To_See">A voir</label>
+                    <button class="btn btn-primary" id="btnAdComment" type="submit">Envoyer</button><br><br>
+
+                </form>
+
+
+                {% if infoMovieList != false %}
+                    <h1>Liste des Commentaires</h1>
+                {% endif %}
+
+            {% endif %}
+
+            {% for infoMovie in infoMovieList %}
+                {% if (ID_SESSION != infoMovie.ID_USER)  %}
                 <h4>Note : {{ infoMovie.RATE }}</h4>
                 <p>{{ infoMovie.COMMENT }}</p>
-                {% if (ID_SESSION == infoMovie.ID_USER) or (IS_ADMIN == 1) %}
-                    <button  onclick="deleteDetailConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
+                    {% if (IS_ADMIN == 1) %}
+                        <button class="btn btn-danger" onclick="deleteDetailConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
+                    {% endif %}
                 {% endif %}
                 <hr>
             {% endfor %}

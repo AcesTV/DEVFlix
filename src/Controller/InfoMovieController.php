@@ -8,8 +8,6 @@ use src\Model\BDD;
 
 class InfoMovieController extends AbstractController
 {
-    //ToDo : URL Rewriting
-
     public function index(){
         echo "Controller Infomovie";
         //rediriger vers index (Page d'accueil)
@@ -49,26 +47,9 @@ class InfoMovieController extends AbstractController
         }
     }
 
-    //Fonction GetAll
-    public function GetAll(){
-        try {
-            $val = new User();
-            $response = $val->SQLGetAll(BDD::getInstance());
-
-            if ($response[0]) {
-                var_dump($response[1]);
-            } else {
-                echo "Une erreur c'est produite : ${response[1]}";
-            }
-        } catch(\Exception $e) {
-            echo $this->twig->render("User/test.html.twig", []);
-            echo $e->getMessage();
-        }
-    }
-
     //Fonction Ajout
     public function AddInfoMovie(){
-        //ToDo : Vérifier si pas déjà un commentaire pour l'ID SI existe, renvoyer sur la modification
+        //ToDo : Vérifier si pas déjà un commentaire pour l'ID si existe, renvoyer sur la modification
         //Permet la vérification de la présence d'un ID pour le film
         if (!isset($_GET["param"]) OR empty($_GET["param"])){
             header("location:/");
@@ -76,7 +57,7 @@ class InfoMovieController extends AbstractController
 
         if (isset($_POST["Rate"]) && isset($_POST["Comment"])){
             $val = new InfoMovie();
-            $val->setRate($_POST["Rate"]);
+            $val->setRate($_POST["Rate"] > 10 ? 10 : $_POST["Rate"]);
             $val->setComment($_POST["Comment"]);
             $val->setShare(isset($_POST["Share"]));
             $val->setToSee(isset($_POST["To_See"]));
@@ -97,9 +78,9 @@ class InfoMovieController extends AbstractController
 
     //Fonction Modifier
     public function UpdateInfoMovie($id){
-        //Permet la vérification de la présence d'un ID pour le commentaire
+        //Permet la vérification de la présence d'un ID pour le commentaire et l'id de l'utilisateur
         $admin = new User();
-        if (!isset($_GET["param"]) OR empty($_GET["param"])){
+        if (!isset($_GET["param"]) OR empty($_GET["param"]) OR !isset($_SESSION["ID_USER"])){
             header("location:/");
         }
 
@@ -114,7 +95,7 @@ class InfoMovieController extends AbstractController
 
             $response = $movie->SQLUpdateInfoMovie(BDD::getInstance(), $id);
             if ($response[0]){
-                header("location:/?controller=Movie&action=ShowOneMovie&param=${_POST["ID_MOVIE"]}");
+                header("location:/movie/${_POST["ID_MOVIE"]}");
             } else {
                 echo "Une erreur s'est produite : ${response[1]}";
             }
@@ -122,7 +103,7 @@ class InfoMovieController extends AbstractController
             $movieInfo = $movie->SQLGetOne(BDD::getInstance(), $id);
 
             if (($_SESSION["ID_USER"] != $movieInfo["ID_USER"]) OR $admin->CheckAdminUser() == false) {
-                header("location:/?controller=Movie&action=ShowOneMovie&param=${movie["ID_MOVIE"]}");
+                header("location:/movie/${movie["ID_MOVIE"]}");
             }
 
             return $this->twig->render("InfoMovie/UpdateInfoMovie.html.twig",[
@@ -133,9 +114,6 @@ class InfoMovieController extends AbstractController
 
     //Fonction Supprimer le commentaire
     public function DeleteInfoMovie($id){
-        //ToDo : Vérifier si propriétaire du commentaire ou admin
-        //Todo : Redirection vers le film si sur interface film, profil si profil, ou profil admin
-
         //Permet la vérification de la présence d'un ID pour le commentaire
         if (!isset($_GET["param"]) OR empty($_GET["param"])){
             header("location:/");
@@ -149,13 +127,10 @@ class InfoMovieController extends AbstractController
             header("location:/movie/${pre_reponse["ID_MOVIE"]}");
         }
 
-
-
         $response = $InfoMovie->SQLDeleteInfoMovie(BDD::getInstance(), $id);
         if ($response[0]){
-            //echo $response[1];
-
-            header("location:/movie/${pre_reponse["ID_MOVIE"]}");
+            var_dump($_SERVER["HTTP_REFERER"]);
+            header("Location: $_SERVER[HTTP_REFERER]");
 
 
         } else {

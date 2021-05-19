@@ -22,3 +22,10 @@ RewriteRule ^admin/movies$ index.php?controller=Movie&action=ListAdmin
 RewriteRule ^admin/movie/modify/([0-9]+)$ index.php?controller=movie&action=updatemovie&param=$1
 RewriteRule ^admin/movie/delete/([0-9]+)$ index.php?controller=Movie&action=DeleteMovie&param=$1
 RewriteRule ^admin/movie/add$ index.php?controller=Movie&action=AddMovie
+
+#URL Rewritting pour Info_Movie
+RewriteRule ^infomovie/list$ index.php?controller=InfoMovie&action=List
+RewriteRule ^infomovie/comment/([0-9]+)$ index.php?controller=InfoMovie&action=GetOne&param=$1
+RewriteRule ^infomovie/addcomment/([0-9]+)$ index.php?controller=InfoMovie&action=AddInfoMovie&param=$1
+RewriteRule ^infomovie/editcomment/([0-9]+)$ index.php?controller=InfoMovie&action=UpdateInfoMovie&param=$1
+RewriteRule ^infomovie/deletecomment/([0-9]+)$ index.php?controller=InfoMovie&action=DeleteInfoMovie&param=$1

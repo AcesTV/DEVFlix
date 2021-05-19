@@ -1,4 +1,4 @@
-{% extends"base.html.twig" %}
+{% extends "base.html.twig" %}
 
 {% block title %}Commentaires - {{ parent() }}{% endblock %}
 
@@ -11,7 +11,7 @@
 
 <form name="addInfoMovie" method="post" action="/?controller=InfoMovie&action=AddInfoMovie&param={{ ID_MOVIE }}">
 
-    <input id="Rate" type="number" name="Rate" placeholder="Note" required><br><br>
+    <input id="Rate" type="number" step="0.1" min="0" max="10" name="Rate" placeholder="Note" required><br><br>
     <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="33" required></textarea>
     <input type="checkbox" id="Share" name="Share">
     <label for="Share">actuellement prêté</label>

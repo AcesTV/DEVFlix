@@ -16,7 +16,7 @@
             <p>Film n°{{ infoMovie.ID_MOVIE }}</p>
             <h4>Note : {{ infoMovie.RATE }}</h4>
             <p>{{ infoMovie.COMMENT }}</p>
-            <button  onclick="deleteConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
+            <button class="btn btn-danger" onclick="deleteConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
             <hr>
         {% endfor %}
     {% else %}

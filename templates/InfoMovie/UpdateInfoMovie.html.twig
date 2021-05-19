@@ -9,7 +9,7 @@
 {% block body %}
     <h1>Mise à jour du Commentaire n° {{ InfoMovie.ID_INFO }}</h1>
 
-    <form name="addInfoMovie" method="post" action="?controller=InfoMovie&action=updateInfoMovie&param={{ InfoMovie.ID_INFO }}">
+    <form name="updateInfoMovie" method="post" action="/infomovie/editcomment/{{ InfoMovie.ID_INFO }}">
 
         <input id="Rate" type="number" name="Rate" placeholder="Note" value="{{ InfoMovie.RATE }}"><br><br>
         <textarea id="Comment" name="Comment" rows="5" cols="33" >{{ InfoMovie.COMMENT}}</textarea>
@@ -20,7 +20,7 @@
 
         <input type="hidden" name="ID_MOVIE" value="{{ InfoMovie.ID_MOVIE }}">
 
-        <button id="btnAdComment" type="submit">Envoyer</button><br><br>
+        <button class="btn btn-primary" id="btnAdComment" type="submit">Envoyer</button><br><br>
 
     </form>
 {% endblock %}
