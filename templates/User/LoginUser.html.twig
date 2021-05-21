@@ -1,21 +1,22 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta name="viewport" content="width=device-width" initial-scale=1/>
-    <link rel="stylesheet" href="/assets/css/MyStyleForUsers.css">
-</head>
+{% extends"base.html.twig" %}
 
-<body>
+{% block title %}Movies - {{ parent() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/MyStyleForUsers.css">
+{% endblock %}
+
+{% block body %}
 
     <div id="FormSignInUp">
 
         <form name="addUser" method="post" action="/login">
             <h2>Connexion</h2>
 
-            <input type="text" name="Pseudo" placeholder="Pseudo"><br><br>
-            <input type="password" name="Password" placeholder="Mot de passe"><br><br>
+            <input type="text" name="Pseudo" placeholder="Pseudo">
+            <input type="password" name="Password" placeholder="Mot de passe">
 
-            <input type="submit" value="Connexion"><br><br><br>
+            <input type="submit" value="Connexion">
 
             <a href="/resetpassword">Mot de passe oublié ?</a><br><br>
 
@@ -24,5 +25,8 @@
         </form>
     </div>
 
-</body>
-</html>
+{% endblock %}
+
+{% block javascript %}
+<script src="/assets/js/formulaire.js"></script>
+{% endblock %}
