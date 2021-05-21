@@ -27,9 +27,9 @@
         </div>
     </div>
     <div class="col-6 col-lg-2">
-        <a href="/login" class="text-white row text-decoration-none">
+        <a href="{% if IsOnline == true %}/logout{% else %}/login{% endif %}" class="text-white row text-decoration-none">
             <i class="col-2 p-0 my-auto text-center fas fa-user"></i>
-            <p class="col-8 p-0 my-auto">Se connecter</p>
+            <p class="col-8 p-0 my-auto">{% if IsOnline == true %}Se déconnecter{% else %}Se connecter{% endif %}</p>
         </a>
     </div>
 </nav>
@@ -43,9 +43,9 @@
         </div>
     </div>
     <div class="col-6 col-lg-2">
-        <a href="/login" class="text-white row text-decoration-none">
+        <a href="{% if IsOnline == true %}/logout{% else %}/login{% endif %}" class="text-white row text-decoration-none">
             <i class="col-2 p-0 my-auto text-center fas fa-user"></i>
-            <p class="col-8 p-0 my-auto">Se connecter</p>
+            <p class="col-8 p-0 my-auto">{% if IsOnline == true %}Se déconnecter{% else %}Se connecter{% endif %}</p>
         </a>
     </div>
 </nav>

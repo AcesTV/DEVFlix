@@ -11,4 +11,8 @@ table, tbody, td, tr {
   background-color: #000;
 }
 
+table tr {
+  border-width: 1px;
+}
+
 /*# sourceMappingURL=mystyleForMovie.css.map */

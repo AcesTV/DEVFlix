@@ -125,12 +125,10 @@ class UserController extends AbstractController
 
             $response = $val->SQLLoginUser(BDD::getInstance());
             if ($response[0] == true){
-                //echo $response[1];
-                header("location:/");
                 $_SESSION["Pseudo"] = $val->getUserPSEUDO();
                 $_SESSION["IsAdmin"] = $val->getUserISADMIN();
                 $_SESSION["ID_USER"] = $val->getUserID();
-
+                header("location:/");
             } else {
                 echo "Une erreur c'est produite : ${response[1]}";
             }

@@ -16,7 +16,8 @@ class MovieController extends AbstractController
 
         //ToDo : Modifier le bouton connecter par un deconnexion
         return $this->twig->render("Movie/accueil.html.twig",[
-            "movieList" => $movieList
+            "movieList" => $movieList,
+            "IsOnline" => isset($_SESSION["Pseudo"])
         ]);
     }
 
@@ -72,7 +73,8 @@ class MovieController extends AbstractController
             "infoMovieList" => $response[1],
             "totalRate" => $totalRate,
             "ID_SESSION" => isset($_SESSION["ID_USER"]) ? $_SESSION["ID_USER"] : null,
-            "IS_ADMIN" => isset($_SESSION["IsAdmin"])
+            "IS_ADMIN" => isset($_SESSION["IsAdmin"]),
+            "IsOnline" => isset($_SESSION["Pseudo"])
         ]);
     }
 
