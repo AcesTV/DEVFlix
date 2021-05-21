@@ -3,16 +3,17 @@
 {% block title %}Commentaires - {{ parent() }}{% endblock %}
 
 {% block css %}
-    {#<link rel="stylesheet" href="/assets/css/mystyleForMovie.css">#}
+    <link rel="stylesheet" href="/assets/css/comment.css">
 {% endblock %}
 
 {% block body %}
+    <div class="AddComment">
 <h1>Ajout d'un commentaire</h1>
 
 <form name="addInfoMovie" method="post" action="?controller=InfoMovie&action=AddInfoMovie">
 
     <input id="Rate" type="number" name="Rate" placeholder="Note" required><br><br>
-    <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="33" required></textarea>
+    <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="7" cols="55" required></textarea>
     <input type="checkbox" id="Share" name="Share">
     <label for="Share">actuellement prêté</label>
     <input type="checkbox" id="To_See" name="To_See" >
@@ -20,4 +21,5 @@
     <button id="btnAdComment" type="submit">Envoyer</button><br><br>
 
 </form>
+    </div>
 {% endblock %}
