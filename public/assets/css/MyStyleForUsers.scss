@@ -29,6 +29,8 @@ body{
   display: flex;
   justify-content: center;
   text-align: center;
+  font-family: unset;
+  line-height: 1.0;
 
   form{
     padding: 1em;
@@ -38,6 +40,23 @@ body{
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+
+    input,label,button{
+      display: grid;
+    }
+
+    label{
+      text-align: left;
+    }
+
+    input{
+      margin: auto auto 10px;
+    }
+
+    button{
+      margin: auto auto 15px;
+    }
+
   }
 }
 

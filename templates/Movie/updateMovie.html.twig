@@ -1,4 +1,4 @@
-{% extends"base.html.twig" %}
+{% extends"base-admin.html.twig" %}
 
 {% block title %}Movies - {{ parent() }}{% endblock %}
 
@@ -7,25 +7,30 @@
 {% endblock %}
 
 {% block body %}
-    <h1>Update de <a href="?controller=movie&action=showonemovie&param={{ movie.ID_MOVIE }}">{{ movie.NAME }}</a></h1>
+    <h1>Update de <a href="/movie/{{ movie.ID_MOVIE }}">{{ movie.NAME }}</a></h1>
+    <form name="updateMovie" method="post" action="?controller=Movie&action=UpdateMovie&param={{ movie.ID_MOVIE }}">
+        <label for="Name">Name</label><input class="form-control" id="Name" type="text" name="Name" placeholder="Name" value="{{ movie.NAME }}" required>
 
-    <form name="addMovie" method="post" action="?controller=Movie&action=UpdateMovie&param={{ movie.ID_MOVIE }}">
-        <input id="Name" type="text" name="Name" placeholder="Name" value="{{ movie.NAME }}" required>
-        <input id="Poster" type="text" name="Poster" placeholder="Link Poster" value="{{ movie.POSTER }}" required>
-        <input id="Origin" type="text" name="Origin" placeholder="Origin" value="{{ movie.ORIGIN }}">
-        <input id="VO" type="text" name="VO" placeholder="VO" value="{{ movie.VO }}">
-        <input id="Actors" type="text" name="Actors" placeholder="Actors" value="{{ movie.ACTORS }}">
-        <input id="Director" type="text" name="Director" placeholder="Director" value="{{ movie.DIRECTOR }}">
-        <input id="Genre" type="text" name="Genre" placeholder="Genre" value="{{ movie.GENRE }}">
-        <input id="ReleaseDate" type="date" name="ReleaseDate" placeholder="ReleaseDate" value="{{ movie.RELEASE_DATE }}">
-        <input id="Production" type="text" name="Production" placeholder="Production" value="{{ movie.PRODUCTION }}">
-        <input id="Runtime" type="number" name="Runtime" placeholder="Runtime" value="{{ movie.RUNTIME }}" required>
-        <input id="Trailer" type="text" name="Trailer" placeholder="Link Trailer" value="{{ movie.TRAILER }}">
-        <input id="Nomination" type="text" name="Nomination" placeholder="Nomination" value="{{ movie.NOMINATION }}">
-        <input id="Synopsis" type="text" name="Synopsis" placeholder="Synopsis" value="{{ movie.SYNOPSIS }}" required>
-        <input id="DVD" type="checkbox" name="DVD" value="oui"{% if movie.DVD %} checked {% endif %}>
+        <label for="Poster">Poster</label><input class="form-control" id="Poster" type="text" name="Poster" placeholder="Link Poster" value="{{ movie.POSTER }}" required>
+        <label for="Trailer">Trailer</label><input class="form-control" id="Trailer" type="text" name="Trailer" placeholder="Link Trailer" value="{{ movie.TRAILER }}">
 
-        <input type="submit" value="Submit Movie">
+        <label for="Origin">Origin</label><input class="form-control" id="Origin" type="text" name="Origin" placeholder="Origin" value="{{ movie.ORIGIN }}">
+        <label for="VO">VO</label><input class="form-control" id="VO" type="text" name="VO" placeholder="VO" value="{{ movie.VO }}">
+        <label for="Genre">Genre</label><input class="form-control" id="Genre" type="text" name="Genre" placeholder="Genre" value="{{ movie.GENRE }}">
+        <label for="ReleaseDate">ReleaseDate</label><input class="form-control" id="ReleaseDate" type="date" name="ReleaseDate" placeholder="ReleaseDate" value="{{ movie.RELEASE_DATE }}">
+        <label for="Runtime">Runtime</label><input class="form-control" id="Runtime" type="number" name="Runtime" placeholder="Runtime" value="{{ movie.RUNTIME }}" required>
+        <label for="Actors">Actors</label><input class="form-control" id="Actors" type="text" name="Actors" placeholder="Actors" value="{{ movie.ACTORS }}">
+        <label for="Director">Director</label><input class="form-control" id="Director" type="text" name="Director" placeholder="Director" value="{{ movie.DIRECTOR }}">
+        <label for="Production">Production</label><input class="form-control" id="Production" type="text" name="Production" placeholder="Production" value="{{ movie.PRODUCTION }}">
+        <label for="Nomination">Nomination</label><input class="form-control" id="Nomination" type="text" name="Nomination" placeholder="Nomination" value="{{ movie.NOMINATION }}">
+        <label for="Synopsis">Synopsis</label><input class="form-control" id="Synopsis" type="text" name="Synopsis" placeholder="Synopsis" value="{{ movie.SYNOPSIS }}" required>
+        <input id="DVD" class="checkbox" type="checkbox" name="DVD" value="oui"{% if movie.DVD %} checked {% endif %}>
+        <label for="DVD">Dispo en DVD</label>
+        <div class="form-row">
+            <div class="col">
+                <button class="btn btn-primary mb-2" type="submit">Submit Movie</button>
+            </div>
+        </div>
     </form>
 {% endblock %}
 

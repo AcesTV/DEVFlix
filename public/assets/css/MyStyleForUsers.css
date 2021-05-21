@@ -17,6 +17,8 @@ body {
   display: flex;
   justify-content: center;
   text-align: center;
+  font-family: unset;
+  line-height: 1;
 }
 #FormSignInUp form {
   padding: 1em;
@@ -26,6 +28,18 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+}
+#FormSignInUp form input, #FormSignInUp form label, #FormSignInUp form button {
+  display: grid;
+}
+#FormSignInUp form label {
+  text-align: left;
+}
+#FormSignInUp form input {
+  margin: auto auto 10px;
+}
+#FormSignInUp form button {
+  margin: auto auto 15px;
 }
 
 table {

@@ -14,9 +14,10 @@ class MovieController extends AbstractController
         $movie = new Movie();
         $movieList = $movie->SQLGetAll(BDD::getInstance());
 
-        //ToDo : render la page d'accueil du site à implémenter
+        //ToDo : Modifier le bouton connecter par un deconnexion
         return $this->twig->render("Movie/accueil.html.twig",[
-            "movieList" => $movieList
+            "movieList" => $movieList,
+            "IsOnline" => isset($_SESSION["Pseudo"])
         ]);
     }
 
@@ -24,8 +25,7 @@ class MovieController extends AbstractController
         $movie = new Movie();
         $movieList = $movie->SQLGetAll(BDD::getInstance());
 
-        //ToDo : render la page d'accueil du site à implémenter
-        return $this->twig->render("Movie/list.html.twig",[
+        return $this->twig->render("Movie/accueil.html.twig",[
             "movieList" => $movieList
         ]);
     }
@@ -55,11 +55,26 @@ class MovieController extends AbstractController
         $detailsmovie = new InfoMovie();
         $response = $detailsmovie->SQLGetCommentMovie(BDD::getInstance(), $id);
 
+
+        $totalRate = 0;
+        $totalRateVote = 0;
+        if(!empty($response[1])){
+            foreach ($response[1] as $key => $value) {
+                $totalRate += $value['RATE'];
+                $totalRateVote++;
+            }
+            $totalRate = round($totalRate / $totalRateVote,2);
+        } else {
+            $totalRate = "Non défini";
+        }
+
         return $this->twig->render("Movie/list.html.twig",[
             "movie" => $movie,
             "infoMovieList" => $response[1],
+            "totalRate" => $totalRate,
             "ID_SESSION" => isset($_SESSION["ID_USER"]) ? $_SESSION["ID_USER"] : null,
-            "IS_ADMIN" => isset($_SESSION["IsAdmin"])
+            "IS_ADMIN" => isset($_SESSION["IsAdmin"]),
+            "IsOnline" => isset($_SESSION["Pseudo"])
         ]);
     }
 
@@ -159,7 +174,7 @@ class MovieController extends AbstractController
         } else {
             echo "Une erreur c'est produite : ${response[1]}";
         }
-        header('location:/admin/movie');
+        header('location:/admin/movies');
     }
 
 }

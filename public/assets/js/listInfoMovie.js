@@ -1,5 +1,5 @@
 function deleteDetailConfirm(id) {
     if (confirm("Confirmez la suppression ?")) {
-        window.location.href = "/?controller=InfoMovie&action=DeleteInfoMovie&param=" + id;
+        window.location.href = "/infomovie/deletecomment/" + id;
     }
 }

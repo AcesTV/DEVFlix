@@ -9,6 +9,8 @@ use Twig\Error\LoaderError;
 
 class UserController extends AbstractController
 {
+    //ToDo Couleur bouton formulaire
+
     public function index(){
         //En cas de problème, on redirige vers l'accueil
         header("location:/");
@@ -123,12 +125,10 @@ class UserController extends AbstractController
 
             $response = $val->SQLLoginUser(BDD::getInstance());
             if ($response[0] == true){
-                //echo $response[1];
-                header("location:/");
                 $_SESSION["Pseudo"] = $val->getUserPSEUDO();
                 $_SESSION["IsAdmin"] = $val->getUserISADMIN();
                 $_SESSION["ID_USER"] = $val->getUserID();
-
+                header("location:/");
             } else {
                 echo "Une erreur c'est produite : ${response[1]}";
             }
@@ -136,7 +136,7 @@ class UserController extends AbstractController
         } elseif(isset($_SESSION["Pseudo"]) && empty($_SESSION["Pseudo"]) == false) {
             //Si l'utilisateur est déjà connecté, on le renvoi vers l'accueil
             try {
-                //echo $this->twig->render("base.html.twig", []);
+                //echo $this->twig->render("base-admin.html.twig", []);
                 header("location:/");
             } catch (Exception $e) {
                 echo $e->getMessage();
