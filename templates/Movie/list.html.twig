@@ -20,28 +20,14 @@
         <hr>
         {% endfor %}
     {% else %}
-        <h1>Détail de {{ movie.NAME }}</h1>
-        <h2>{{ movie.NAME }}</h2>
+        <div class="row col-11 mt-4 mx-auto">
+            <img src="{{ movie.POSTER }}" class="col-md-4 p-3 mx-auto" alt="...">
+            <div class="card-body col p-3">
+                <h5 class="card-title">{{ movie.NAME }}</h5>
+                <p class="card-text">{{ movie.SYNOPSIS }}</p>
 
-        <div class="container">
-            <div class="row">
-                <div class="col-6">
-                    <img src="{{ movie.POSTER }}" alt="Affiche du film {{ movie.NAME }}">
-                </div>
-                <div class="col-6">
-                    <iframe width="595" height="446"
-                            src="{{ movie.TRAILER }}?autoplay=1&mute=1">
-                    </iframe>
-                </div>
-            </div>
-        </div>
-        <p>Date de sortie: {{ movie.RELEASE_DATE }}</p>
-        <p>{{ movie.SYNOPSIS }}</p>
-        <hr>
-        <table>
-            <tbody>
-                <tr>
-                    <td>Note : {{ totalRate }}
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Note : {{ totalRate }}
                         {% if totalRate == "Non défini" %}
 
                         {% elseif totalRate >= 10 %}
@@ -54,36 +40,25 @@
                             ⭐⭐
                         {% elseif totalRate >= 2 %}
                             ⭐
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td>Origine : {{ movie.ORIGIN }}</td>
-                </tr>
-                <tr>
-                    <td>VO : {{ movie.VO }}</td>
-                </tr>
-                <tr>
-                    <td>Acteurs : {{ movie.ACTORS }}</td>
-                </tr>
-                <tr>
-                    <td>Réalisateur : {{ movie.DIRECTOR }}</td>
-                </tr>
-                <tr>
-                    <td>Genre : {{ movie.GENRE }}</td>
-                </tr>
-                <tr>
-                    <td>Production : {{ movie.PRODUCTION }}</td>
-                </tr>
-                <tr>
-                    <td>Durée : {{ movie.RUNTIME }} minutes</td>
-                </tr>
-                <tr>
-                    <td>Nomination : {{ movie.NOMINATION }}</td>
-                </tr>
-            </tbody>
-        </table>
-        <hr>
+                        {% endif %}</li>
+                    <li class="list-group-item">Origine : {{ movie.ORIGIN }}</li>
+                    <li class="list-group-item">VO : {{ movie.VO }}</li>
+                    <li class="list-group-item">Origine : {{ movie.ORIGIN }}</li>
+                    <li class="list-group-item">VO : {{ movie.VO }}</li>
+                    <li class="list-group-item">Acteurs : {{ movie.ACTORS }}</li>
+                    <li class="list-group-item">Réalisateur : {{ movie.DIRECTOR }}</li>
+                    <li class="list-group-item">Genre : {{ movie.GENRE }}</li>
+                    <li class="list-group-item">Production : {{ movie.PRODUCTION }}</li>
+                    <li class="list-group-item">Durée : {{ movie.RUNTIME }} minutes</li>
+                    <li class="list-group-item">Nomination : {{ movie.NOMINATION }}</li>
+                </ul>
+            </div>
+            <div class="card-body">
+                <iframe class="col-12"
+                        src="{{ movie.TRAILER }}?autoplay=1&mute=1">
+                </iframe>
+            </div>
+        </div>
 
         {% if infoMovieList is defined %}
 

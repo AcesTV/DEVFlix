@@ -11,6 +11,10 @@ table, tbody, td, tr {
   background-color: #000;
 }
 
+.text-rouge {
+  color: #e30914 !important;
+}
+
 table tr {
   border-width: 1px;
 }
