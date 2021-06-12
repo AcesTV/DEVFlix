@@ -13,10 +13,6 @@
 
         <input id="Rate" type="number" name="Rate" placeholder="Note" value="{{ InfoMovie.RATE }}"><br><br>
         <textarea id="Comment" name="Comment" rows="5" cols="33" >{{ InfoMovie.COMMENT}}</textarea>
-        <input id="Share" type="checkbox" name="Share" {% if InfoMovie.SHARE == 1%} checked {% endif %}>
-        <label for="Share">actuellement prêté</label>
-        <input type="checkbox" id="To_See" name="To_See" {% if InfoMovie.TO_SEE == 1%} checked {% endif %}>
-        <label for="To_See">A voir</label>
 
         <input type="hidden" name="ID_MOVIE" value="{{ InfoMovie.ID_MOVIE }}">
 

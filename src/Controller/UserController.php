@@ -3,6 +3,7 @@
 namespace src\Controller;
 
 use mysql_xdevapi\Exception;
+use src\Model\InfoMovie;
 use src\Model\User;
 use src\Model\BDD;
 use Twig\Error\LoaderError;
@@ -130,13 +131,13 @@ class UserController extends AbstractController
                 $_SESSION["ID_USER"] = $val->getUserID();
                 header("location:/");
             } else {
+                //ToDo : Afficher page login + pseudo
                 echo "Une erreur c'est produite : ${response[1]}";
             }
 
         } elseif(isset($_SESSION["Pseudo"]) && empty($_SESSION["Pseudo"]) == false) {
             //Si l'utilisateur est déjà connecté, on le renvoi vers l'accueil
             try {
-                //echo $this->twig->render("base-admin.html.twig", []);
                 header("location:/");
             } catch (Exception $e) {
                 echo $e->getMessage();
@@ -169,6 +170,10 @@ class UserController extends AbstractController
         //Todo : Ajouter l'interface des commentaire + possibilité de modifier et supprimer
         //Si l'utilisateur est connecté et que le mot de passe ou l'email est renseigné
         if (empty($_SESSION["Pseudo"]) == false){
+            $valInfo = new InfoMovie();
+            $responseInfo = $valInfo->SQLGetCommentUser(BDD::getInstance(),$_SESSION["ID_USER"]);
+
+            var_dump($responseInfo);
 
             if(isset($_POST["Password"]) || isset($_POST["Email"])) {
                 $val = new User();
@@ -180,7 +185,7 @@ class UserController extends AbstractController
                 $response = $val->SQLModifyUser(BDD::getInstance());
                 if ($response[0] == true) {
                     if ($response[1]){
-                        header("location:/user/profil");
+                        header("location:/profil");
                     }
                 } else {
                     echo $this->twig->render("User/ModifyUser.html.twig", [
@@ -195,7 +200,7 @@ class UserController extends AbstractController
             }
         } else {
             //Si utilisateur pas connecter alors on redirige
-            header("location:/user/login");
+            header("location:/login");
 
         }
     }

@@ -85,6 +85,34 @@
         </table>
         <hr>
 
+        {% if ID_SESSION != null %}
+
+            {% if ToSee == 0 %}
+                <button class="btn btn-success" onclick="ToSee({{ movie.ID_MOVIE }})" id="ToSeeBtn">A Voir</button>
+
+            {% else %}
+                <button class="btn btn-danger" onclick="ToSee({{ movie.ID_MOVIE }})" id="ToSeeBtn">Vu</button>
+
+            {% endif %}
+
+            {% if Share == 0 %}
+                <button class="btn btn-success" onclick="ToShare({{ movie.ID_MOVIE }})" id="ToShareBtn">Partager votre DVD</button>
+
+                <!-- Permet de demander un prêt -->
+                <h2>Demander un prêt :</h2>
+                <form name="addInfoMovie" method="post" action="/infomovie/askshare/{{ movie.ID_MOVIE }}">
+                    <label for="DateDebut">Date de début de prêt souhaité : </label>
+                    <input type="date" name="DateDebut" required><br>
+                    <label for="DateFin">Date de fin de prêt souhaité : </label>
+                    <input type="date" name="DateFin" required><br>
+                    <button class="btn btn-primary" type="submit">Demander un prêt</button>
+                </form>
+            {% else %}
+                <button class="btn btn-danger" onclick="ToShare({{ movie.ID_MOVIE }})" id="ToShareBtn">Ne plus partager votre DVD</button>
+
+            {% endif %}
+        {% endif %}
+
         {% if infoMovieList is defined %}
 
             {% set commentOK = 0 %}
@@ -108,10 +136,6 @@
 
                     <input id="Rate" type="number" step="0.1" min="0" max="10" name="Rate" placeholder="Note" required><br><br>
                     <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="33" required></textarea>
-                    <input type="checkbox" id="Share" name="Share">
-                    <label for="Share">actuellement prêté</label>
-                    <input type="checkbox" id="To_See" name="To_See" >
-                    <label for="To_See">A voir</label>
                     <button class="btn btn-primary" id="btnAdComment" type="submit">Envoyer</button><br><br>
 
                 </form>

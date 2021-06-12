@@ -11,7 +11,6 @@ class InfoMovie
     private Float $Rate;
     private String $Comment;
     private int $Share;
-//    private bool $See;
     private bool $To_see;
 
     //Fonction afficher un commentaire
@@ -30,28 +29,51 @@ class InfoMovie
         return $requete->fetchAll(\PDO::FETCH_CLASS, "src\Model\InfoMovie");
     }
 
-    //Fonction afficher les commentaire d'un film
+    //Fonction afficher les commentaires d'un film
     public function SQLGetCommentMovie(\PDO $bdd, $id) : array {
-        $requete = $bdd->prepare("SELECT * FROM t_info_movies WHERE ID_MOVIE=:ID");
+        $requete = $bdd->prepare("SELECT * FROM t_info_movies WHERE ID_MOVIE=:ID AND RATE IS NOT NULL");
         $requete->execute([
             "ID" => $id
         ]);
         return [true, $requete->fetchAll()];
     }
 
+    //Fonction afficher les commentaires d'un utilisateur
+    public function SQLGetCommentUser(\PDO $bdd, $id) : array {
+        $requete = $bdd->prepare("SELECT * FROM t_info_movies WHERE ID_USER=:ID");
+        $requete->execute([
+            "ID" => $id
+        ]);
+        return [true, $requete->fetchAll()];
+    }
+
+    //Fonction vérifier si un utilisateur à déjà une ligne pour le film demandé
+    public function SQLGetCommentUserMovie(\PDO $bdd, $id) : array {
+        $requete = $bdd->prepare("SELECT ID_INFO,SHARE,TO_SEE FROM t_info_movies WHERE ID_USER=:ID_USER AND ID_MOVIE=:ID_MOVIE");
+        $response = $requete->execute([
+            "ID_MOVIE" => $id,
+            "ID_USER" => $_SESSION["ID_USER"] ?? null
+        ]);
+
+        if ($response == false) {
+            return [false, "Non"];
+        } else {
+            return [true, $requete->fetch()];
+        }
+
+    }
+
     //Fonction SQLAjout
     public function SQLAddInfoMovie(\PDO $bdd) : array{
 
         try{
-//            $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, RATE, COMMENT, SHARE, SEE, TO_SEE) VALUES(:ID_MOVIE, :ID_USER, :RATE, :COMMENT, :SHARE, :SEE, :TO_SEE)");
-            $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, RATE, COMMENT, SHARE, TO_SEE) VALUES(:ID_MOVIE, :ID_USER, :RATE, :COMMENT, :SHARE, :TO_SEE)");
+            //ToDo : Ajouter la condition si existe alors update sinon ajout !
+            $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, RATE, COMMENT) VALUES(:ID_MOVIE, :ID_USER, :RATE, :COMMENT)");
             $requete->execute([
                 "ID_MOVIE" => $_GET["param"],
                 "ID_USER" => $_SESSION["ID_USER"],
                 "RATE" => $this->getRate(),
-                "COMMENT" => $this->getComment(),
-                "SHARE" => ($this->isShare()==false)? 0 : 1,
-                "TO_SEE" => ($this->isToSee() ==false)? 0 : 1
+                "COMMENT" => $this->getComment()
             ]);
 
             //Si tous se passe bien return True
@@ -66,13 +88,11 @@ class InfoMovie
     public function SQLUpdateInfoMovie(\PDO $bdd, $id) : array{
 
         try{
-            $requete = $bdd->prepare("UPDATE t_info_movies SET RATE=:RATE, COMMENT=:COMMENT, SHARE=:SHARE, TO_SEE=:TO_SEE WHERE ID_INFO=:ID");
+            $requete = $bdd->prepare("UPDATE t_info_movies SET RATE=:RATE, COMMENT=:COMMENT WHERE ID_INFO=:ID");
             $requete->execute([
                 "ID" => $id,
-                "RATE" => $this->getRate(),
-                "COMMENT" => $this->getComment(),
-                "SHARE" => $this->isShare(),
-                "TO_SEE" => $this->isToSee()
+                "RATE" => $this->getRate() == -1 ? null : $this->getRate(),
+                "COMMENT" => $this->getComment() == '' ? null : $this->getComment()
             ]);
 
             //Si tous se passe bien return True
@@ -91,6 +111,71 @@ class InfoMovie
                 "ID" => $id
             ]);
             return [true,'Suppression réalisée avec succès'];
+
+        }catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
+    }
+
+    //Modifier le status de TO_SEE
+    public function SQLToSee(\PDO $bdd, $id) : array{
+        $response = $this->SQLGetCommentUserMovie(BDD::getInstance(),$id);
+
+        if ($response[1]) {
+            $requete = $bdd->prepare("UPDATE t_info_movies SET TO_SEE=:TO_SEE WHERE ID_USER=:ID_USER AND ID_MOVIE=:ID_MOVIE");
+            $requete->execute([
+                "ID_USER" => $_SESSION["ID_USER"],
+                "ID_MOVIE" => $id,
+                "TO_SEE" => $response[1][2] == true ? 0 : 1
+            ]);
+        } else {
+            $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, TO_SEE) VALUES (:ID_MOVIE,:ID_USER,:TO_SEE)");
+            $requete->execute([
+                "ID_USER" => $_SESSION["ID_USER"],
+                "ID_MOVIE" => $id,
+                "TO_SEE" => 1
+            ]);
+        }
+
+        return[true,"OK"];
+    }
+
+    //Modifier le status de SHARE
+    public function SQLToShare(\PDO $bdd, $id) : array
+    {
+        $response = $this->SQLGetCommentUserMovie(BDD::getInstance(), $id);
+        if ($response[1]) {
+            $requete = $bdd->prepare("UPDATE t_info_movies SET SHARE=:SHARE WHERE ID_USER=:ID_USER AND ID_MOVIE=:ID_MOVIE");
+            $requete->execute([
+                "ID_USER" => $_SESSION["ID_USER"],
+                "ID_MOVIE" => $id,
+                "SHARE" => $response[1][1] == 1 ? 0 : 1
+            ]);
+        } else {
+            $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, SHARE) VALUES (:ID_MOVIE,:ID_USER,:SHARE)");
+            $requete->execute([
+                "ID_USER" => $_SESSION["ID_USER"],
+                "ID_MOVIE" => $id,
+                "SHARE" => 1
+            ]);
+        }
+
+        return [true, "OK"];
+    }
+
+    //Modifier le status de SHARE
+    public function SQLAskShare(\PDO $bdd, $id) : array
+    {
+        try{
+            $requete = $bdd->prepare("INSERT INTO t_prets (ID_USER, ID_MOVIE, DATE_PRET, DATE_RETOUR) VALUES (:ID_USER, :ID_MOVIE, :DATE_PRET, :DATE_RETOUR)");
+            $requete->execute([
+                "ID_USER" => $_SESSION["ID_USER"],
+                "ID_MOVIE" => $id,
+                "DATE_PRET" => htmlspecialchars($_POST["DateDebut"]),
+                "DATE_RETOUR" => htmlspecialchars($_POST["DateFin"])
+            ]);
+
+            return [true, "OK"];
 
         }catch (\Exception $e){
             return [false,"Une erreur c'est produite : ".$e->getMessage()];

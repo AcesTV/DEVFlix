@@ -28,4 +28,7 @@ RewriteRule ^infomovie/list$ index.php?controller=InfoMovie&action=List
 RewriteRule ^infomovie/comment/([0-9]+)$ index.php?controller=InfoMovie&action=GetOne&param=$1
 RewriteRule ^infomovie/addcomment/([0-9]+)$ index.php?controller=InfoMovie&action=AddInfoMovie&param=$1
 RewriteRule ^infomovie/editcomment/([0-9]+)$ index.php?controller=InfoMovie&action=UpdateInfoMovie&param=$1
-RewriteRule ^infomovie/deletecomment/([0-9]+)$ index.php?controller=InfoMovie&action=DeleteInfoMovie&param=$1
+RewriteRule ^infomovie/deletecomment/([0-9]+)$ index.php?controller=InfoMovie&action=BtnDeleteInfoMovie&param=$1
+RewriteRule ^infomovie/tosee/([0-9]+)$ index.php?controller=InfoMovie&action=BtnToSee&param=$1
+RewriteRule ^infomovie/toshare/([0-9]+)$ index.php?controller=InfoMovie&action=BtnToShare&param=$1
+RewriteRule ^infomovie/askshare/([0-9]+)$ index.php?controller=InfoMovie&action=BtnAskShare&param=$1

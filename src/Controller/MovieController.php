@@ -14,7 +14,6 @@ class MovieController extends AbstractController
         $movie = new Movie();
         $movieList = $movie->SQLGetAll(BDD::getInstance());
 
-        //ToDo : Modifier le bouton connecter par un deconnexion
         return $this->twig->render("Movie/accueil.html.twig",[
             "movieList" => $movieList,
             "IsOnline" => isset($_SESSION["Pseudo"])
@@ -68,12 +67,16 @@ class MovieController extends AbstractController
             $totalRate = "Non défini";
         }
 
+        $response2 = $detailsmovie->SQLGetCommentUserMovie(BDD::getInstance(), $id);
+
         return $this->twig->render("Movie/list.html.twig",[
             "movie" => $movie,
             "infoMovieList" => $response[1],
+            "Share" => $response2[1][1] ?? 0,
+            "ToSee" => $response2[1][2] ?? 0,
             "totalRate" => $totalRate,
-            "ID_SESSION" => isset($_SESSION["ID_USER"]) ? $_SESSION["ID_USER"] : null,
-            "IS_ADMIN" => isset($_SESSION["IsAdmin"]),
+            "ID_SESSION" => $_SESSION["ID_USER"] ?? null,
+            "IS_ADMIN" => $_SESSION["IsAdmin"] ?? null,
             "IsOnline" => isset($_SESSION["Pseudo"])
         ]);
     }
