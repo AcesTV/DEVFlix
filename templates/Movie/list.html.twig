@@ -53,65 +53,57 @@
                     <li class="list-group-item">Nomination : {{ movie.NOMINATION }}</li>
                 </ul>
             </div>
-            <div class="card-body">
-                <iframe class="col-12"
-                        src="{{ movie.TRAILER }}?autoplay=1&mute=1">
-                </iframe>
+            <div class="video-container mb-3">
+                <iframe src="{{movie.TRAILER }}?autoplay=1&mute=1" frameborder="0" width="560" height="315" allowfullscreen></iframe>
             </div>
         </div>
 
-        {% if infoMovieList is defined %}
+        {% if (ID_SESSION == infoMovie.ID_USER)  %}
 
-            {% set commentOK = 0 %}
-            {% for infoMovie in infoMovieList %}
-                {% if (ID_SESSION == infoMovie.ID_USER)  %}
+            <h1>Liste des Commentaires</h1>
 
-                    <h1>Liste des Commentaires</h1>
+            <h4>Note : {{ infoMovie.RATE }}</h4>
+            <p>{{ infoMovie.COMMENT }}</p>
+            <button class="btn btn-success" onclick="window.location.href='/infomovie/editcomment/{{ infoMovie.ID_INFO }}'">Modifier</button>
+            <button class="btn btn-danger" onclick="deleteDetailConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
+            {% set commentOK = 1 %}
+        {% endif %}
 
-                    <h4>Note : {{ infoMovie.RATE }}</h4>
-                    <p>{{ infoMovie.COMMENT }}</p>
-                    <button class="btn btn-success" onclick="window.location.href='/infomovie/editcomment/{{ infoMovie.ID_INFO }}'">Modifier</button>
-                    <button class="btn btn-danger" onclick="deleteDetailConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
-                    {% set commentOK = 1 %}
-                {% endif %}
+        {% if commentOK == 0 and ID_SESSION != null%}
+            <div class="mb-3 p-0 form-check">
+                <button type="button" class="btn btn-primary">Actuellement prêté</button>
+                <button type="button" class="btn btn-primary">À voir</button>
+            </div>
 
-            {% endfor %}
+            <h2 class="mb-3">Ajouter un commentaire</h2>
+            <form class="mb-3" name="addInfoMovie" method="post" action="/infomovie/addcomment/{{ movie.ID_MOVIE }}">
+                <div class="mb-1">
+                    <input id="Rate" type="number" step="0.25" min="0" max="10" name="Rate" placeholder="Note" required><br><br>
+                </div>
+                <div class="mb-1">
+                    <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="40" required></textarea>
+                </div>
+                <button type="submit" id="btnAdComment" class="btn btn-primary">Envoyer</button>
+            </form>
 
-            {% if commentOK == 0 and ID_SESSION != null%}
-                <h2>Ajouter un commentaire</h2>
-                <form name="addInfoMovie" method="post" action="/infomovie/addcomment/{{ movie.ID_MOVIE }}">
-
-                    <input id="Rate" type="number" step="0.1" min="0" max="10" name="Rate" placeholder="Note" required><br><br>
-                    <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="33" required></textarea>
-                    <input type="checkbox" id="Share" name="Share">
-                    <label for="Share">actuellement prêté</label>
-                    <input type="checkbox" id="To_See" name="To_See" >
-                    <label for="To_See">A voir</label>
-                    <button class="btn btn-primary" id="btnAdComment" type="submit">Envoyer</button><br><br>
-
-                </form>
-
-
-                {% if infoMovieList != false %}
-                    <h1>Liste des Commentaires</h1>
-                {% endif %}
-
+            {% if infoMovieList != false %}
+                <h1>Liste des Commentaires</h1>
             {% endif %}
 
+        {% endif %}
+
             {% for infoMovie in infoMovieList %}
-                {% if (ID_SESSION != infoMovie.ID_USER)  %}
+{#                {% if (ID_SESSION != infoMovie.ID_USER) %}#}
                 <h4>Note : {{ infoMovie.RATE }}</h4>
                 <p>{{ infoMovie.COMMENT }}</p>
                     {% if (IS_ADMIN == 1) %}
                         <button class="btn btn-danger" onclick="deleteDetailConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
                     {% endif %}
-                {% endif %}
+{#                {% endif %}#}
                 <hr>
             {% endfor %}
         {% endif %}
-
-    {% endif %}
-</div>
+    </div>
 {% endblock %}
 
 {% block javascript %}
