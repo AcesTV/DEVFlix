@@ -16,36 +16,36 @@
 
 </head>
 
-<nav class="navbar navbar-dark bg-noir row m-0 d-none d-lg-flex">
-    <div class="col-6 col-lg-5">
+<nav class="navbar navbar-dark bg-noir row m-0 d-none d-md-flex">
+    <div class="col-8">
         <div class="row m-0">
-            <img onclick="window.location.href='/'" src="/assets/Images/logo.png" alt="" class="col-2">
-            <form class="col-10 d-none d-lg-block col-3 form-inline my-2 ml-0 row">
-                <input class="col-7 mr-sm-2" type="search" placeholder="Film, Acteur, Producteur, ..." aria-label="Search">
-                <button class="col-3 col-lg-4 col-xl-3 btn btn-outline-danger align-baseline" type="submit">Rechercher</button>
+            <img onclick="window.location.href='/'" src="/assets/Images/logo_cut.jpg" alt="" class="col-4 col-xl-2 my-2">
+            <form class="col-8 form-inline my-2 ml-0 row">
+                <input class="col-6 mr-sm-2" type="search" placeholder="Film, Acteur, Producteur, ..." aria-label="Search">
+                <button class="col-4 col-lg-3 ml-3 btn btn-outline-danger align-baseline" type="submit">Rechercher</button>
             </form>
         </div>
     </div>
-    <div class="col-6 col-lg-2">
+    <div class="col-4">
         <a href="{% if IsOnline == true %}/logout{% else %}/login{% endif %}" class="text-white row text-decoration-none">
             <i class="col-2 p-0 my-auto text-center fas fa-user"></i>
             <p class="col-8 p-0 my-auto">{% if IsOnline == true %}Se déconnecter{% else %}Se connecter{% endif %}</p>
         </a>
     </div>
 </nav>
-<nav class="navbar navbar-dark bg-dark row m-0 d-flex d-lg-none">
+<nav class="navbar navbar-dark bg-noir row m-0 d-flex d-md-none">
+    <img src="/assets/images/logo_cut.jpg" alt="" class="col-12 mb-2">
     <div class="col-6 col-lg-5">
         <div class="row m-0">
             <button class="col-5 col-lg-2 col-xl-1 navbar-toggler mx-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <img src="/assets/images/logo.png" alt="" class="col-2">
         </div>
     </div>
     <div class="col-6 col-lg-2">
         <a href="{% if IsOnline == true %}/logout{% else %}/login{% endif %}" class="text-white row text-decoration-none">
             <i class="col-2 p-0 my-auto text-center fas fa-user"></i>
-            <p class="col-8 p-0 my-auto">{% if IsOnline == true %}Se déconnecter{% else %}Se connecter{% endif %}</p>
+            <p class="col-8 p-0 my-auto">{% if IsOnline == true %}Déconnexion{% else %}Connexion{% endif %}</p>
         </a>
     </div>
 </nav>
