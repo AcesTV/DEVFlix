@@ -19,7 +19,8 @@ class InfoMovieController extends AbstractController
         $infoMovieList = $infoMovie->SQLGetAll(BDD::getInstance());
 
         return $this->twig->render("InfoMovie/list.html.twig",[
-            "infoMovieList" => $infoMovieList
+            "infoMovieList" => $infoMovieList,
+            "IsOnline" => isset($_SESSION["Pseudo"])
         ]);
     }
 
@@ -35,7 +36,7 @@ class InfoMovieController extends AbstractController
             $val->setRate($_POST["Rate"] > 10 ? 10 : $_POST["Rate"]);
             $val->setComment($_POST["Comment"]);
 
-            //Vérifier si le contient déjà des infos de l'utilisateur
+            //Retourne TRUE si l'utilisateur à déjà posté un commentaire pour le film
             $response = $val->SQLGetCommentUserMovie(BDD::getInstance(),$_GET["param"]);
 
             if ($response[0]){
@@ -52,7 +53,8 @@ class InfoMovieController extends AbstractController
         } else {
             //Affiche la vue
             return $this->twig->render("InfoMovie/AddInfoMovie.html.twig",[
-                "ID_MOVIE" => $_GET["param"]
+                "ID_MOVIE" => $_GET["param"],
+                "IsOnline" => isset($_SESSION["Pseudo"])
             ]);
         }
 
@@ -88,7 +90,8 @@ class InfoMovieController extends AbstractController
             }
 
             return $this->twig->render("InfoMovie/UpdateInfoMovie.html.twig",[
-                "InfoMovie" => $movieInfo
+                "InfoMovie" => $movieInfo,
+                "IsOnline" => isset($_SESSION["Pseudo"])
             ]);
         }
     }
@@ -128,7 +131,7 @@ class InfoMovieController extends AbstractController
 
     }
 
-    //ToDo : Fonction pour modifier le statut : A voir
+    //Permet de lancer la requete qui change le status de 'ToSee' dans la bdd
     public function BtnToSee($id){
         if (isset($_SESSION["ID_USER"])){
             $val = new InfoMovie();
@@ -184,8 +187,5 @@ class InfoMovieController extends AbstractController
         }
 
     }
-
-    //ToDo : Obtenir dans la page profil toute les demandes de prêt que l'utilisateur peut accepter
-    //Todo : Obtenir dans la page profil les demandes en attente de l'utilisateur
 
 }

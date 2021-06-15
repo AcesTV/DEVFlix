@@ -372,15 +372,18 @@ class Movie
     public function SQLDeleteMovie(\PDO $bdd, $id) : array
     {
         try{
+            //Supprimer les commentaires selon l'ID du film
             $requete = $bdd->prepare("DELETE FROM t_info_movies WHERE ID_MOVIE=:ID");
             $requete->execute([
                 "ID" => $id,
             ]);
+
+            //Supprimer toutes les informations du film
             $requete = $bdd->prepare("DELETE FROM t_movies WHERE ID_MOVIE=:ID");
             $requete->execute([
                 "ID" => $id,
             ]);
-            //Si tous se passe bien return True
+
             return [true,"Supression du film réussie !"];
 
         } catch (\Exception $e) {

@@ -12,8 +12,10 @@
 
         <form name="addUser" method="post" action="/login">
             <h2>Connexion</h2>
-
-            <input type="text" name="Pseudo" placeholder="Pseudo">
+            {% if MsgError is defined %}
+                <h5><div class='msgerror'>{{ MsgError }}</div></h5>
+            {% endif  %}
+            <input type="text" name="Pseudo" value="{{ Pseudo }}" placeholder="Pseudo">
             <input type="password" name="Password" placeholder="Mot de passe">
 
             <input type="submit" value="Connexion">

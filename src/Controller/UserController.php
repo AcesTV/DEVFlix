@@ -10,8 +10,6 @@ use Twig\Error\LoaderError;
 
 class UserController extends AbstractController
 {
-    //ToDo Couleur bouton formulaire
-
     public function index(){
         //En cas de problème, on redirige vers l'accueil
         header("location:/");
@@ -62,7 +60,7 @@ class UserController extends AbstractController
                             <body>
                                 <h1>Toutes l'équipe de DevFlix vous souhaite la bienvenue sur notre site !</h1>
                                 Vous pouvez à présent commenter, noter et partager vos films préférés. <br><br>
-                                Retrouvez nous vite sur notre site <a href='http://devflix.local'>DevFlix</a>
+                                Retrouvez nous vite sur notre site <a href='http://www.devflix.local'>DevFlix</a>
                             </body>
                         </html>";
                 $headers = "From: devflix.cesi@gmail.com\r\n";
@@ -72,7 +70,7 @@ class UserController extends AbstractController
                 //Envoi du mail de bienvenue
                 $this->sendmail($to_email, $subject, $body, $headers);
 
-                header("location:/");
+                header("location:/login");
 
             } else if($response[1] == "PSEUDO_DOUBLON"){
                 try {
@@ -125,14 +123,18 @@ class UserController extends AbstractController
             $val->setUserPASSWORD($_POST["Password"]);
 
             $response = $val->SQLLoginUser(BDD::getInstance());
-            if ($response[0] == true){
+            if ($response[0]){
                 $_SESSION["Pseudo"] = $val->getUserPSEUDO();
                 $_SESSION["IsAdmin"] = $val->getUserISADMIN();
                 $_SESSION["ID_USER"] = $val->getUserID();
                 header("location:/");
             } else {
-                //ToDo : Afficher page login + pseudo
-                echo "Une erreur c'est produite : ${response[1]}";
+
+                echo $this->twig->render("User/LoginUser.html.twig", [
+                    "Pseudo" => isset($_POST["Pseudo"]) ? $_POST["Pseudo"] : "",
+                    "MsgError" => "Pseudo ou mot de passe incorrect",
+                    "IsOnline" => isset($_SESSION["Pseudo"])
+                ]);
             }
 
         } elseif(isset($_SESSION["Pseudo"]) && empty($_SESSION["Pseudo"]) == false) {
@@ -145,7 +147,8 @@ class UserController extends AbstractController
         } else {
             //Si pas connecté
             try {
-                echo $this->twig->render("User/LoginUser.html.twig", []);
+                echo $this->twig->render("User/LoginUser.html.twig", [
+                    "IsOnline" => isset($_SESSION["Pseudo"])]);
             } catch (LoaderError $e) {
                 echo $e->getMessage();
             }
@@ -172,8 +175,8 @@ class UserController extends AbstractController
         if (empty($_SESSION["Pseudo"]) == false){
             $valInfo = new InfoMovie();
             $responseInfo = $valInfo->SQLGetCommentUser(BDD::getInstance(),$_SESSION["ID_USER"]);
-
-            var_dump($responseInfo);
+            $responseInfoFilmCanShare = $valInfo->SQLSelectMovieCanShare(BDD::getInstance(),$_SESSION["ID_USER"]);
+            $ReponseMoviePretToSee = $valInfo->SQLGetMoviePretToSee(BDD::getInstance(),$_SESSION["ID_USER"]);
 
             if(isset($_POST["Password"]) || isset($_POST["Email"])) {
                 $val = new User();
@@ -189,13 +192,21 @@ class UserController extends AbstractController
                     }
                 } else {
                     echo $this->twig->render("User/ModifyUser.html.twig", [
-                        "Pseudo" => $_SESSION["Pseudo"]
+                        "Pseudo" => $_SESSION["Pseudo"],
+                        "InfoUserList" => $responseInfo[1],
+                        "IsOnline" => isset($_SESSION["Pseudo"]),
+                        "InfoMovieCanShareList" => $responseInfoFilmCanShare[1],
+                        "InfoMovieToSeeList" => $ReponseMoviePretToSee[1]
                     ]);
                     echo "Une erreur c'est produite : ${response[1]}";
                 }
             } else {
                 echo $this->twig->render("User/ModifyUser.html.twig", [
-                    "Pseudo" => $_SESSION["Pseudo"]
+                    "Pseudo" => $_SESSION["Pseudo"],
+                    "InfoUserList" => $responseInfo[1],
+                    "IsOnline" => isset($_SESSION["Pseudo"]),
+                    "InfoMovieCanShareList" => $responseInfoFilmCanShare[1],
+                    "InfoMovieToSeeList" => $ReponseMoviePretToSee[1]
                 ]);
             }
         } else {
@@ -258,7 +269,8 @@ class UserController extends AbstractController
                             "ID_User" => $result[1]["ID_USER"],
                             "Pseudo" => $result[1]["PSEUDO"],
                             "Email" => $result[1]["MAIL"],
-                            "ischeck" => $ischeck
+                            "ischeck" => $ischeck,
+                            "IsOnline" => isset($_SESSION["Pseudo"])
                         ]);
                     }
                 }
@@ -308,7 +320,8 @@ class UserController extends AbstractController
 
                         echo $this->twig->render("UserAdmin/DeleteUser.html.twig", [
                             "Pseudo" => $result[1]["PSEUDO"],
-                            "ID_User" => $result[1]["ID_USER"]
+                            "ID_User" => $result[1]["ID_USER"],
+                            "IsOnline" => isset($_SESSION["Pseudo"])
                         ]);
                     }
                 }
@@ -329,7 +342,8 @@ class UserController extends AbstractController
 
                 if ($response[0]) {
                     echo $this->twig->render("UserAdmin/ListUser.html.twig", [
-                        "userslist" => $response[1]
+                        "userslist" => $response[1],
+                        "IsOnline" => isset($_SESSION["Pseudo"])
                     ]);
                 } else {
                     echo "Une erreur c'est produite : ${response[1]}";
@@ -362,7 +376,8 @@ class UserController extends AbstractController
                 return $this->twig->render("User/reset.html.twig",[
                     "ValeurBouton" => "Valider le nouveau mot de passe",
                     "NiveauInterface" => 0,
-                    "MSG_SUCCES" => "Modification du mot de passe réussit"
+                    "MSG_SUCCES" => "Modification du mot de passe réussit",
+                    "IsOnline" => isset($_SESSION["Pseudo"])
                 ]);
 
 
@@ -371,7 +386,8 @@ class UserController extends AbstractController
                     "ValeurBouton" => "Valider le nouveau mot de passe",
                     "NiveauInterface" => 2,
                     "RecoveryEmail" => $_POST["Email"],
-                    "MSG_ERR" => "Les mots de passe ne sont pas identiques"
+                    "MSG_ERR" => "Les mots de passe ne sont pas identiques",
+                    "IsOnline" => isset($_SESSION["Pseudo"])
                 ]);
             }
 
@@ -389,14 +405,16 @@ class UserController extends AbstractController
                     "ValeurBouton" => "Valider le nouveau mot de passe",
                     "NiveauInterface" => 2,
                     "RecoveryCleHidden" => $_POST["CleRecovery"],
-                    "RecoveryEmail" => $_POST["Email"]
+                    "RecoveryEmail" => $_POST["Email"],
+                    "IsOnline" => isset($_SESSION["Pseudo"])
                 ]);
             } else {
                 return $this->twig->render("User/reset.html.twig",[
                     "ValeurBouton" => "Valider le mot de passe temporaire",
                     "NiveauInterface" => 1,
                     "MSG_ERR" => "Clé incorrecte !",
-                    "RecoveryEmail" => $_POST["Email"]
+                    "RecoveryEmail" => $_POST["Email"],
+                    "IsOnline" => isset($_SESSION["Pseudo"])
                 ]);
             }
 
@@ -424,14 +442,16 @@ class UserController extends AbstractController
                 return $this->twig->render("User/reset.html.twig",[
                     "ValeurBouton" => "Valider le mot de passe temporaire",
                     "RecoveryEmail" => $val->getRecoveryEmail(),
-                    "NiveauInterface" => 1
+                    "NiveauInterface" => 1,
+                    "IsOnline" => isset($_SESSION["Pseudo"])
                 ]);
 
             } else {
                 return $this->twig->render("User/reset.html.twig",[
                     "ValeurBouton" => "Valider l'adresse email",
                     "NiveauInterface" => 0,
-                    "MSG_ERR" => "L'adresse email n'est pas présente dans notre base"
+                    "MSG_ERR" => "L'adresse email n'est pas présente dans notre base",
+                    "IsOnline" => isset($_SESSION["Pseudo"])
                 ]);
             }
 
@@ -440,8 +460,54 @@ class UserController extends AbstractController
             $val->setRecoveryID("12");
             return $this->twig->render("User/reset.html.twig",[
                 "ValeurBouton" => "Valider l'adresse email",
-                "NiveauInterface" => 0
+                "NiveauInterface" => 0,
+                "IsOnline" => isset($_SESSION["Pseudo"])
             ]);
+        }
+    }
+
+    public function DeleteMoviePretToSee(){
+        $valInfoMovie = new InfoMovie();
+        $response = $valInfoMovie->SQLDeleteMoviePretToSee(BDD::getInstance(),$_GET["param"]);
+
+        if ($response[0]) {
+            header("location:/profil");
+        } else {
+            echo "Une erreur c'est produite : " . $response[1];
+        }
+    }
+
+    public function UpdateAcceptPret(){
+        $valInfoMovie = new InfoMovie();
+        $response = $valInfoMovie->SQLUpdateAcceptPret(BDD::getInstance(),$_GET["param"]);
+
+        if ($response[0]) {
+            header("location:/profil");
+        } else {
+            echo "Une erreur c'est produite : " . $response[1];
+        }
+    }
+
+    //Fonction qui permet de supprimer un commentaire via le profil
+    public function DeleteCommentProfil(){
+        $valInfoMovie = new InfoMovie();
+        $valUser = new User();
+        $pre_reponse = $valInfoMovie->SQLgetOne(BDD::getInstance(),$_GET["param"]);
+
+        //On vérifie que la personne qui supprime est l'auteur ou admin
+        if (($pre_reponse[1]["ID_USER"] != $_SESSION["ID_USER"]) OR ($valUser->CheckAdminUser())){
+            header("location:/");
+        }
+
+        $valInfoMovie->setRate(-1);
+        $valInfoMovie->setComment("");
+
+        $response = $valInfoMovie->SQLUpdateInfoMovie(BDD::getInstance(),$_GET["param"]);
+
+        if ($response[0]) {
+            header("location:/profil");
+        } else {
+            echo "Une erreur c'est produite : " . $response[1];
         }
     }
 

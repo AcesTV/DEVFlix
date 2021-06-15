@@ -17,10 +17,10 @@
         <div class="boite">
 
             <strong>Pseudonyme : <li>{{ users.PSEUDO }}</li></strong>
-                <strong>Rôle : {{ users.NAME|default('Utilisateur') }}</strong>
+            <strong>Rôle : {{ users.NAME|default('Utilisateur') }}</strong>
 
-                <a class="btnmodifyadmin" href="/admin/modify/{{ users.ID_USER }}">Modifier l'utilisateur</a>
-                <a class="btndeleteadmin" href="/admin/delete/{{ users.ID_USER }}">Supprimer le compte</a>
+            <a class="btnmodifyadmin" href="/admin/modify/{{ users.ID_USER }}">Modifier l'utilisateur</a>
+            <a class="btndeleteadmin" href="/admin/delete/{{ users.ID_USER }}">Supprimer le compte</a>
 
         </div>
     {% endfor %}

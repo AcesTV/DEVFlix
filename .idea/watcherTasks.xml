@@ -14,9 +14,9 @@
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="$PROJECT_DIR$/../../../dart-sass/sass.bat" />
+      <option name="program" value="$PROJECT_DIR$/../../../DEV/dart-sass/sass" />
       <option name="runOnExternalChanges" value="true" />
-      <option name="scopeName" value="SCSS" />
+      <option name="scopeName" value="Devflix" />
       <option name="trackOnlyRoot" value="true" />
       <option name="workingDir" value="$FileDir$" />
       <envs />

@@ -24,7 +24,7 @@ class InfoMovie
 
     //Fonction afficher tous les commentaires
     public function SQLGetAll(\PDO $bdd) {
-        $requete = $bdd->prepare("SELECT * FROM t_info_movies");
+        $requete = $bdd->prepare("SELECT * FROM t_info_movies INNER JOIN t_users ON t_info_movies.ID_USER = t_users.ID_USER INNER JOIN t_movies on t_info_movies.ID_MOVIE = t_movies.ID_MOVIE WHERE RATE IS NOT NULL");
         $requete->execute();
         return $requete->fetchAll(\PDO::FETCH_CLASS, "src\Model\InfoMovie");
     }
@@ -40,7 +40,7 @@ class InfoMovie
 
     //Fonction afficher les commentaires d'un utilisateur
     public function SQLGetCommentUser(\PDO $bdd, $id) : array {
-        $requete = $bdd->prepare("SELECT * FROM t_info_movies WHERE ID_USER=:ID");
+        $requete = $bdd->prepare("SELECT ID_INFO,t_info_movies.ID_MOVIE,COMMENT,RATE,NAME FROM t_info_movies INNER JOIN t_movies ON t_info_movies.ID_MOVIE = t_movies.ID_MOVIE WHERE ID_USER=:ID");
         $requete->execute([
             "ID" => $id
         ]);
@@ -67,7 +67,6 @@ class InfoMovie
     public function SQLAddInfoMovie(\PDO $bdd) : array{
 
         try{
-            //ToDo : Ajouter la condition si existe alors update sinon ajout !
             $requete = $bdd->prepare("INSERT INTO t_info_movies (ID_MOVIE, ID_USER, RATE, COMMENT) VALUES(:ID_MOVIE, :ID_USER, :RATE, :COMMENT)");
             $requete->execute([
                 "ID_MOVIE" => $_GET["param"],
@@ -103,6 +102,7 @@ class InfoMovie
         }
     }
 
+    //Fonction de suppression de TOUTES les informations dans la table info movie via un ID
     public function SQLDeleteInfoMovie(\PDO $bdd, $id) : array{
         try{
             //Récupération de L'ID_Info
@@ -178,6 +178,95 @@ class InfoMovie
             return [true, "OK"];
 
         }catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
+    }
+
+    //Afficher les films que l'on peux preter
+    public function SQLSelectMovieCanShare(\PDO $bdd, $id) : array
+    {
+        try{
+            $requete = $bdd->prepare("SELECT t_prets.ID_PRET,t_prets.DATE_PRET,t_prets.DATE_RETOUR,t_movies.NAME,t_users.PSEUDO FROM t_prets INNER JOIN t_movies ON t_prets.ID_MOVIE = t_movies.ID_MOVIE INNER JOIN t_users ON t_prets.ID_USER = t_users.ID_USER WHERE t_prets.APPROVE = 0 AND t_prets.ID_MOVIE IN (SELECT ID_MOVIE FROM t_info_movies WHERE SHARE = 1 AND ID_USER = :ID_USER)");
+            $requete->execute([
+                "ID_USER" => $id
+            ]);
+
+            $data = $requete->fetchAll();
+
+            return [true, $data];
+
+        }catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
+    }
+
+    //Fonction qui permet d'accepter une demande de pret
+    //ToDo : Vérifier que l'on peux bien accepter car on l'a et pas déjà preter !  !
+    public function SQLUpdateAcceptPret(\PDO $bdd, $id) : array{
+        try{
+            $requete = $bdd->prepare("UPDATE t_prets SET ID_USER_PRET=:ID_USER_PRET,APPROVE = 1 WHERE ID_PRET=:ID_PRET");
+            $requete->execute([
+                "ID_USER_PRET" => $_SESSION["ID_USER"],
+                "ID_PRET" => $id
+            ]);
+
+            return[true,"Ok"];
+
+        } catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
+    }
+
+    //Fonction SQL qui permet de recupérer les demandes de prêts perso en attente
+    public function SQLGetMoviePretToSee(\PDO $bdd, $id): array{
+        try{
+            $requete = $bdd->prepare("SELECT T_MOVIES.NAME,T_PRETS.ID_PRET,T_PRETS.DATE_PRET,T_PRETS.DATE_RETOUR FROM t_movies INNER JOIN t_prets ON t_movies.ID_MOVIE = t_prets.ID_MOVIE WHERE t_prets.ID_USER = :ID_USER AND APPROVE = 0");
+            $requete->execute([
+                "ID_USER" => $id
+            ]);
+
+            $data = $requete->fetchAll();
+
+            return [true,$data];
+
+        } catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
+    }
+
+    //Fonction qui permet d'obtenir l'ID utilisateur via un ID de prêt
+    public function SQLGetOnePret(\PDO $bdd, $id){
+        try{
+            $requete = $bdd->prepare("SELECT ID_USER FROM t_prets WHERE ID_PRET=:ID_PRET");
+            $requete->execute([
+                "ID_PRET" => $id
+            ]);
+
+            return [true,$requete->fetch()];
+
+        } catch (\Exception $e){
+            return [false,"Une erreur c'est produite : ".$e->getMessage()];
+        }
+    }
+
+    //Fonction qui permet de supprimer un pret
+    public function SQLDeleteMoviePretToSee(\PDO $bdd, $id): array{
+        try{
+            $ValUser = New User();
+
+            $pre_response = $this->SQLGetOnePret(BDD::getInstance(),$id);
+            if ($pre_response[1]["ID_USER"] == $_SESSION["ID_USER"] OR $ValUser->CheckAdminUser()){
+                $requete = $bdd->prepare("DELETE FROM t_prets WHERE ID_PRET=:ID_PRET");
+                $requete->execute([
+                    "ID_PRET" => $id
+                ]);
+
+                return [true,"Suppression OK"];
+            } else {
+                return[false,"Vous n'êtes pas autorisé à effectuer cette action !"];
+            }
+
+        } catch (\Exception $e){
             return [false,"Une erreur c'est produite : ".$e->getMessage()];
         }
     }

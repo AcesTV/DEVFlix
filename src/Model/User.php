@@ -55,6 +55,7 @@ class User
     //Fonction SQLLogin
     public function SQLLoginUser(\PDO $bdd) : array{
         try{
+            //Permet de ralentir les attaques par force brute
             sleep(1);
 
             $requete = $bdd->prepare("SELECT t_users.ID_USER,PSEUDO,PASSWORD,ISADMIN,NAME FROM t_users LEFT JOIN t_roles ON t_users.ID_USER = t_roles.ID_USER WHERE PSEUDO=:PSEUDO");
@@ -64,7 +65,7 @@ class User
 
             $data = $requete->fetch(\PDO::FETCH_ASSOC);
 
-            if (password_verify($this->getUserPASSWORD(),trim($data["PASSWORD"]))){
+            if (isset($data["PASSWORD"]) AND password_verify($this->getUserPASSWORD(),trim($data["PASSWORD"]))){
                 //Si tous se passe bien return True
                 $this->setUserID($data["ID_USER"]);
                 if ($data["ISADMIN"] == "1"){

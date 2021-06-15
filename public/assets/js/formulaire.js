@@ -51,13 +51,13 @@ function check_password(){
     if (xPassword.length < 8){
         document.querySelector("#LabelPassword").innerHTML = "<font color='red' size=0.5em>Mot de passe trop court, 8 caractères minimum !</font><br>";
     } else {
-        document.querySelector("#LabelPassword").innerHTML = "<br>";
+        document.querySelector("#LabelPassword").innerHTML = "";
     }
 
     if (xPassword !== xPasswordCheck){
         document.querySelector("#LabelPasswordcheck").innerHTML = "<font color='red' size=0.5em>Les mots de passe ne correspondent pas !</font><br>";
     } else {
-        document.querySelector("#LabelPasswordcheck").innerHTML = "<br>";
+        document.querySelector("#LabelPasswordcheck").innerHTML = "";
     }
 }
 
@@ -69,6 +69,6 @@ function check_email(){
     if (xEmail !== xEmailCheck){
         document.querySelector("#LabelEmailcheck").innerHTML = "<font color='red' size=1em>L'email ne correspond pas !</font><br>";
     } else {
-        document.querySelector("#LabelEmailcheck").innerHTML = "<br>";
+        document.querySelector("#LabelEmailcheck").innerHTML = "";
     }
 }

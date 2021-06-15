@@ -6,6 +6,7 @@
 ul#myUL {
   margin: auto;
   width: 80%;
+  padding: 0;
 }
 
 body {
@@ -68,7 +69,7 @@ td {
   text-decoration: none;
   color: #000;
   width: 200px;
-  height: 25px;
+  height: 35px;
   margin-left: 10px;
 }
 
@@ -78,7 +79,7 @@ td {
   text-decoration: none;
   color: #000;
   width: 200px;
-  height: 25px;
+  height: 35px;
   margin-left: 10px;
 }
 
@@ -93,6 +94,16 @@ td {
 }
 .boite li {
   list-style: none;
+}
+.boite .stong-padding-bottom {
+  padding-bottom: 5px;
+}
+
+.boite-comment {
+  height: 300px;
+}
+.boite-comment button {
+  max-height: 40px;
 }
 
 ul {

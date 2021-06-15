@@ -32,3 +32,6 @@ RewriteRule ^infomovie/deletecomment/([0-9]+)$ index.php?controller=InfoMovie&ac
 RewriteRule ^infomovie/tosee/([0-9]+)$ index.php?controller=InfoMovie&action=BtnToSee&param=$1
 RewriteRule ^infomovie/toshare/([0-9]+)$ index.php?controller=InfoMovie&action=BtnToShare&param=$1
 RewriteRule ^infomovie/askshare/([0-9]+)$ index.php?controller=InfoMovie&action=BtnAskShare&param=$1
+RewriteRule ^user/asksharedelete/([0-9]+)$ index.php?controller=User&action=DeleteMoviePretToSee&param=$1
+RewriteRule ^user/accepshare/([0-9]+)$ index.php?controller=User&action=UpdateAcceptPret&param=$1
+RewriteRule ^user/deletecommentprofil/([0-9]+)$ index.php?controller=User&action=DeleteCommentProfil&param=$1

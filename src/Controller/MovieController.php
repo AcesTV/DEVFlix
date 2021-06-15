@@ -39,7 +39,8 @@ class MovieController extends AbstractController
         $movieList = $movie->SQLGetAll(BDD::getInstance());
 
         return $this->twig->render("Movie/list.html.twig",[
-            "movieList" => $movieList
+            "movieList" => $movieList,
+            "IsOnline" => isset($_SESSION["Pseudo"])
         ]);
     }
 
@@ -116,7 +117,9 @@ class MovieController extends AbstractController
             }
 
         } else {
-            return $this->twig->render("Movie/addMovie.html.twig");
+            return $this->twig->render("Movie/addMovie.html.twig",[
+                "IsOnline" => isset($_SESSION["Pseudo"])
+            ]);
         }
 
     }
@@ -157,7 +160,8 @@ class MovieController extends AbstractController
             $movie = $movie->SQLGetOne(BDD::getInstance(), $id);
 
             return $this->twig->render("Movie/updateMovie.html.twig",[
-                "movie" => $movie
+                "movie" => $movie,
+                "IsOnline" => isset($_SESSION["Pseudo"])
             ]);
         }
         header("Location:/admin/movie/modify/$id");

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="devflix" uuid="842a7602-bc6b-4414-8ad6-dc621c29ce46">
+    <data-source source="LOCAL" name="DEVFLIX" uuid="62b96cb1-b634-4fd6-a83d-0e6aa3bc1353">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://localhost:3306/devflix</jdbc-url>
+      <jdbc-url>jdbc:mariadb://localhost:3306/DEVFLIX</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

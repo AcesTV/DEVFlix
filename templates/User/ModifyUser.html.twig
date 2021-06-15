@@ -1,56 +1,104 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta name="viewport" content="width=device-width" initial-scale=1/>
+{% extends"base.html.twig" %}
+
+{% block title %}Movies - {{ parent() }}{% endblock %}
+
+{% block css %}
     <link rel="stylesheet" href="/assets/css/MyStyleForUsers.css">
+{% endblock %}
 
-</head>
+{% block body %}
 
-<body>
+<div class="container">
 
-<a href="/">Retourner à l'accueil (bouton temporaire)</a>
+    <h1>Bienvenue sur votre profil {{ Pseudo }}</h1>
 
-<h1>Bienvenue sur votre profil {{ Pseudo }}</h1>
+        <h2>Modifier votre mot de passe</h2>
+        <form name="ModifyUserPassword" method="post" action="/profil">
 
+            <input id="Pseudo" type="hidden" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}"><br><br>
+            <input id="Password" type="password" name="Password" placeholder="Mot de passe" required><br><br>
+            <input id="PasswordCheck" type="password" name="PasswordCheck" placeholder="Vérification mot de passe" required><br><br>
 
-    <form name="ModifyUserPassword" method="post" action="/profil">
+            <input id="Email" type="hidden" name="Email" placeholder="Votre email" value="">
 
-        <input id="Pseudo" type="hidden" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}"><br><br>
-        <input id="Password" type="password" name="Password" placeholder="Mot de passe" required><br><br>
-        <input id="PasswordCheck" type="password" name="PasswordCheck" placeholder="Vérification mot de passe" required><br><br>
+            <button id="btnModifyPassword" type="submit">Enregistrer Mot de passe</button><br><br>
 
-        <input id="Email" type="hidden" name="Email" placeholder="Votre email" value="">
+        </form>
 
-        <button id="btnModifyPassword" type="submit">Enregistrer Mot de passe</button><br><br>
+        <h2>Modifier votre adresse email</h2>
+        <form name="ModifyUserMail" method="post" action="/profil">
 
-    </form>
+            <input id="Pseudo" type="hidden" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}"><br><br>
+            <input id="Email" type="email" name="Email" placeholder="Votre email" required><br><br>
+            <input id="EmailCheck" type="email" name="EmailCheck" placeholder="Vérification email" required><br><br>
 
-    <form name="ModifyUserMail" method="post" action="/profil">
-
-        <input id="Pseudo" type="hidden" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}"><br><br>
-        <input id="Email" type="email" name="Email" placeholder="Votre email" required><br><br>
-        <input id="EmailCheck" type="email" name="EmailCheck" placeholder="Vérification email" required><br><br>
-
-        <input id="Password" type="hidden" name="Password" placeholder="Mot de passe" value="">
-
-
-        <button id="btnModifyMail" type="submit">Enregistrer Mail</button><br><br>
-
-    </form>
+            <input id="Password" type="hidden" name="Password" placeholder="Mot de passe" value="">
 
 
+            <button id="btnModifyMail" type="submit">Enregistrer Mail</button><br><br>
+
+        </form>
+
+        <!-- Tableau des demandes en attente -->
+    {% if InfoMovieToSeeList is not empty  %}
+        <h2>Liste des prêts en attente : </h2>
+        <ul id="myUL" class="TextCenter">
+            {% for MoviePretToSee in InfoMovieToSeeList  %}
+                <div class="boite-comment boite">
+
+                    <strong class="stong-padding-bottom">Film : {{ MoviePretToSee.NAME }}</strong>
+                    <strong class="stong-padding-bottom">Date début : {{ MoviePretToSee.DATE_PRET }}</strong>
+                    <strong class="stong-padding-bottom">Date fin : {{ MoviePretToSee.DATE_RETOUR }}</strong>
+
+                    <button class="btn btn-danger mb-2" onclick="window.location.href='/user/asksharedelete/{{ MoviePretToSee.ID_PRET }}'">Supprimer</button>
+                </div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+        <!-- Tableau des demandes de prêt en attentes que l'on peux accepter-->
+    {% if InfoMovieCanShareList is not null %}
+        <h2>Liste des demandes de prêt que vous pouvez accepter : </h2>
+        <ul id="myUL" class="TextCenter">
+            {% for InfoMovieCanShare in InfoMovieCanShareList  %}
+                    <div class="boite-comment boite">
+
+                        <strong class="stong-padding-bottom">Film : {{ InfoMovieCanShare.NAME }}</strong>
+                        <strong class="stong-padding-bottom">Pseudo : {{ InfoMovieCanShare.PSEUDO }}</strong>
+                        <strong class="stong-padding-bottom">Date début : {{ InfoMovieCanShare.DATE_PRET }}</strong>
+                        <strong class="stong-padding-bottom">Date fin : {{ InfoMovieCanShare.DATE_RETOUR }}</strong>
+
+                        <button class="btn btn-primary mb-2" onclick="window.location.href='/user/accepshare/{{ InfoMovieCanShare.ID_PRET }}'">Accepter</button>
+                    </div>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    {% if InfoUserList is not null %}
+        <!-- Modifier, passer d'un tableau à une ligne -->
+        <h2>Liste de vos commentaires : </h2>
+        <ul id="myUL" class="TextCenter">
+            {% for InfoUser in InfoUserList  %}
+                {% if (InfoUser.COMMENT is not null or InfoUser.RATE is not null) %}
+                    <div class="boite-comment boite">
+
+                        <strong class="stong-padding-bottom">Film : <a href="/movie/{{ InfoUser.ID_MOVIE }}">{{ InfoUser.NAME }}</a></strong>
+                        <strong class="stong-padding-bottom">Commentaire : {{ InfoUser.COMMENT }}</strong>
+                        <strong>Note : {{ InfoUser.RATE }}</strong>
+
+                        <button class="btn btn-danger mb-2" onclick="window.location.href='/user/deletecommentprofil/{{ InfoUser.ID_INFO }}'">Supprimer</button>
+                    </div>
+
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
 
 
-    <table>
-        <tr><td>Commentaire</td><td>{{ InfoUser.COMMENT }}</td><td>Note</td><td>{{ InfoUser.RATE }}</td><td><button></button></td></tr>
+</div>
 
-    </table>
+{% endblock %}
 
-
-
-
-<!-- Pour afficher le input en rouge -->
-<!-- <script src="/assets/js/formulaire.js"></script> -->
-
-</body>
-</html>
+{% block javascript %}
+    <script src="/assets/js/formulaire.js"></script>
+{% endblock %}
