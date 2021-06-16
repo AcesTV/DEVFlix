@@ -294,8 +294,6 @@ class User
     //Fonction Recovery - Step 1 : Vérification existance compte
     public function SQLCheckEmail(\PDO $bdd) : array{
         try{
-            var_dump($this->getRecoveryEmail());
-
             $requete = $bdd->prepare("SELECT ID_USER,MAIL FROM t_users WHERE MAIL = :MAIL");
             $requete->execute([
                 "MAIL" => $this->getRecoveryEmail()

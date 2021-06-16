@@ -1,15 +1,14 @@
-<!doctype html>
-<html lang="fr">
-<head>
-    <meta name="viewport" content="width=device-width" initial-scale=1/>
-    <link rel="stylesheet" href="/assets/css/MyStyleForUsers.css">
-</head>
+{% extends"base.html.twig" %}
 
-<a href="/login">Retourner sur la page de connexion</a>
+{% block title %}Movies - {{ parent() }}{% endblock %}
 
-<body>
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/MyStyleForUser.css">
+{% endblock %}
 
-<div id="ResetPassword">
+{% block body %}
+
+<div id="ResetPassword" class="container">
 
     <h2 class="TextCenter">Réinitialiser le mot de passe</h2>
 
@@ -17,16 +16,16 @@
     <h4 class="TextCenter msg-succes">{{ MSG_SUCCES }}</h4>
 
     <form name="ResetPassword" method="post" action="/resetpassword">
-        <input type="email" name="Email" placeholder="Adresse Email" value="{{ RecoveryEmail }}">
+        <input type="email" name="Email" placeholder="Adresse Email" value="{{ RecoveryEmail }}"><br>
 
         {% if NiveauInterface == 1 %}
-            <label for="CleRecovery">Une clé temporaire vous à été envoyé par mail</label>
-            <input type="string" name="CleRecovery" placeholder="Clé envoyé par mail">
+            <label for="CleRecovery">Une clé temporaire vous à été envoyé par mail</label><br>
+            <input type="string" name="CleRecovery" placeholder="Clé envoyé par mail"><br>
         {% endif %}
 
         {% if NiveauInterface >= 2 %}
-            <input type="password" name="Password" placeholder="Mot de passe">
-            <input type="password" name="PasswordCheck" placeholder="Vérifier le mot de passe">
+            <input type="password" name="Password" placeholder="Mot de passe"><br>
+            <input type="password" name="PasswordCheck" placeholder="Vérifier le mot de passe"><br>
         {% endif %}
 
         <input class="btn-center" type="submit" value="{{ ValeurBouton }}">
@@ -34,6 +33,8 @@
 
 
 </div>
+{% endblock %}
 
-</body>
-</html>
+{% block javascript %}
+
+{% endblock %}

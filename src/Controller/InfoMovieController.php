@@ -15,13 +15,21 @@ class InfoMovieController extends AbstractController
 
     //Afficher la liste complète des commentaires
     public function List(){
-        $infoMovie = new InfoMovie();
-        $infoMovieList = $infoMovie->SQLGetAll(BDD::getInstance());
+        $VarUser = new User();
 
-        return $this->twig->render("InfoMovie/list.html.twig",[
-            "infoMovieList" => $infoMovieList,
-            "IsOnline" => isset($_SESSION["Pseudo"])
-        ]);
+        if ($VarUser->CheckAdminUser()){
+            $infoMovie = new InfoMovie();
+            $infoMovieList = $infoMovie->SQLGetAll(BDD::getInstance());
+
+            return $this->twig->render("InfoMovie/list.html.twig",[
+                "infoMovieList" => $infoMovieList,
+                "IsOnline" => isset($_SESSION["Pseudo"])
+            ]);
+        } else {
+            header("location:/");
+        }
+
+
     }
 
     //Fonction Ajout

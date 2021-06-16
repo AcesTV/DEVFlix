@@ -429,13 +429,13 @@ class UserController extends AbstractController
 
             if ($response[0]){
 
-                $objet = "Récupération de votre mot de passe";
+                $objet = htmlspecialchars("Votre mot de passe temporaire");
                 $msg = htmlspecialchars("Voici votre mot de passe temporaire : " . $val->getRecoveryCle());
                 $msg =  utf8_decode($msg) ;
 
                 $to = $val->getRecoveryEmail();
 
-                $headers = "From: Webmaster Site <webmaster@devflix.local>\n";
+                $headers = "From: devflix.cesi@gmail.com\r\n";
                 $headers = $headers."Content-type: text/plain; charset=iso-8859-1\n";
 
                 $this->sendmail($to, $objet, $msg, $headers);
