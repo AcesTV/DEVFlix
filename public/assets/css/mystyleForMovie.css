@@ -1,0 +1,10 @@
+table, tbody, td, tr {
+  border-collapse: collapse;
+  border: 1px solid black;
+}
+
+.container-flex {
+  display: flex;
+}
+
+/*# sourceMappingURL=mystyleForMovie.css.map */

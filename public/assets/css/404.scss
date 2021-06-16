@@ -1,0 +1,25 @@
+#Box{
+  Display : flex;
+  Align-items: center;
+  justify-content: center;
+
+  p{
+    border: solid 1px #000;
+    padding: 20px;
+  }
+
+
+  margin-top: 50vh;
+  transform: translateY(-50%);
+
+  text-align: center;
+
+
+}
+
+.btn-404{
+  padding: 10px;
+  color: #000;
+  text-decoration: none;
+  background-color: #477adb;
+}

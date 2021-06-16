@@ -1,0 +1,126 @@
+@media (min-width: 1024px) {
+  #FormSignInUp {
+    zoom: 200%;
+  }
+}
+ul#myUL {
+  margin: auto;
+  width: 80%;
+}
+
+body {
+  background-color: #e3e4e5;
+  margin: 0px;
+}
+
+#FormSignInUp {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+#FormSignInUp form {
+  padding: 1em;
+  border: solid #000 1px;
+  background-color: #fff;
+  /* Centrage verticale */
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+table {
+  border-collapse: collapse;
+  width: 90%;
+  /* Centrage horizontal */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+td {
+  text-align: center;
+  border: 2px solid black;
+  width: 25%;
+  height: 35px;
+}
+
+.msgerror {
+  color: red;
+}
+
+.btnmodifyadmin {
+  background-color: #5295ff;
+  padding: 5px 15px;
+  text-decoration: none;
+  color: #000;
+  width: 200px;
+  height: 25px;
+  margin-left: 10px;
+}
+
+.btndeleteadmin {
+  background-color: #f12c2c;
+  padding: 5px 15px;
+  text-decoration: none;
+  color: #000;
+  width: 200px;
+  height: 25px;
+  margin-left: 10px;
+}
+
+.boite {
+  display: inline-grid;
+  width: 250px;
+  height: 200px;
+  border: #000 1px solid;
+  padding: 5px;
+  margin-bottom: 20px;
+  background-color: #ffffff;
+}
+.boite li {
+  list-style: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+#ResetPassword form {
+  padding-top: 15px;
+  text-align: center;
+}
+#ResetPassword form input, #ResetPassword form label {
+  display: block;
+}
+#ResetPassword form input {
+  margin: auto auto 15px;
+}
+
+.TextCenter {
+  text-align: center;
+}
+
+.msg-err {
+  color: #e52f1b;
+}
+
+.msg-succes {
+  color: #477adb;
+}
+
+.container {
+  margin: 0;
+  padding: 0;
+  max-width: unset;
+}
+.container *, .container ::after, .container ::before {
+  box-sizing: unset;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #FFF;
+}
+
+/*# sourceMappingURL=MyStyleForUsers.css.map */
