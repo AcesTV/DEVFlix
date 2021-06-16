@@ -196,7 +196,8 @@ class UserController extends AbstractController
                         "InfoUserList" => $responseInfo[1],
                         "IsOnline" => isset($_SESSION["Pseudo"]),
                         "InfoMovieCanShareList" => $responseInfoFilmCanShare[1],
-                        "InfoMovieToSeeList" => $ReponseMoviePretToSee[1]
+                        "InfoMovieToSeeList" => $ReponseMoviePretToSee[1],
+                        "IsAdmin" => (isset($_SESSION["IsAdmin"]) AND $_SESSION["IsAdmin"])
                     ]);
                     echo "Une erreur c'est produite : ${response[1]}";
                 }
@@ -206,7 +207,8 @@ class UserController extends AbstractController
                     "InfoUserList" => $responseInfo[1],
                     "IsOnline" => isset($_SESSION["Pseudo"]),
                     "InfoMovieCanShareList" => $responseInfoFilmCanShare[1],
-                    "InfoMovieToSeeList" => $ReponseMoviePretToSee[1]
+                    "InfoMovieToSeeList" => $ReponseMoviePretToSee[1],
+                    "IsAdmin" => (isset($_SESSION["IsAdmin"]) AND $_SESSION["IsAdmin"])
                 ]);
             }
         } else {

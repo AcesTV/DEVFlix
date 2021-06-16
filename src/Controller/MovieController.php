@@ -16,7 +16,8 @@ class MovieController extends AbstractController
 
         return $this->twig->render("Movie/accueil.html.twig",[
             "movieList" => $movieList,
-            "IsOnline" => isset($_SESSION["Pseudo"])
+            "IsOnline" => isset($_SESSION["Pseudo"]),
+            "IsAdmin" => (isset($_SESSION["IsAdmin"]) AND $_SESSION["IsAdmin"])
         ]);
     }
 
@@ -25,7 +26,8 @@ class MovieController extends AbstractController
         $movieList = $movie->SQLGetAll(BDD::getInstance());
 
         return $this->twig->render("Movie/accueil.html.twig",[
-            "movieList" => $movieList
+            "movieList" => $movieList,
+            "IsAdmin" => (isset($_SESSION["IsAdmin"]) AND $_SESSION["IsAdmin"])
         ]);
     }
 
@@ -40,7 +42,8 @@ class MovieController extends AbstractController
 
         return $this->twig->render("Movie/list-admin.html.twig",[
             "movieList" => $movieList,
-            "IsOnline" => isset($_SESSION["Pseudo"])
+            "IsOnline" => isset($_SESSION["Pseudo"]),
+            "IsAdmin" => (isset($_SESSION["IsAdmin"]) AND $_SESSION["IsAdmin"])
         ]);
     }
 
@@ -78,7 +81,8 @@ class MovieController extends AbstractController
             "totalRate" => $totalRate,
             "ID_SESSION" => $_SESSION["ID_USER"] ?? null,
             "IS_ADMIN" => $_SESSION["IsAdmin"] ?? null,
-            "IsOnline" => isset($_SESSION["Pseudo"])
+            "IsOnline" => isset($_SESSION["Pseudo"]),
+            "IsAdmin" => (isset($_SESSION["IsAdmin"]) AND $_SESSION["IsAdmin"])
         ]);
     }
 
