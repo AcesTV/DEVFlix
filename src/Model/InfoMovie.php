@@ -55,10 +55,11 @@ class InfoMovie
             "ID_USER" => $_SESSION["ID_USER"] ?? null
         ]);
 
-        if ($response == false) {
-            return [false, "Non"];
-        } else {
+        //Si il existe un commentaire, alors on renvoi true
+        if ($requete->rowCount() >= 1) {
             return [true, $requete->fetch()];
+        } else {
+            return [false, "Non"];
         }
 
     }
@@ -121,7 +122,7 @@ class InfoMovie
     public function SQLToSee(\PDO $bdd, $id) : array{
         $response = $this->SQLGetCommentUserMovie(BDD::getInstance(),$id);
 
-        if ($response[1]) {
+        if ($response[0]) {
             $requete = $bdd->prepare("UPDATE t_info_movies SET TO_SEE=:TO_SEE WHERE ID_USER=:ID_USER AND ID_MOVIE=:ID_MOVIE");
             $requete->execute([
                 "ID_USER" => $_SESSION["ID_USER"],
@@ -144,7 +145,7 @@ class InfoMovie
     public function SQLToShare(\PDO $bdd, $id) : array
     {
         $response = $this->SQLGetCommentUserMovie(BDD::getInstance(), $id);
-        if ($response[1]) {
+        if ($response[0]) {
             $requete = $bdd->prepare("UPDATE t_info_movies SET SHARE=:SHARE WHERE ID_USER=:ID_USER AND ID_MOVIE=:ID_MOVIE");
             $requete->execute([
                 "ID_USER" => $_SESSION["ID_USER"],

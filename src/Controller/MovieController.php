@@ -38,7 +38,7 @@ class MovieController extends AbstractController
         $movie = new Movie();
         $movieList = $movie->SQLGetAll(BDD::getInstance());
 
-        return $this->twig->render("Movie/list.html.twig",[
+        return $this->twig->render("Movie/list-admin.html.twig",[
             "movieList" => $movieList,
             "IsOnline" => isset($_SESSION["Pseudo"])
         ]);
@@ -73,8 +73,8 @@ class MovieController extends AbstractController
         return $this->twig->render("Movie/list.html.twig",[
             "movie" => $movie,
             "infoMovieList" => $response[1],
-            "Share" => $response2[1][1] ?? 0,
-            "ToSee" => $response2[1][2] ?? 0,
+            "Share" => $response2[0] ? $response2[1][1] : 0,
+            "ToSee" => $response2[0] ? $response2[1][2] : 0,
             "totalRate" => $totalRate,
             "ID_SESSION" => $_SESSION["ID_USER"] ?? null,
             "IS_ADMIN" => $_SESSION["IsAdmin"] ?? null,
