@@ -170,7 +170,6 @@ class UserController extends AbstractController
 
     //Fonction Modifier du côté utilisateur
     public function ModifyUser(){
-        //Todo : Ajouter l'interface des commentaire + possibilité de modifier et supprimer
         //Si l'utilisateur est connecté et que le mot de passe ou l'email est renseigné
         if (empty($_SESSION["Pseudo"]) == false){
             $valInfo = new InfoMovie();

@@ -13,7 +13,7 @@
         <form name="ModifyUserRole" method="post" action="/admin/modify/{{ ID_User }}">
 
             <input id="ID_User" type="hidden" name="ID_User" value="{{ ID_User }}"><br><br>
-            <label for="Email">Email actuelle : {{ Email }}</label> <br><br>
+            <label for="Email">Email actuel : {{ Email }}</label> <br><br>
             <input id="Email" type="email" name="Email" placeholder="Nouvelle email"><br><br>
 
             <input type="checkbox" id="Role" name="Role" {{ ischeck }} value="Oui">
