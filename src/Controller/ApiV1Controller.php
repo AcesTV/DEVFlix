@@ -5,7 +5,6 @@ namespace src\Controller;
 use src\Model\Article;
 use src\Model\Movie;
 use src\Model\BDD;
-use src\Model\User;
 
 class ApiV1Controller {
 
