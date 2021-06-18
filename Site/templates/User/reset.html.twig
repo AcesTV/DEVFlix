@@ -1,0 +1,40 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Movies - {{ parent() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/MyStyleForUser.css">
+{% endblock %}
+
+{% block body %}
+
+<div id="ResetPassword" class="container">
+
+    <h2 class="TextCenter">Réinitialiser le mot de passe</h2>
+
+    <h4 class="TextCenter msg-err">{{ MSG_ERR }}</h4>
+    <h4 class="TextCenter msg-succes">{{ MSG_SUCCES }}</h4>
+
+    <form name="ResetPassword" method="post" action="/resetpassword">
+        <input type="email" name="Email" placeholder="Adresse Email" value="{{ RecoveryEmail }}"><br>
+
+        {% if NiveauInterface == 1 %}
+            <label for="CleRecovery">Une clé temporaire vous à été envoyée par mail</label><br>
+            <input type="string" name="CleRecovery" placeholder="Clé envoyé par mail"><br>
+        {% endif %}
+
+        {% if NiveauInterface >= 2 %}
+            <input type="password" name="Password" placeholder="Mot de passe"><br>
+            <input type="password" name="PasswordCheck" placeholder="Vérifier le mot de passe"><br>
+        {% endif %}
+
+        <input class="btn-center" type="submit" value="{{ ValeurBouton }}">
+    </form>
+
+
+</div>
+{% endblock %}
+
+{% block javascript %}
+
+{% endblock %}

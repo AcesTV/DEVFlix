@@ -1,0 +1,40 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Movies - {{ parent() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/MyStyleForUsers.css">
+{% endblock %}
+
+{% block body %}
+
+<div id="FormSignInUp">
+
+    <form name="addUser" method="post" action="/signin">
+        <h1>Inscription</h1>
+
+        <input id="Pseudo" type="text" name="Pseudo" placeholder="Pseudo" value="{{ Pseudo }}" required>
+
+        <label id="LabelPassword" for="Password"></label>
+        <input id="Password" type="password" name="Password" placeholder="Mot de passe" required>
+
+        <label id="LabelPasswordcheck" for="Passwordcheck"></label>
+        <input id="Passwordcheck" type="password" name="Passwordcheck" placeholder="Vérification mot de passe" required>
+
+        <input id="Email" type="email" name="Email" placeholder="Votre email" value="{{ Email }}" required>
+
+        <label id="LabelEmailcheck" for="Emailcheck"></label>
+        <input id="Emailcheck" type="email" name="Emailcheck" placeholder="Vérification email" required>
+
+        <button id="btnsignup" type="submit">Inscription</button>
+
+        <a href="/login">Déjà un compte ? Connectez vous !</a>
+
+    </form>
+</div>
+
+{% endblock %}
+
+{% block javascript %}
+    <script src="/assets/js/formulaire.js"></script>
+{% endblock %}

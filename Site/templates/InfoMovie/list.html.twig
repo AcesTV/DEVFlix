@@ -1,0 +1,35 @@
+{% extends"base-admin.html.twig" %}
+
+{% block title %}Commentaires - {{ parent() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/mystyleForMovie.css">
+
+{% endblock %}
+
+
+{% block body %}
+
+    <div class="container">
+        {% if infoMovieList is defined %}
+            <h1>Liste des Commentaires</h1>
+            {% for infoMovie in infoMovieList %}
+                <h3>Commentaire de : {{ infoMovie.PSEUDO }}</h3>
+                <h4>Film n°{{ infoMovie.ID_MOVIE }} - {{ infoMovie.NAME }}</h4>
+                <h5>Note : {{ infoMovie.RATE }}</h5>
+                <p>{{ infoMovie.COMMENT }}</p>
+                <button class="btn btn-danger" onclick="deleteConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <h1>Détail de {{ infoMovie.ID_INFO }}</h1>
+            <h4>Note : {{ infoMovie.RATE }}</h4>
+            <p>{{ infoMovie.COMMENT }}</p>
+            <hr>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="/assets/js/listInfoMovie.js"></script>
+{% endblock %}

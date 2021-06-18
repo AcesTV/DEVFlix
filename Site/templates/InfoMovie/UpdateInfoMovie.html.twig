@@ -1,0 +1,22 @@
+{% extends"base-admin.html.twig" %}
+
+{% block title %}Movies - {{ parent() }}{% endblock %}
+
+{% block css %}
+    {#<link rel="stylesheet" href="/assets/css/mystyleForMovie.css">#}
+{% endblock %}
+
+{% block body %}
+    <h1>Mise à jour du Commentaire n° {{ InfoMovie.ID_INFO }}</h1>
+
+    <form name="updateInfoMovie" method="post" action="/infomovie/editcomment/{{ InfoMovie.ID_INFO }}">
+
+        <input id="Rate" type="number" name="Rate" placeholder="Note" value="{{ InfoMovie.RATE }}"><br><br>
+        <textarea id="Comment" name="Comment" rows="5" cols="33" >{{ InfoMovie.COMMENT}}</textarea>
+
+        <input type="hidden" name="ID_MOVIE" value="{{ InfoMovie.ID_MOVIE }}">
+
+        <button class="btn btn-primary" id="btnAdComment" type="submit">Envoyer</button><br><br>
+
+    </form>
+{% endblock %}

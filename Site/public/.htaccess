@@ -1,0 +1,43 @@
+ErrorDocument 404 /404.html
+
+RewriteEngine On
+
+#URL Rewriting pour la partie user
+RewriteRule ^signin$ index.php?controller=User&action=AddUser
+RewriteRule ^login$ index.php?controller=User&action=LoginUser
+RewriteRule ^logout$ index.php?controller=User&action=LogoutUser
+RewriteRule ^profil$ index.php?controller=User&action=ModifyUser
+RewriteRule ^resetpassword$ index.php?controller=User&action=ResetPassword
+
+#URL Rewriting pour la partie admin
+RewriteRule ^admin/modify/([0-9]+)$ index.php?controller=User&action=ModifyAdmin&param=$1
+RewriteRule ^admin/delete/([0-9]+)$ index.php?controller=User&action=DeleteAdmin&param=$1
+RewriteRule ^admin/list$ index.php?controller=User&action=GetAll
+RewriteRule ^admin$ index.php?controller=User&action=Admin
+
+#URL Rewriting movie
+RewriteRule ^movies$ index.php?controller=Movie&action=List
+RewriteRule ^movie/([0-9]+)$ index.php?controller=movie&action=showonemovie&param=$1
+RewriteRule ^admin/movies$ index.php?controller=Movie&action=ListAdmin
+RewriteRule ^admin/movie/modify/([0-9]+)$ index.php?controller=movie&action=updatemovie&param=$1
+RewriteRule ^admin/movie/delete/([0-9]+)$ index.php?controller=Movie&action=DeleteMovie&param=$1
+RewriteRule ^admin/movie/add$ index.php?controller=Movie&action=AddMovie
+
+#URL Rewritting pour Info_Movie
+RewriteRule ^infomovie/list$ index.php?controller=InfoMovie&action=List
+RewriteRule ^infomovie/comment/([0-9]+)$ index.php?controller=InfoMovie&action=GetOne&param=$1
+RewriteRule ^infomovie/addcomment/([0-9]+)$ index.php?controller=InfoMovie&action=AddInfoMovie&param=$1
+RewriteRule ^infomovie/editcomment/([0-9]+)$ index.php?controller=InfoMovie&action=UpdateInfoMovie&param=$1
+RewriteRule ^infomovie/deletecomment/([0-9]+)$ index.php?controller=InfoMovie&action=BtnDeleteInfoMovie&param=$1
+RewriteRule ^infomovie/tosee/([0-9]+)$ index.php?controller=InfoMovie&action=BtnToSee&param=$1
+RewriteRule ^infomovie/toshare/([0-9]+)$ index.php?controller=InfoMovie&action=BtnToShare&param=$1
+RewriteRule ^infomovie/askshare/([0-9]+)$ index.php?controller=InfoMovie&action=BtnAskShare&param=$1
+RewriteRule ^user/asksharedelete/([0-9]+)$ index.php?controller=User&action=DeleteMoviePretToSee&param=$1
+RewriteRule ^user/accepshare/([0-9]+)$ index.php?controller=User&action=UpdateAcceptPret&param=$1
+RewriteRule ^user/deletecommentprofil/([0-9]+)$ index.php?controller=User&action=DeleteCommentProfil&param=$1
+
+#API
+#Articles
+RewriteRule ^API/movies$ index.php?controller=ApiV1&action=articles
+#Article
+RewriteRule ^API/movie/([0-9]+)$ index.php?controller=ApiV1&action=article&param=$1

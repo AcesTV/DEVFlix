@@ -1,0 +1,34 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Movies - {{ parent() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/MyStyleForUsers.css">
+{% endblock %}
+
+{% block body %}
+
+    <div id="FormSignInUp">
+
+        <form name="addUser" method="post" action="/login">
+            <h2>Connexion</h2>
+            {% if MsgError is defined %}
+                <h5><div class='msgerror'>{{ MsgError }}</div></h5>
+            {% endif  %}
+            <input type="text" name="Pseudo" value="{{ Pseudo }}" placeholder="Pseudo">
+            <input type="password" name="Password" placeholder="Mot de passe">
+
+            <input type="submit" value="Connexion">
+
+            <a href="/resetpassword">Mot de passe oublié ?</a><br><br>
+
+            <a href="/signin">Pas de compte ? Créez le !</a>
+
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block javascript %}
+<script src="/assets/js/formulaire.js"></script>
+{% endblock %}

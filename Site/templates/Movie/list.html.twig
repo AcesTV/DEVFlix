@@ -1,0 +1,139 @@
+{% extends"base.html.twig" %}
+
+{% block title %}Movies - {{ parent() }}{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="/assets/css/mystyleForMovie.css">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    {% if movieList is defined %}
+        <h1>Liste des Films</h1>
+        {% for movie in movieList %}
+            <h2><a href="/movie/{{ movie.ID_MOVIE }}">{{ movie.NAME }}</a></h2>
+            <button class="btn btn-success" onclick="window.location.href='/admin/movie/modify/{{ movie.ID_MOVIE }}'">Modifier</button>
+            <button class="btn btn-danger" onclick="deleteConfirm({{ movie.ID_MOVIE }})" id="deleteButton">Supprimer</button>
+            <p>{{ movie.RELEASE_DATE }}</p>
+            <p>{{ movie.SYNOPSIS }}</p>
+            <hr>
+        {% endfor %}
+    {% else %}
+        <div class="row col-11 mt-4 mx-auto">
+            <img src="{{ movie.POSTER }}" class="col-md-4 p-3 mx-auto" alt="...">
+            <div class="card-body col p-3">
+                <h5 class="card-title">{{ movie.NAME }}</h5>
+                <p class="card-text">{{ movie.SYNOPSIS }}</p>
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Note : {{ totalRate }}
+                        {% if totalRate == "Non défini" %}
+
+                        {% elseif totalRate >= 10 %}
+                            ⭐⭐⭐⭐⭐
+                        {% elseif totalRate >= 8 %}
+                            ⭐⭐⭐⭐
+                        {% elseif totalRate >= 6 %}
+                            ⭐⭐⭐
+                        {% elseif totalRate >= 4 %}
+                            ⭐⭐
+                        {% elseif totalRate >= 2 %}
+                            ⭐
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">Origine : {{ movie.ORIGIN }}</li>
+                    <li class="list-group-item">VO : {{ movie.VO }}</li>
+                    <li class="list-group-item">Acteur(s) : {{ movie.ACTORS }}</li>
+                    <li class="list-group-item">Réalisateur(s) : {{ movie.DIRECTOR }}</li>
+                    <li class="list-group-item">Genre : {{ movie.GENRE }}</li>
+                    <li class="list-group-item">Production : {{ movie.PRODUCTION }}</li>
+                    <li class="list-group-item">Durée : {{ movie.RUNTIME }} minutes</li>
+                    <li class="list-group-item">Nomination : {{ movie.NOMINATION }}</li>
+                </ul>
+            </div>
+            <div class="video-container mb-3">
+                <iframe src="{{movie.TRAILER }}?autoplay=1&mute=1" frameborder="0" width="560" height="315" allowfullscreen></iframe>
+            </div>
+        </div>
+
+        {% if ID_SESSION != null %}
+
+            {% if ToSee == 0 %}
+                <button class="btn btn-success" onclick="ToSee({{ movie.ID_MOVIE }})" id="ToSeeBtn">A Voir</button>
+
+            {% else %}
+                <button class="btn btn-danger" onclick="ToSee({{ movie.ID_MOVIE }})" id="ToSeeBtn">Vu</button>
+
+            {% endif %}
+
+            {% if Share == 0 %}
+                <button class="btn btn-success" onclick="ToShare({{ movie.ID_MOVIE }})" id="ToShareBtn">Partager votre DVD</button>
+
+                <!-- Permet de demander un prêt -->
+                <h2>Demander un prêt :</h2>
+                <form name="addInfoMovie" method="post" action="/infomovie/askshare/{{ movie.ID_MOVIE }}">
+                    <label for="DateDebut">Date de début de prêt souhaitée : </label>
+                    <input type="date" name="DateDebut" required><br>
+                    <label for="DateFin">Date de fin de prêt souhaitée : </label>
+                    <input type="date" name="DateFin" required><br>
+                    <button class="btn btn-primary" type="submit">Demander un prêt</button>
+                </form>
+            {% else %}
+                <button class="btn btn-danger" onclick="ToShare({{ movie.ID_MOVIE }})" id="ToShareBtn">Ne plus partager votre DVD</button>
+
+            {% endif %}
+        {% endif %}
+
+        {% if infoMovieList is defined %}
+
+            {% set commentOK = 0 %}
+            {% for infoMovie in infoMovieList %}
+                {% if (ID_SESSION == infoMovie.ID_USER)  %}
+
+                    <h1>Liste des Commentaires</h1>
+
+                    <h4>Note : {{ infoMovie.RATE }}</h4>
+                    <p>{{ infoMovie.COMMENT }}</p>
+                    <button class="btn btn-success" onclick="window.location.href='/infomovie/editcomment/{{ infoMovie.ID_INFO }}'">Modifier</button>
+                    <button class="btn btn-danger" onclick="deleteDetailConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
+                    {% set commentOK = 1 %}
+                {% endif %}
+
+            {% endfor %}
+
+            {% if commentOK == 0 and ID_SESSION != null%}
+                <h2>Ajouter un commentaire</h2>
+                <form name="addInfoMovie" method="post" action="/infomovie/addcomment/{{ movie.ID_MOVIE }}">
+
+                    <input id="Rate" type="number" step="0.1" min="0" max="10" name="Rate" placeholder="Note" required><br><br>
+                    <textarea id="Comment" name="Comment" placeholder="Commentaire" rows="5" cols="33" required></textarea>
+                    <button class="btn btn-primary" id="btnAdComment" type="submit">Envoyer</button><br><br>
+
+                </form>
+
+
+                {% if infoMovieList != false %}
+                    <h1>Liste des Commentaires</h1>
+                {% endif %}
+
+            {% endif %}
+
+            {% for infoMovie in infoMovieList %}
+                {% if (ID_SESSION != infoMovie.ID_USER)  %}
+                    <h4>Note : {{ infoMovie.RATE }}</h4>
+                    <p>{{ infoMovie.COMMENT }}</p>
+                    {% if (IS_ADMIN == 1) %}
+                        <button class="btn btn-danger" onclick="deleteDetailConfirm({{ infoMovie.ID_INFO }})" id="deleteButton">Supprimer</button>
+                    {% endif %}
+                {% endif %}
+                <hr>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block javascript %}
+<script src="/assets/js/listMovie.js"></script>
+<script src="/assets/js/listInfoMovie.js"></script>
+{% endblock %}
