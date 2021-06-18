@@ -43,10 +43,8 @@
                     </li>
                     <li class="list-group-item">Origine : {{ movie.ORIGIN }}</li>
                     <li class="list-group-item">VO : {{ movie.VO }}</li>
-                    <li class="list-group-item">Origine : {{ movie.ORIGIN }}</li>
-                    <li class="list-group-item">VO : {{ movie.VO }}</li>
-                    <li class="list-group-item">Acteurs : {{ movie.ACTORS }}</li>
-                    <li class="list-group-item">Réalisateur : {{ movie.DIRECTOR }}</li>
+                    <li class="list-group-item">Acteur(s) : {{ movie.ACTORS }}</li>
+                    <li class="list-group-item">Réalisateur(s) : {{ movie.DIRECTOR }}</li>
                     <li class="list-group-item">Genre : {{ movie.GENRE }}</li>
                     <li class="list-group-item">Production : {{ movie.PRODUCTION }}</li>
                     <li class="list-group-item">Durée : {{ movie.RUNTIME }} minutes</li>
@@ -74,9 +72,9 @@
                 <!-- Permet de demander un prêt -->
                 <h2>Demander un prêt :</h2>
                 <form name="addInfoMovie" method="post" action="/infomovie/askshare/{{ movie.ID_MOVIE }}">
-                    <label for="DateDebut">Date de début de prêt souhaité : </label>
+                    <label for="DateDebut">Date de début de prêt souhaitée : </label>
                     <input type="date" name="DateDebut" required><br>
-                    <label for="DateFin">Date de fin de prêt souhaité : </label>
+                    <label for="DateFin">Date de fin de prêt souhaitée : </label>
                     <input type="date" name="DateFin" required><br>
                     <button class="btn btn-primary" type="submit">Demander un prêt</button>
                 </form>

@@ -58,7 +58,7 @@ class UserController extends AbstractController
                 $subject = "Bienvenue sur DevFlix !";
                 $body = "<html>
                             <body>
-                                <h1>Toutes l'équipe de DevFlix vous souhaite la bienvenue sur notre site !</h1>
+                                <h1>Toute l'équipe de DevFlix vous souhaite la bienvenue sur notre site !</h1>
                                 Vous pouvez à présent commenter, noter et partager vos films préférés. <br><br>
                                 Retrouvez nous vite sur notre site <a href='http://www.devflix.local'>DevFlix</a>
                             </body>
@@ -168,6 +168,7 @@ class UserController extends AbstractController
         }
     }
 
+    //ToDo : Lors de la mise à jour de l'adresse mail, il faut vérifier que l'adresse mail est correcte (Regex)
     //Fonction Modifier du côté utilisateur
     public function ModifyUser(){
         //Si l'utilisateur est connecté et que le mot de passe ou l'email est renseigné
@@ -217,6 +218,7 @@ class UserController extends AbstractController
         }
     }
 
+    //ToDo : Lors de la mise à jour de l'adresse mail, il faut vérifier que l'adresse mail est correcte (Regex)
     //Fonction ModifyAdmin qui permet la modification de l'email et du rôle côté admin
     public function ModifyAdmin(){
         $val = new User();

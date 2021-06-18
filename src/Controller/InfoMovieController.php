@@ -44,7 +44,7 @@ class InfoMovieController extends AbstractController
             $val->setRate($_POST["Rate"] > 10 ? 10 : $_POST["Rate"]);
             $val->setComment($_POST["Comment"]);
 
-            //Retourne TRUE si l'utilisateur à déjà posté un commentaire pour le film
+            //Retourne TRUE si l'utilisateur a déjà posté un commentaire pour le film
             $response = $val->SQLGetCommentUserMovie(BDD::getInstance(),$_GET["param"]);
 
             if ($response[0]){
